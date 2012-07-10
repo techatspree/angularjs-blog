@@ -72,6 +72,13 @@ public abstract class AbstractDaoBean<E extends AbstractEntity> implements
 		entityManager.remove(remove);
 	}
 
+
+	@Override
+	public void remove(final long id){
+		E entity = entityManager.find(entityClass, id);
+		remove(entity);
+	}
+
 	@Override
 	public E merge(final E instance) {
 		E merge = entityManager.merge(instance);

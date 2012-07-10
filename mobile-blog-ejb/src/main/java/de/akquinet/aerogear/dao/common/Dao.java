@@ -16,4 +16,6 @@ public interface Dao<E extends AbstractEntity> {
 
 	List<E> findAll();
 
+	void remove(long id);
+
 }
