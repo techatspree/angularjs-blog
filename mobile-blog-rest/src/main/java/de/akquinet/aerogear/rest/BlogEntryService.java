@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
@@ -28,7 +29,7 @@ import de.akquinet.aerogear.dao.BlogEntryDao;
 
 @Stateless
 @Path("/blog")
-public class BlogEntryListService {
+public class BlogEntryService {
 
 	private static final int MAX_RESULTS = 5;
 
@@ -53,7 +54,9 @@ public class BlogEntryListService {
 	@Path("/{id:^[1-9][0-9]*}")
 	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	public BlogEntry findBlogEntry(@PathParam("id") final long id) {
-		return blogEntryDao.find(id);
+		BlogEntry blogEntry = blogEntryDao.find(id);
+		log.info("findBlogEntry( " + id + ") " + blogEntry);
+		return blogEntry;
 	}
 
 	@DELETE
