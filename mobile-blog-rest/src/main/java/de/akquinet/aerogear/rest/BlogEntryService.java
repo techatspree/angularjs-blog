@@ -28,7 +28,7 @@ import de.akquinet.aerogear.dao.BlogEntryDao;
 
 @Stateless
 @Path("/blog")
-public class BlogEntryListService {
+public class BlogEntryService {
 
 	private static final int MAX_RESULTS = 5;
 
@@ -42,7 +42,7 @@ public class BlogEntryListService {
 	private Validator validator;
 
 	@GET
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public List<BlogEntry> getResultList(
 			@QueryParam("firstResult") final int firstResult) {
 
@@ -51,7 +51,7 @@ public class BlogEntryListService {
 
 	@GET
 	@Path("/{id:^[1-9][0-9]*}")
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry findBlogEntry(@PathParam("id") final long id) {
 		return blogEntryDao.find(id);
 	}
@@ -64,7 +64,7 @@ public class BlogEntryListService {
 
 	@PUT
 	@Path("/{id:^[1-9][0-9]*}")
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry updateBlogEntry(@PathParam("id") final long id,
 			@FormParam("title") final String title,
 			@FormParam("content") final String content)
@@ -79,8 +79,8 @@ public class BlogEntryListService {
 	}
 
 	@POST
-	@Consumes({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry saveBlogEntry(final BlogEntry blogEntry){
 		return null;
 	}
