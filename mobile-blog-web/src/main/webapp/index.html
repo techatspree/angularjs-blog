@@ -1,48 +1,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-	<head>
-	   <title>Java EE 6 Blog!</title>
-	   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+    <title>AeroGear Blog Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" type="text/css" href="css/screen.css" />
+    <!-- Set viewport scaling and zoom features -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<script type="text/javascript" src="js/app.js"></script>
-		<script type="text/javascript" src="js/jquery.min.js"></script>
-	</head>
-	<body>
-	<script type="text/javascript">
-	     $(document).ready( function() {
-             getBlogEntryTemplate();
-          });
-           </script>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="css/lib/jo2.css"/>
+    <link rel="stylesheet" type="text/css" href="css/screen.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="css/lib/apple.css"/> -->
 
-	<div id="container">
-	   	<div id="header">
-	         <div style="color: #FFFFFF;">
-			<div style="float: left; font-size: 2.5em;">
-				<p>Java EE Blog!</p>
-			</div>
+    <script type="text/javascript" src="js/lib/underscore.min.js"></script>
+    <script type="text/javascript" src="js/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="js/lib/backbone.min.js"></script>
+    <script type="text/javascript" src="js/lib/jo.min.js"></script>
 
-			<div style="float: right;">
-				TODO Login
-			</div>
-		</div>
-	      </div>
-	      <div id="content">
-			<table>
-				<tbody id="blogEntries"></tbody>
-			</table>
-	      </div>
-	      <div id="footer">
-	         <p>
-	         	&#169; mobile-blog - 1.0-SNAPSHOT
-	         </p>
-	      </div>
-	   </div>
+    <!-- This is our main app and entry point -->
+    <script src="js/App.js"></script>
 
+    <script src="js/backend/BlogEntryService.js"></script>
 
+    <script src="js/frontend/AboutView.js"></script>
+    <script src="js/frontend/BlogListView.js"></script>
+    <script src="js/frontend/BlogEntryView.js"></script>
 
-	</body>
+</head>
+<body>
+
+<script type="text/javascript">
+    Zepto(function($){
+        App.load();
+    })
+</script>
+
+</body>
 </html>
