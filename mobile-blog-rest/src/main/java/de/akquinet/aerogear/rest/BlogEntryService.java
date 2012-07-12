@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
@@ -53,7 +54,9 @@ public class BlogEntryService {
 	@Path("/{id:^[1-9][0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry findBlogEntry(@PathParam("id") final long id) {
-		return blogEntryDao.find(id);
+		BlogEntry blogEntry = blogEntryDao.find(id);
+		log.info("findBlogEntry( " + id + ") " + blogEntry);
+		return blogEntry;
 	}
 
 	@DELETE
