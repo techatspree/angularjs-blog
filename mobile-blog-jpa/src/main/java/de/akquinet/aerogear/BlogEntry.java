@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import de.akquinet.aerogear.common.AbstractEntity;
@@ -40,7 +41,6 @@ public class BlogEntry extends AbstractEntity {
 
 	@NotNull
 	@ManyToOne(optional = false)
-	@XmlTransient
 	private User author;
 
 	@NotNull
@@ -50,6 +50,7 @@ public class BlogEntry extends AbstractEntity {
 	@OneToMany(mappedBy = "blogEntry", cascade = { CascadeType.REMOVE,
 			CascadeType.REFRESH })
 	@XmlTransient
+	@JsonIgnore
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public String getTitle() {

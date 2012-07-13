@@ -25,6 +25,7 @@ public class UserTestdata {
 			user.setFirstname(firstname);
 			user.setSurname(surname);
 			user.setUsername(username.toLowerCase());
+			user.setEmail(username.toLowerCase() + "@akquinet.de");
 			user.setPassword(PASSWORD);
 
 			userDao.persist(user);

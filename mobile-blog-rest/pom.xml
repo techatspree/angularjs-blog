@@ -97,8 +97,14 @@
 			<artifactId>resteasy-jaxrs</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
 
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>13.0-rc1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 
 	<profiles>
