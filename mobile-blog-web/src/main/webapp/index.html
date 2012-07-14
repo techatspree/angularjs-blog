@@ -5,40 +5,19 @@
     <title>AeroGear Blog Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <!-- Set viewport scaling and zoom features -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="css/lib/jo2.css"/>
-
-    <link media="only screen and (max-device-width: 767px)" href="css/lib/ios.css" type= "text/css" rel="stylesheet">
-    <link media="only screen and (min-device-width: 768px)" href="css/lib/browser.css" type= "text/css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="css/screen.css"/>
-
-    <script type="text/javascript" src="js/lib/underscore.min.js"></script>
-    <script type="text/javascript" src="js/lib/zepto.min.js"></script>
-    <script type="text/javascript" src="js/lib/zepto.onpress.js"></script>
-    <script type="text/javascript" src="js/lib/backbone.min.js"></script>
-    <script type="text/javascript" src="js/lib/jo.min.js"></script>
-
-    <!-- This is our main app and entry point -->
-    <script src="js/App.js"></script>
-
-    <script src="js/backend/BlogEntryService.js"></script>
-
-    <script src="js/frontend/AboutView.js"></script>
-    <script src="js/frontend/BlogListView.js"></script>
-    <script src="js/frontend/BlogEntryView.js"></script>
-
+    <script type="text/javascript">
+        var mq = window.matchMedia( "(max-width: 767px)" );
+        if (mq.matches) {
+        // mobile
+        document.location.href="mobile/index.html";
+        }
+        else {
+        document.location.href="desktop/index.html";
+        }
+    </script>
 </head>
 
 <body>
-<script type="text/javascript">
-    Zepto(function($){
-        App.load();
-    })
-</script>
 </body>
 
 </html>
