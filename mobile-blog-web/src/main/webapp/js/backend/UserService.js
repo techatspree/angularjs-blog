@@ -11,6 +11,9 @@ App.UserService = function() {
         login : function(username, password, callback, errorCallback) {
             console.log(username + ":" + password);
             loggedIn = true;
+
+
+
             callback();
         },
 

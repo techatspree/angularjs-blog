@@ -1,4 +1,8 @@
 App = {
+	currentBlogPostId: 0,
+
+	postLoginAction: function() {},
+
 	load: function() {
 		jo.load();
 		
@@ -16,11 +20,11 @@ App = {
     			    this.nav = new joNavbar(),
 					this.stack = new joStackScroller(),
 				]),
-				this.toolbar = new joToolbar(
-				    new joControl("AeroGear Blog Demo, v1.0").selectEvent.subscribe(function() {
-                        App.stack.push(joCache.get("AboutView"));
-                    })
-				)
+//				this.toolbar = new joToolbar(
+//				    new joControl("AeroGear Blog Demo, v1.0").selectEvent.subscribe(function() {
+//                        App.stack.push(joCache.get("AboutView"));
+//                    })
+//				)
 			]).setStyle({position: "absolute", top: "0", left: "0", bottom: "0", right: "0"})
 		);
 		
@@ -30,17 +34,7 @@ App = {
 		this.stack.push(joCache.get("BlogListView"));
 		
 		joGesture.backEvent.subscribe(this.stack.pop, this.stack);
-
-    	$('.loginButton').hide();
-
-
-//        $('#loginControl').onpress(function() {
-//            App.scn.showPopup(joCache.get("LoginView"));
-//            return false;
-//        });
 	},
-
-	currentBlogPostId: 0,
 
 	openBlogPost: function(id) {
 	    this.currentBlogPostId = id;

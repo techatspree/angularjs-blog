@@ -1,11 +1,25 @@
 // using joCache here to defer creation of this
 // view until we actually use it
 joCache.set("BlogEntryView", function() {
+	var onAddComClicked = function() {
+        if (!App.UserService.isLoggedIn()) {
+            App.postLoginAction = function() {
+                App.stack.push(joCache.get("NewCommentView"));
+            }
+            App.scn.showPopup(joCache.get("LoginView"));
+        }
+        else {
+            App.stack.push(joCache.get("NewCommentView"));
+        }
+	}
+
 	var card = new joCard([
 		new joGroup(
-		    new joHTML(" \
-		        <div id=\"blogEntryContainer\"></div> \
-		    ")
+		    new joFlexcol([
+		        new joHTML("<div id='blogEntryContainer' />"),
+		        new joDivider(),
+	    	    new joButton("Add comment").selectEvent.subscribe(onAddComClicked)
+		    ])
 		)
 	]);
 

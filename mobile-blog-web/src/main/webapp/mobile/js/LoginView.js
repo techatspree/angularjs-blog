@@ -20,10 +20,11 @@ joCache.set("LoginView", function() {
 
         // perform login
         App.UserService.login(inputUser.getData(), inputPass.getData(), function() {
-            App.stack.push(joCache.get("NewPostView"));
+            App.postLoginAction();
         });
+        // TODO: failure case
 
-		App.scn.hidePopup();
+        App.scn.hidePopup();
 	}
 
 	return popup;
