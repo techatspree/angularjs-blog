@@ -17,6 +17,6 @@ App = {
 	},
 
 	openBlogPost: function(id) {
-        document.location.href = "blogPost.html?post=" + id;
+        document.location.href = "?showPost=" + id;
     }
 };

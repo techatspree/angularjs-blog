@@ -23,24 +23,12 @@ joCache.set("BlogEntryView", function() {
 		)
 	]);
 
-    var retrieveBlogEntry = function() {
-        // TODO: Error handling
-        App.BlogEntryService.retrieveBlogEntry(App.currentBlogPostId, function(result){
-            $('#blogEntryContainer').empty().append(buildBlogEntry(result));
-        });
-    };
-
-	/* Builds the updated table for the member list */
-    var buildBlogEntry = function(blogEntry) {
-        return _.template( $( "#blogentry-tmpl" ).html(), {"blogEntry": blogEntry});
-    }
-
     $.ajax({
         url: "../template/BlogEntry.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
-            retrieveBlogEntry();
+            App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), App.currentBlogPostId);
         }
     });
 

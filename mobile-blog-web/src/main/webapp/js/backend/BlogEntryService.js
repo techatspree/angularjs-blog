@@ -3,7 +3,7 @@ App.BlogEntryService = function() {
         addBlogEntry : function(blogEntry) {
             // TODO: all posts (e.g. add user, add post) are alike. use one function to do it?
             $.ajax({
-                url: "rest/blog",
+                url: "../rest/blog",
                 type: "POST",
                 cache: false,
                 data: blogEntry,
@@ -24,11 +24,12 @@ App.BlogEntryService = function() {
         retrieveBlogEntries : function(callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "../mockData/blogEntries.json",
+//                url: "../mockData/blogEntries.json",
+                url: "../rest/blog",
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
-                    data = JSON.parse(data);
+//                    data = JSON.parse(data);
                     callback(data);
                 },
                 error: function(error) {
@@ -44,11 +45,11 @@ App.BlogEntryService = function() {
         retrieveBlogEntry : function(id, callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "../mockData/blogEntry.json",
+                url: "../rest/blog/" + id,
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
-                    data = JSON.parse(data);
+//                    data = JSON.parse(data);
                     callback(data);
                 },
                 error: function(error) {

@@ -31,7 +31,7 @@ joCache.set("BlogListView", function() {
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
-            App.BlogEntryFrontend.updateBlogTable($('#blogEntryList'))  ;
+            App.BlogEntryFrontend.updateWithBlogList($('#blogEntryList'))  ;
         }
     });
 
