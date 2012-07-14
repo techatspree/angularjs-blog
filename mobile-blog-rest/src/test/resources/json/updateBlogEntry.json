@@ -1,0 +1,14 @@
+{"blogEntry":
+	{
+		"title":"testUpdate",
+		"content":"testUpdate",
+		"author":
+			{
+				"firstname":"Fred",
+				"surname":"Johnson",
+				"email":"fjohnson@akquinet.de",
+				"username":"fjohnson"
+			},
+		"created":"2012-07-12T15:36:08.110+02:00"
+	}
+}

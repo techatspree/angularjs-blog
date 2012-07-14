@@ -32,4 +32,19 @@ public class UserDaoBean extends AbstractDaoBean<User> implements UserDao {
 
 		return getSingleResult(query);
 	}
+
+	@Override
+	public Long countUserByEmail(final String email) {
+
+		log.info("count user with email " + email);
+
+		CriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<Long> query = builder.createQuery(Long.class);
+		Root<User> user = query.from(User.class);
+		query.select(builder.count(user));
+
+		query.where(builder.equal(user.get(User_.email), email));
+
+		return this.<Long> getTypedSingleResult(query);
+	}
 }

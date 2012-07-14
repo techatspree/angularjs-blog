@@ -131,6 +131,12 @@
 				<version>2.3.4.Final</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-xc</artifactId>
+				<version>1.9.2</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

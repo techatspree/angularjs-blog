@@ -11,6 +11,7 @@ public class UserTestdataBuilder extends AbstractTestdataBuilder<User> {
 	private String withUsername;
 	private String withFirstname;
 	private String withSurname;
+	private String withEmail;
 
 	public UserTestdataBuilder() {
 		super();
@@ -35,6 +36,11 @@ public class UserTestdataBuilder extends AbstractTestdataBuilder<User> {
 		return this;
 	}
 
+	public UserTestdataBuilder withEmail(String email) {
+		this.withEmail = email;
+		return this;
+	}
+
 	private String getFirstname() {
 		return withFirstname != null ? withFirstname : "Max";
 	}
@@ -47,13 +53,17 @@ public class UserTestdataBuilder extends AbstractTestdataBuilder<User> {
 		return withUsername != null ? withUsername : "mmuster" + getId();
 	}
 
+	private String getEmail() {
+		return withEmail != null ? withEmail : "mmuster" + getId() + "@test.de";
+	}
+
 	@Override
 	public User build() {
 		final User user = new User();
 		user.setUsername(getUsername());
 		user.setFirstname(getFirstname());
 		user.setSurname(getSurname());
-
+		user.setEmail(getEmail());
 		user.setPassword(DEFAULT_PASSWORD);
 
 		return user;

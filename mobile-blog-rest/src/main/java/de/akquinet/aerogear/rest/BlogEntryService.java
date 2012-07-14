@@ -1,17 +1,11 @@
 package de.akquinet.aerogear.rest;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -40,7 +34,7 @@ public class BlogEntryService {
 	private BlogEntryDao blogEntryDao;
 
 	@Inject
-	private Validator validator;
+	private ContraintValidator validator;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -55,7 +49,7 @@ public class BlogEntryService {
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry findBlogEntry(@PathParam("id") final long id) {
 		BlogEntry blogEntry = blogEntryDao.find(id);
-		log.info("findBlogEntry( " + id + ") " + blogEntry);
+		log.info("findBlogEntry(" + id + ") " + blogEntry);
 		return blogEntry;
 	}
 
@@ -75,7 +69,7 @@ public class BlogEntryService {
 		final BlogEntry entry = blogEntryDao.find(id);
 		entry.setContent(content);
 		entry.setTitle(title);
-		validate(entry);
+		validator.validate(entry);
 
 		return entry;
 
@@ -88,12 +82,4 @@ public class BlogEntryService {
 		return null;
 	}
 
-	private void validate(final BlogEntry entry) {
-		final Set<ConstraintViolation<BlogEntry>> constraintViolations = validator
-				.validate(entry);
-		if (!constraintViolations.isEmpty()) {
-			throw new ConstraintViolationException(
-					new HashSet<ConstraintViolation<?>>(constraintViolations));
-		}
-	}
 }

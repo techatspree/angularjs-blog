@@ -1,4 +1,4 @@
-package de.akquinet.aerogear.rest;
+package de.akquinet.aerogear.rest.deployment;
 
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;
@@ -16,8 +16,8 @@ public interface TestWebArchiveDeployment {
 		@Override
 		public boolean include(ArchivePath object) {
 			final String name = object.get();
-			return name.contains("Test") && !name.contains("Testdata") ? false
-					: true;
+			return name.contains("Test") && !name.contains("Testdata")
+					|| name.contains("TestdataBuilder") ? false : true;
 		}
 	};
 
@@ -30,7 +30,6 @@ public interface TestWebArchiveDeployment {
 			.addPackages(true, TEST_CLASSES_FILTER, "de.akquinet.aerogear")
 			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
 			.addAsResource("META-INF/persistence.xml",
-					"META-INF/persistence.xml")
-			.addAsWebInfResource("jboss-deployment-structure.xml");
+					"META-INF/persistence.xml");
 
 }

@@ -10,4 +10,6 @@ public interface UserDao extends Dao<User> {
 
 	User findByUsername(String username);
 
+	Long countUserByEmail(String email);
+
 }

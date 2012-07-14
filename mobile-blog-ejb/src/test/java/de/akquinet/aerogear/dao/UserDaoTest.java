@@ -41,4 +41,15 @@ public class UserDaoTest {
 		Assert.assertNull(other);
 	}
 
+	@Test
+	public void testCountUserByEmail() throws Exception {
+
+		User user = new UserTestdataBuilder(entityManager).buildAndSave();
+
+		Long count = userDao.countUserByEmail(user.getEmail());
+
+		Assert.assertEquals(Long.valueOf(1), count);
+
+	}
+
 }
