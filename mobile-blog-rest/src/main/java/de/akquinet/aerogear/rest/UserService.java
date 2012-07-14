@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 
 import de.akquinet.aerogear.User;
 import de.akquinet.aerogear.dao.UserDao;
-import de.akquinet.aerogear.dao.validator.UserUniqueEmailValidator;
+import de.akquinet.aerogear.dao.validator.UserValidator;
 
 @Stateless
 @Path("/user")
@@ -35,7 +35,7 @@ public class UserService {
 	private ContraintValidator validator;
 
 	@Inject
-	private UserUniqueEmailValidator uniqueEmailValidator;
+	private UserValidator userValidator;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -71,7 +71,7 @@ public class UserService {
 		managedUser.setSurname(user.getSurname());
 		log.info("update user " + managedUser);
 
-		validator.validate(managedUser, uniqueEmailValidator);
+		validator.validate(managedUser, userValidator);
 
 		return managedUser;
 	}
@@ -91,7 +91,7 @@ public class UserService {
 		user.setPassword(password);
 		user.setEmail(email);
 		user.setPhone(phone);
-		validator.validate(user, uniqueEmailValidator);
+		validator.validate(user, userValidator);
 		userDao.persist(user);
 		return user;
 	}

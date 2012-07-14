@@ -5,6 +5,6 @@ import javax.ejb.Local;
 import de.akquinet.aerogear.User;
 
 @Local
-public interface UserUniqueEmailValidator extends EntityValidator<User> {
+public interface UserValidator extends EntityValidator<User> {
 
 }

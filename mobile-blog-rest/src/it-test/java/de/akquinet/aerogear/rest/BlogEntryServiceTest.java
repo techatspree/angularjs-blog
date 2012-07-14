@@ -16,6 +16,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import de.akquinet.aerogear.BlogEntry;
 import de.akquinet.aerogear.rest.deployment.TestWebArchiveDeployment;
 
 @RunWith(Arquillian.class)
@@ -31,9 +32,12 @@ public class BlogEntryServiceTest {
 		ClientRequest request = new ClientRequest(URL + "/blog?firstResult=0");
 		request.accept(MediaType.APPLICATION_JSON);
 
-		ClientResponse<String> response = request.get(String.class);
+		ClientResponse<BlogEntry[]> response = request.get(BlogEntry[].class);
 
-		Assert.assertEquals(200, response.getStatus());
+		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		BlogEntry[] users = response.getEntity();
+		Assert.assertEquals(5, users.length);
 	}
 
 	@Test
@@ -41,9 +45,11 @@ public class BlogEntryServiceTest {
 
 		ClientRequest request = new ClientRequest(URL + "/blog/6");
 		request.accept(MediaType.APPLICATION_JSON);
-		ClientResponse<String> response = request.get(String.class);
+		ClientResponse<BlogEntry> response = request.get(BlogEntry.class);
 
-		Assert.assertEquals(200, response.getStatus());
+		BlogEntry blogEntry = response.getEntity();
+		Assert.assertEquals(Long.valueOf(6), blogEntry.getId());
+		Assert.assertNotNull(blogEntry.getAuthor());
 	}
 
 	@Test
@@ -57,13 +63,13 @@ public class BlogEntryServiceTest {
 		final String content = "new content";
 		formParameters.add("title", title);
 		formParameters.add("content", content);
-		ClientResponse<String> response = request.put(String.class);
+		ClientResponse<BlogEntry> response = request.put(BlogEntry.class);
 
-		Assert.assertEquals(200, response.getStatus());
+		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
-		String entity = response.getEntity();
-		Assert.assertTrue(entity.contains(title));
-		Assert.assertTrue(entity.contains(content));
+		BlogEntry entity = response.getEntity();
+		Assert.assertEquals(title, entity.getTitle());
+		Assert.assertEquals(content, entity.getContent());
 	}
 
 	@Test
@@ -72,7 +78,7 @@ public class BlogEntryServiceTest {
 		ClientRequest request = new ClientRequest(URL + "/blog/6");
 		request.accept(MediaType.APPLICATION_JSON);
 
-		MultivaluedMap<String, String> formParameters = request
+		final MultivaluedMap<String, String> formParameters = request
 				.getFormParameters();
 
 		final String title = "";
@@ -83,5 +89,22 @@ public class BlogEntryServiceTest {
 		ClientResponse<String> response = request.put(String.class);
 
 		Assert.assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
+	}
+
+
+	@Test
+	public void testDeleteBlogEntry() throws Exception {
+		ClientRequest request = new ClientRequest(URL + "/blog/15");
+		request.accept(MediaType.APPLICATION_JSON);
+
+		ClientResponse<BlogEntry> response = request.get(BlogEntry.class);
+
+		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		BlogEntry blogEntry = response.getEntity();
+
+		ClientRequest deleteRequest = new ClientRequest(URL + "/blog/" + blogEntry.getId());
+		ClientResponse<?> deleteResponse = deleteRequest.delete();
+
+		Assert.assertEquals(Status.NO_CONTENT.getStatusCode(), deleteResponse.getStatus());
 	}
 }

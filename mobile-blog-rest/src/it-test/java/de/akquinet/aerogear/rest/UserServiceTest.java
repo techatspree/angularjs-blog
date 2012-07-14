@@ -147,7 +147,5 @@ public class UserServiceTest {
 		ClientResponse<?> deleteResponse = deleteRequest.delete();
 
 		Assert.assertEquals(Status.NO_CONTENT.getStatusCode(), deleteResponse.getStatus());
-
-
 	}
 }
