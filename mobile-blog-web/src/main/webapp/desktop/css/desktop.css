@@ -60,5 +60,8 @@ section {
 
 
 footer {
-    clear: both
+    clear: both;
+    text-align:center;
+    font-size: 0.8em;
+    color: #999;
 }

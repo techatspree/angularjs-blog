@@ -22,7 +22,7 @@ joCache.set("BlogEntryView", function() {
     }
 
     $.ajax({
-        url: "template/BlogEntry.tmpl",
+        url: "../template/BlogEntry.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );

@@ -2,7 +2,7 @@ App = {
 	load: function() {
 		jo.load();
 		
-//        The following reduces delay when tapping on views
+        // The following reduces delay when tapping on views
 		document.body.addEventListener('touchmove', function(e) {
 		    e.preventDefault();
 			joEvent.stop(e);
@@ -13,8 +13,7 @@ App = {
 		this.scn = new joScreen(
 			new joContainer([
 				new joFlexcol([
-    			    new joView("test"),
-					this.nav = new joNavbar(),
+    			    this.nav = new joNavbar(),
 					this.stack = new joStackScroller(),
 				]),
 				this.toolbar = new joToolbar(
@@ -32,13 +31,13 @@ App = {
 		
 		joGesture.backEvent.subscribe(this.stack.pop, this.stack);
 
-        $.ajax({
-            url: "html/about.html",
-            dataType: "html",
-            success: function(data) {
-                $('body').append(data);
-            }
-        });
+    	$('.loginButton').hide();
+
+
+//        $('#loginControl').onpress(function() {
+//            App.scn.showPopup(joCache.get("LoginView"));
+//            return false;
+//        });
 	},
 
 	currentBlogPostId: 0,

@@ -1,5 +1,19 @@
 App.UserService = function() {
+    var loggedIn = false;
+
     return {
+        isLoggedIn : function() {
+            // TODO: implement
+            return loggedIn;
+        },
+
+        // TODO: Error handling
+        login : function(username, password, callback, errorCallback) {
+            console.log(username + ":" + password);
+            loggedIn = true;
+            callback();
+        },
+
         register : function(user, callback, errorCallback) {
             $.ajax({
                 url: "rest/user",

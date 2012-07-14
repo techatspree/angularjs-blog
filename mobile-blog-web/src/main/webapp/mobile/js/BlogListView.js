@@ -1,11 +1,23 @@
 // using joCache here to defer creation of this
 // view until we actually use it
 joCache.set("BlogListView", function() {
+    var onActionButtonClicked = function() {
+        if (App.UserService.isLoggedIn()) {
+            App.stack.push(joCache.get("NewPostView"));
+        }
+        else {
+            App.scn.showPopup(joCache.get("LoginView"));
+        }
+    }
+
 	var card = new joCard([
 		new joGroup(
-		    new joHTML(" \
-		        <div id=\"blogEntryList\"></div> \
-		    ")
+            new joFlexcol([
+                 new joButton('New Blog Post', 'actionButton')
+                        .selectEvent.subscribe(onActionButtonClicked),
+                 new joDivider(),
+                 new joHTML("<div id='blogEntryList' />")
+            ])
 		)
 	]);
 
@@ -33,7 +45,7 @@ joCache.set("BlogListView", function() {
     }
 
     $.ajax({
-        url: "template/BlogListEntry.tmpl",
+        url: "../template/BlogListEntry.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );

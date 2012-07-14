@@ -1,4 +1,4 @@
-App.BlogEntryService = function() {
+App.BlogEntryFrontend = function() {
     /* Builds the updated table for the member list */
     var appendBlogEntryRows = function(root, blogEntries) {
          _.each(blogEntries, function(blogEntry) {
@@ -18,7 +18,7 @@ App.BlogEntryService = function() {
         updateBlogTable : function(rootNode) {
             // TODO: Error handling
             App.BlogEntryService.retrieveBlogEntries(function(result){
-                $('#blogEntryList').empty();
+                $(rootNode).empty();
                 appendBlogEntryRows(rootNode, result);
             });
         }

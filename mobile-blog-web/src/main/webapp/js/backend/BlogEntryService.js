@@ -3,7 +3,7 @@ App.BlogEntryService = function() {
         retrieveBlogEntries : function(callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "mockData/blogEntries.json",
+                url: "../mockData/blogEntries.json",
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
@@ -23,7 +23,7 @@ App.BlogEntryService = function() {
         retrieveBlogEntry : function(id, callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "mockData/blogEntry.json",
+                url: "../mockData/blogEntry.json",
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
