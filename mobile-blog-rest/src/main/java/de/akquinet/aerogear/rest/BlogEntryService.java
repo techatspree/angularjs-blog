@@ -56,6 +56,7 @@ public class BlogEntryService {
 	@DELETE
 	@Path("/{id:^[1-9][0-9]*}")
 	public void deleteBlogEntry(@PathParam("id") final long id) {
+		log.info("delete blog entry " + id);
 		blogEntryDao.remove(id);
 	}
 

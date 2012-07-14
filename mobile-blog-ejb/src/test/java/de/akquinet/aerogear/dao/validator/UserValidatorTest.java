@@ -19,7 +19,7 @@ import de.akquinet.jbosscc.needle.junit.DatabaseRule;
 import de.akquinet.jbosscc.needle.junit.NeedleRule;
 import de.akquinet.jbosscc.needle.mock.EasyMockProvider;
 
-public class UserUniqueEmailValidatorTest {
+public class UserValidatorTest {
 
 	@Rule
 	public NeedleRule needleRule = new NeedleRule();
@@ -28,7 +28,7 @@ public class UserUniqueEmailValidatorTest {
 	public DatabaseRule databaseRule = new DatabaseRule();
 
 	@ObjectUnderTest
-	private UserUniqueEmailValidatorBean userUniqueEmailValidator;
+	private UserValidatorBean userValidator;
 
 	@EJB
 	private UserDao userDaoMock;
@@ -36,14 +36,14 @@ public class UserUniqueEmailValidatorTest {
 	private EasyMockProvider mockProvider = needleRule.getMockProvider();
 
 	@Test
-	public void testTransinetNonUniqueUser() {
+	public void testTransinetUserNonUniqueEmail() {
 		User user = new UserTestdataBuilder().build();
 
 		EasyMock.expect(userDaoMock.countUserByEmail(user.getEmail()))
 				.andReturn(1L);
 
 		mockProvider.replayAll();
-		Set<ConstraintViolation<?>> validate = userUniqueEmailValidator.validate(user);
+		Set<ConstraintViolation<?>> validate = userValidator.validate(user);
 		Assert.assertFalse(validate.isEmpty());
 
 		mockProvider.verifyAll();
@@ -51,27 +51,60 @@ public class UserUniqueEmailValidatorTest {
 
 	@Test
 	public void testPersistedUniqueUser() {
-		User user = new UserTestdataBuilder(databaseRule.getEntityManager()).buildAndSave();
+		User user = new UserTestdataBuilder(databaseRule.getEntityManager())
+				.buildAndSave();
 
 		EasyMock.expect(userDaoMock.countUserByEmail(user.getEmail()))
 				.andReturn(1L);
 
 		mockProvider.replayAll();
-		Set<ConstraintViolation<?>> validate = userUniqueEmailValidator.validate(user);
+		Set<ConstraintViolation<?>> validate = userValidator.validate(user);
 		Assert.assertTrue(validate.isEmpty());
 		mockProvider.verifyAll();
 	}
 
 	@Test
-	public void testPersistedNonUniqueUser() {
-		User user = new UserTestdataBuilder(databaseRule.getEntityManager()).buildAndSave();
+	public void testPersistedUserNonUniqueEmail() {
+		User user = new UserTestdataBuilder(databaseRule.getEntityManager())
+				.buildAndSave();
 
 		EasyMock.expect(userDaoMock.countUserByEmail(user.getEmail()))
 				.andReturn(2L);
 
 		mockProvider.replayAll();
-		Set<ConstraintViolation<?>> validate = userUniqueEmailValidator.validate(user);
+		Set<ConstraintViolation<?>> validate = userValidator.validate(user);
 		Assert.assertFalse(validate.isEmpty());
+		mockProvider.verifyAll();
+	}
+
+	@Test
+	public void testPersistedUserNonUniqueUsername() {
+		User user1 = new UserTestdataBuilder(databaseRule.getEntityManager())
+				.buildAndSave();
+		User user2 = new UserTestdataBuilder(databaseRule.getEntityManager())
+				.buildAndSave();
+
+		EasyMock.expect(userDaoMock.countUserByEmail(user2.getEmail()))
+				.andReturn(1L);
+		EasyMock.expect(userDaoMock.findByUsername(user2.getUsername()))
+				.andReturn(user1);
+
+		mockProvider.replayAll();
+		Set<ConstraintViolation<?>> validate = userValidator.validate(user2);
+		Assert.assertFalse(validate.isEmpty());
+		mockProvider.verifyAll();
+	}
+
+	@Test
+	public void testTransientUserUniqueUsername() {
+		User user1 = new UserTestdataBuilder().build();
+
+		EasyMock.expect(userDaoMock.countUserByEmail(user1.getEmail()))
+				.andReturn(0L);
+
+		mockProvider.replayAll();
+		Set<ConstraintViolation<?>> validate = userValidator.validate(user1);
+		Assert.assertTrue(validate.isEmpty());
 		mockProvider.verifyAll();
 	}
 

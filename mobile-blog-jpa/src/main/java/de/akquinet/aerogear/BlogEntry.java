@@ -69,6 +69,7 @@ public class BlogEntry extends AbstractEntity {
 		this.content = content;
 	}
 
+	@JsonIgnore
 	public String getShortContent() {
 		if (content != null && content.length() > 200) {
 			return content.substring(0, 200) + "...";
@@ -86,6 +87,10 @@ public class BlogEntry extends AbstractEntity {
 
 	public Date getCreated() {
 		return created;
+	}
+
+	void setCreated(final Date created) {
+		this.created = created;
 	}
 
 	public List<Comment> getComments() {
