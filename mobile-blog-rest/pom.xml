@@ -59,6 +59,13 @@
 		</dependency>
 
 		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>de.akquinet.aerogear</groupId>
+			<artifactId>mobile-blog-jpa</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- Arquillian Test scope dependencies -->
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
@@ -99,11 +106,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>13.0-rc1</version>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
 			<scope>test</scope>
+			<version>2.2.3.GA</version>
 		</dependency>
+
+
 	</dependencies>
 
 

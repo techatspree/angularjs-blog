@@ -4,6 +4,7 @@ import static de.akquinet.aerogear.rest.deployment.TestWebArchiveDeployment.URL;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response.Status;
 
 import junit.framework.Assert;
 
@@ -81,6 +82,6 @@ public class BlogEntryServiceTest {
 
 		ClientResponse<String> response = request.put(String.class);
 
-		Assert.assertEquals(409, response.getStatus());
+		Assert.assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
 	}
 }

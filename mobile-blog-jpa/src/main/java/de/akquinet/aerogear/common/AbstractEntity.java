@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
@@ -26,6 +29,12 @@ public abstract class AbstractEntity implements Serializable {
 		return id;
 	}
 
+	void setId(Long id) {
+		this.id = id;
+	}
+
+	@XmlTransient
+	@JsonIgnore
 	public Long getVersion() {
 		return version;
 	}

@@ -16,8 +16,8 @@ public interface TestWebArchiveDeployment {
 		@Override
 		public boolean include(ArchivePath object) {
 			final String name = object.get();
-			return name.contains("Test") && !name.contains("Testdata") ? false
-					: true;
+			return name.contains("Test") && !name.contains("Testdata")
+					|| name.contains("TestdataBuilder") ? false : true;
 		}
 	};
 

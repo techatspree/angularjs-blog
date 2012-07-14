@@ -6,9 +6,9 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
-import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 
 import de.akquinet.aerogear.User;
 import de.akquinet.aerogear.dao.UserDao;
+import de.akquinet.aerogear.dao.validator.UserUniqueEmailValidator;
 
 @Stateless
 @Path("/user")
@@ -32,6 +33,9 @@ public class UserService {
 
 	@Inject
 	private ContraintValidator validator;
+
+	@Inject
+	private UserUniqueEmailValidator uniqueEmailValidator;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -58,20 +62,38 @@ public class UserService {
 	@Path("/{id:^[1-9][0-9]*}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
-	public User updateUser(User user) throws ValidationException {
+	public User updateUser(@PathParam("id") final long id, final User user)
+			throws ValidationException {
+		final User managedUser = userDao.find(id);
+		managedUser.setEmail(user.getEmail());
+		managedUser.setFirstname(user.getFirstname());
+		managedUser.setPhone(user.getPhone());
+		managedUser.setSurname(user.getSurname());
+		log.info("update user " + managedUser);
 
-		// TODO
-		validator.validate(user);
+		validator.validate(managedUser, uniqueEmailValidator);
 
-		return user;
-
+		return managedUser;
 	}
 
 	@POST
-	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
-	public User saveUser(final User user) {
-		return null;
+	public User saveUser(@FormParam("password") final String password,
+			@FormParam("username") final String username,
+			@FormParam("firstname") final String firstname,
+			@FormParam("surname") final String surname,
+			@FormParam("email") final String email,
+			@FormParam("phone") final String phone) {
+		final User user = new User();
+		user.setUsername(username);
+		user.setFirstname(firstname);
+		user.setSurname(surname);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setPhone(phone);
+		validator.validate(user, uniqueEmailValidator);
+		userDao.persist(user);
+		return user;
 	}
 
 }

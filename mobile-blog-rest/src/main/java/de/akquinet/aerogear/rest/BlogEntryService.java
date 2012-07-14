@@ -82,5 +82,4 @@ public class BlogEntryService {
 		return null;
 	}
 
-
 }

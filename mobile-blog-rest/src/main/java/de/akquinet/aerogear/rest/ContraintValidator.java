@@ -8,17 +8,25 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import de.akquinet.aerogear.dao.validator.EntityValidator;
+
 public class ContraintValidator {
 
 	@Inject
 	private Validator validator;
 
-	public <T> void validate(final T entity) {
-		final Set<ConstraintViolation<T>> constraintViolations = validator
-				.validate(entity);
+	public <T> void validate(
+			final T entity, @SuppressWarnings("rawtypes") final EntityValidator... validatorInstnaces) {
+		final Set<ConstraintViolation<?>> constraintViolations = new HashSet<ConstraintViolation<?>>();
+
+		for (EntityValidator<Object> entityValidator : validatorInstnaces) {
+			constraintViolations.addAll(entityValidator.validate(entity));
+		}
+
+		constraintViolations.addAll(validator.validate(entity));
+
 		if (!constraintViolations.isEmpty()) {
-			throw new ConstraintViolationException(
-					new HashSet<ConstraintViolation<?>>(constraintViolations));
+			throw new ConstraintViolationException(constraintViolations);
 		}
 	}
 }
