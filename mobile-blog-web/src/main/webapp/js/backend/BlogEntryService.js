@@ -3,7 +3,7 @@ App.BlogEntryService = function() {
         retrieveBlogEntries : function(callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "test/blogEntries.json",
+                url: "mockData/blogEntries.json",
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
@@ -14,7 +14,7 @@ App.BlogEntryService = function() {
                     var errorMsg = "error retrieving blog posts -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
-                        cerrorCallback(errorMsg);
+                        errorCallback(errorMsg);
                     }
                 }
             });
@@ -23,7 +23,7 @@ App.BlogEntryService = function() {
         retrieveBlogEntry : function(id, callback, errorCallback) {
             $.ajax({
                 // TODO: Replace with REST call
-                url: "test/blogEntry.json",
+                url: "mockData/blogEntry.json",
                 cache: false,
                 success: function(data) {
                     // TODO: Remove next line when JSON media type is given by server
@@ -34,7 +34,7 @@ App.BlogEntryService = function() {
                     var errorMsg = "error retrieving blog post -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
-                        cerrorCallback(errorMsg);
+                        errorCallback(errorMsg);
                     }
                 }
             });

@@ -1,0 +1,64 @@
+body {
+    background-color: #AAA;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+   font-size: 1.8em;
+}
+
+aside {
+    font-size: 0.9em;
+    width: 245px;
+    float: right;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+
+.logo {
+    float: left;
+}
+
+
+.dualbrand {
+    float: right;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
+.article {
+    font-size: 1.2em;
+    font-family: Verdana;
+}
+
+
+
+
+#page {
+    background-color: #FFF;
+    width: 800px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+/*
+aside {
+    margin-right: 10px;
+    padding: 20px 0 10px 0;
+    margin: -60px 0 0 530px;
+}
+*/
+
+section {
+    margin-top:50px;
+    float: left;
+    width: 450px;
+    clear: both;
+}
+
+
+footer {
+    clear: both
+}

@@ -1,14 +1,10 @@
-/*
-body, html {
-    overflow: hidden
-}
-*/
-
-
-#jqt {
-  position: static;
-}
-
-#jqt > * {
-  position: static;
+aside {
+    font-size: 0.9em;
+    width: 245px;
+    float: right;
+    margin: 20px 0;
+    border: 1px solid #D5D5D5;
+    background: #F1F1F1;
+    background-repeat: repeat-x;
+    padding: 20px;
 }
