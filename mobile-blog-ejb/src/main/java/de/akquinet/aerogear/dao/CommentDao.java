@@ -13,4 +13,6 @@ public interface CommentDao extends Dao<Comment> {
 
 	List<Comment> findComments(BlogEntry blogEntry);
 
+	List<Comment> findComments(Long blogEntryId);
+
 }

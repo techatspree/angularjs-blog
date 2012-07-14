@@ -67,4 +67,8 @@ public class Comment extends AbstractEntity {
 		return created;
 	}
 
+	void setCreated(Date created) {
+		this.created = created;
+	}
+
 }

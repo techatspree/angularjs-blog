@@ -7,9 +7,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Root;
 
 import de.akquinet.aerogear.BlogEntry;
+import de.akquinet.aerogear.BlogEntry_;
 import de.akquinet.aerogear.Comment;
 import de.akquinet.aerogear.Comment_;
 import de.akquinet.aerogear.dao.common.AbstractDaoBean;
@@ -32,6 +34,21 @@ public class CommentDaoBean extends AbstractDaoBean<Comment> implements
 		query.select(from)
 				.where(builder.equal(from.get(Comment_.blogEntry), blogEntry))
 				.orderBy(builder.asc(from.get(Comment_.created)));
+		return getResultList(query);
+	}
+
+	@Override
+	public List<Comment> findComments(final Long blogEntryId) {
+		CriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<Comment> query = builder.createQuery(Comment.class);
+		Root<BlogEntry> from = query.from(BlogEntry.class);
+		ListJoin<BlogEntry, Comment> join = from.join(
+				BlogEntry_.comments);
+
+		query.select(join)
+				.where(builder.equal(from.get(BlogEntry_.id), blogEntryId))
+				.orderBy(builder.asc(join.get(Comment_.created)));
+
 		return getResultList(query);
 	}
 }

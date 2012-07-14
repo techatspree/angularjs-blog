@@ -18,7 +18,7 @@ import de.akquinet.jbosscc.needle.annotation.ObjectUnderTest;
 import de.akquinet.jbosscc.needle.junit.DatabaseRule;
 import de.akquinet.jbosscc.needle.junit.NeedleRule;
 
-public class CommentEntryDaoTest {
+public class CommentDaoTest {
 
 	@Rule
 	public DatabaseRule databaseRule = new DatabaseRule();
@@ -45,6 +45,18 @@ public class CommentEntryDaoTest {
 		comments = commentDao.findComments(blogEntry2);
 
 		Assert.assertEquals(0, comments.size());
+	}
+
+
+	@Test
+	public void testFindCommentsByBlogEntryId() throws Exception {
+
+		BlogEntry blogEntry1 = new BlogEntryTestdataBuilder(entityManager).buildAndSave();
+		new CommentTestdataBuilder(entityManager).withBlogEntry(blogEntry1).buildAndSave();
+		new CommentTestdataBuilder(entityManager).withBlogEntry(blogEntry1).buildAndSave();
+
+		List<Comment> comments = commentDao.findComments(blogEntry1.getId());
+		Assert.assertEquals(2, comments.size());
 
 	}
 

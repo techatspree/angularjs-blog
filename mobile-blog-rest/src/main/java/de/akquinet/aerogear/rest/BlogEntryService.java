@@ -45,7 +45,7 @@ public class BlogEntryService {
 	}
 
 	@GET
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry findBlogEntry(@PathParam("id") final long id) {
 		BlogEntry blogEntry = blogEntryDao.find(id);
@@ -54,14 +54,14 @@ public class BlogEntryService {
 	}
 
 	@DELETE
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	public void deleteBlogEntry(@PathParam("id") final long id) {
 		log.info("delete blog entry " + id);
 		blogEntryDao.remove(id);
 	}
 
 	@PUT
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public BlogEntry updateBlogEntry(@PathParam("id") final long id,
 			@FormParam("title") final String title,
