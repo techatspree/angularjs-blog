@@ -5,10 +5,6 @@ joCache.set("NewPostView", function() {
             new joFlexrow(new joInput("")),
             new joLabel("Content"),
             new joFlexrow(new joTextarea("")),
-            new joFlexrow([
-                new joLabel("Left Aligned").setStyle({className:"left", marginTop:"2px"}),
-                new joInput("From CSS").setStyle({width: "150px", marginBottom: "0"})
-            ])
         ]),
         new joDivider(),
         new joButton("Submit")
