@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>AeroGear Blog Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" type="text/css" href="css/desktop.css"/>
+
+    <script type="text/javascript" src="../js/lib/underscore.min.js"></script>
+    <script type="text/javascript" src="../js/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="../js/lib/zepto.onpress.js"></script>
+    <script type="text/javascript" src="../js/lib/backbone.min.js"></script>
+    <script type="text/javascript" src="../js/lib/jo.min.js"></script>
+
+    <!-- This is our main app and entry point -->
+    <script type="text/javascript" src="js/DesktopApp.js"></script>
+
+    <script type="text/javascript" src="../js/backend/BlogEntryService.js"></script>
+
+    <script type="text/javascript" src="../js/frontend/BlogEntryFrontend.js"></script>
+
+</head>
+
+<body>
+
+<div id="page">
+
+<div class="logo">
+    <img src="../images/aerogear_logo_150px.png" />
+</div>
+
+<div class="dualbrand">
+    <img src="../images/dualbrand_logo.png" />
+</div>
+
+
+<section id="content">
+</section>
+
+<aside>
+    <p>More info about aerogear.</p>
+    <p>Some other stuff</p>
+    <p>Even more stuff</p>
+</aside>
+
+
+<footer>
+    AeroGear Mobile
+</footer>
+
+<script type="text/javascript">
+    Zepto(function($) {
+        App.load();
+        App.BlogEntryFrontend.updateBlogTable($('#content'));
+    })
+</script>
+</div>
+
+</body>
+
+</html>

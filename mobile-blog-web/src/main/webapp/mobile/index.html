@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>AeroGear Blog Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <!-- Set viewport scaling and zoom features -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="css/lib/jo2.css"/>
+
+    <!--<link media="only screen" href="css/lib/ios.css" type= "text/css" rel="stylesheet">-->
+    <link media="only screen and (min-device-width: 768px)" href="css/lib/browser.css" type= "text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/lib/ios-orientationchange-fix.js"></script>
+
+    <script type="text/javascript" src="../js/lib/underscore.min.js"></script>
+    <script type="text/javascript" src="../js/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="../js/lib/zepto.onpress.js"></script>
+    <script type="text/javascript" src="../js/lib/backbone.min.js"></script>
+    <script type="text/javascript" src="../js/lib/jo.min.js"></script>
+
+    <!-- This is our main app and entry point -->
+    <script src="js/MobileApp.js"></script>
+
+    <script src="../js/backend/UserService.js"></script>
+    <script src="../js/backend/BlogEntryService.js"></script>
+
+    <script src="js/AboutView.js"></script>
+    <script src="js/BlogListView.js"></script>
+    <script src="js/BlogEntryView.js"></script>
+    <script src="js/LoginView.js"></script>
+    <script src="js/NewPostView.js"></script>
+
+</head>
+
+<body>
+<script type="text/javascript">
+    Zepto(function($){
+        App.load();
+    })
+</script>
+</body>
+
+</html>

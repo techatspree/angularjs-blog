@@ -1,39 +1,39 @@
 // using joCache here to defer creation of this
 // view until we actually use it
-joCache.set("BlogListView", function() {
+joCache.set("BlogEntryView", function() {
 	var card = new joCard([
 		new joGroup(
 		    new joHTML(" \
-		        <div id=\"blogEntryList\"></div> \
+		        <div id=\"blogEntryContainer\"></div> \
 		    ")
 		)
 	]);
 
-    var updateBlogTable = function() {
+    var retrieveBlogEntry = function() {
         // TODO: Error handling
-        App.BlogEntryService.retrieveBlogEntries(function(result){
-            $('#blogEntryList').empty().append(buildBlogEntryRows(result));
+        App.BlogEntryService.retrieveBlogEntry(App.currentBlogPostId, function(result){
+            $('#blogEntryContainer').empty().append(buildBlogEntry(result));
         });
     };
 
 	/* Builds the updated table for the member list */
-    var buildBlogEntryRows = function(blogEntries) {
-        return _.template( $( "#blogentrylist-tmpl" ).html(), {"blogEntries": blogEntries});
+    var buildBlogEntry = function(blogEntry) {
+        return _.template( $( "#blogentry-tmpl" ).html(), {"blogEntry": blogEntry});
     }
 
     $.ajax({
-        url: "template/BlogEntryList.tmpl",
+        url: "../template/BlogEntry.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
-            updateBlogTable();
+            retrieveBlogEntry();
         }
     });
 
 	// hey, you don't have to make messy chained and
 	// inlined code; that's a coding style decision
 	// Jo doesn't pretend it should make for you.
-	card.setTitle("Aerogear Blog Demo");
+	card.setTitle("Blog Demo");
 
 	return card;
 });
