@@ -1,12 +1,14 @@
 App.BlogEntryService = function() {
     return {
-        addBlogEntry : function(blogEntry) {
+        addBlogEntry : function(blogEntry, callback, errorCallback) {
             // TODO: all posts (e.g. add user, add post) are alike. use one function to do it?
             $.ajax({
                 url: "../rest/blog",
+                contentType: "application/json",
+                dataType: "json",
                 type: "POST",
+                data: JSON.stringify(blogEntry),
                 cache: false,
-                data: blogEntry,
                 success: function(data) {
                     callback(data);
                 },

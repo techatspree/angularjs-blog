@@ -1,6 +1,6 @@
 [
    {
-      "blogEntry":{
+      {
          "id":0,
          "author":{
              "forename":"Philipp",
@@ -13,7 +13,7 @@
       }
    },
    {
-      "blogEntry":{
+      {
          "id":1,
          "author":{
              "forename":"Heinz",
@@ -25,7 +25,7 @@
       }
    },
    {
-      "blogEntry":{
+      :{
          "id":2,
          "author":{
              "forename":"Matthias",
@@ -37,7 +37,7 @@
       }
    },
    {
-      "blogEntry":{
+      {
          "id":3,
          "author":{
              "forename":"John",
