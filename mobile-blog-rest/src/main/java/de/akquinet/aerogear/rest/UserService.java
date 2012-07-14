@@ -44,7 +44,7 @@ public class UserService {
 	}
 
 	@GET
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public User findUser(@PathParam("id") final long id) {
 		User user = userDao.find(id);
@@ -53,13 +53,13 @@ public class UserService {
 	}
 
 	@DELETE
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	public void deleteBlogEntry(@PathParam("id") final long id) {
 		userDao.remove(id);
 	}
 
 	@PUT
-	@Path("/{id:^[1-9][0-9]*}")
+	@Path("/{id:[1-9][0-9]*}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public User updateUser(@PathParam("id") final long id, final User user)
