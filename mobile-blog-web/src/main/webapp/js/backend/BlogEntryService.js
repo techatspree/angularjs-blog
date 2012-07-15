@@ -1,6 +1,10 @@
 // TODO: make callbacks optional
 
 App.BlogEntryService = function() {
+    var changeEventName = "BlogEntryService:change";
+
+    $.Event(changeEventName);
+
     return {
         addBlogEntry : function(blogEntry, callback, errorCallback) {
             // TODO: all posts (e.g. add user, add post) are alike. use one function to do it?
@@ -12,6 +16,7 @@ App.BlogEntryService = function() {
                 data: JSON.stringify(blogEntry),
                 cache: false,
                 success: function(data) {
+                    $(document.body).trigger(changeEventName);
                     callback(data);
                 },
                 error: function(error) {
@@ -34,6 +39,7 @@ App.BlogEntryService = function() {
                 data: JSON.stringify(comment),
                 cache: false,
                 success: function(data) {
+                    $(document.body).trigger(changeEventName);
                     callback(data);
                 },
                 error: function(error) {

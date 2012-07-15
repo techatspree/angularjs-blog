@@ -1,39 +1,75 @@
+/*
+ * The central app object.
+ */
 App = {
 	currentBlogPostId: 0,
 
+	fetchTemplates: function() {
+        // Fetch HTML template for blog entries
+        $.ajax({
+            url: "../js/template/BlogListEntry.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+
+        $.ajax({
+            url: "../js/template/BlogEntry.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+
+        $.ajax({
+            url: "../js/template/Comment.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+	},
+
 	postLoginAction: function() {},
 
+	/*
+	 * This is the entry point into the app.
+	 */
 	load: function() {
+	    App.fetchTemplates();
+
+		// Load jo framework for mobile UI.
+		// jo defines UI via JavaScript.
 		jo.load();
 		
-        // The following reduces delay when tapping on views
+        // the following reduces delay when tapping on views
 		document.body.addEventListener('touchmove', function(e) {
 		    e.preventDefault();
 			joEvent.stop(e);
 		}, false);
 		
 
-		// this is a more complex UI with a nav bar and a toolbar
+		// Defines a UI with a navigation bar and a so-called stack.
+		// The stack is capable of puuting screens on top of each other,
+		// allowing us to navigate back to screens we have already visited
+		// by popping the current screen off the stack.
 		this.scn = new joScreen(
 			new joContainer([
 				new joFlexcol([
     			    this.nav = new joNavbar(),
 					this.stack = new joStackScroller(),
 				]),
-//				this.toolbar = new joToolbar(
-//				    new joControl("AeroGear Blog Demo, v1.0").selectEvent.subscribe(function() {
-//                        App.stack.push(joCache.get("AboutView"));
-//                    })
-//				)
 			]).setStyle({position: "absolute", top: "0", left: "0", bottom: "0", right: "0"})
 		);
 		
 		this.nav.setStack(this.stack);
 		
-		// First screen to present
-		this.stack.push(joCache.get("BlogListView"));
-		
 		joGesture.backEvent.subscribe(this.stack.pop, this.stack);
+
+        // First screen to present
+		this.stack.push(App.BlogListScreen.get());
+        App.BlogListScreen.refresh();
 	},
 
 	openBlogPost: function(id) {

@@ -28,33 +28,14 @@ joCache.set("BlogEntryView", function() {
 		)
 	]);
 
-    $.ajax({
-        url: "../template/BlogEntry.tmpl",
-        dataType: "html",
-        success: function( data ) {
-            $( "head" ).append( data );
-            App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), App.currentBlogPostId);
-        }
-    });
-
-    $.ajax({
-        url: "../template/Comment.tmpl",
-        dataType: "html",
-        success: function( data ) {
-            $( "head" ).append( data );
-            refresh();
-        }
-    });
-
-
-
-    App.BlogEntryFrontend.changeEvent.subscribe(function(data) {
-        if ($('#blogEntryContainer').length == 0) {
-            return;
-        }
-
-        refresh();
-    }, this);
+    // TODO: use own eventing
+//    App.BlogEntryFrontend.changeEvent.subscribe(function(data) {
+//        if ($('#blogEntryContainer').length == 0) {
+//            return;
+//        }
+//
+//        refresh();
+//    }, this);
 
 	card.setTitle("Blog Demo");
 
