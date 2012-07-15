@@ -97,14 +97,23 @@
                 <configuration>
                     <!-- configuration properties will go here -->
                     <preloadSources>
-                        <source>${project.basedir}\src\main\webapp\js\lib\jquery.min.js</source>
-                        <source>${project.basedir}\src\main\webapp\js\lib\underscore.min.js</source>
-                        <source>${project.basedir}\src\main\webapp\js\lib\zepto.min.js</source>
-                        <source>${project.basedir}\src\main\webapp\js\lib\jo.min.js</source>
-                        <source>${project.basedir}\src\main\webapp\js\lib\backbone.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/ios-orientationchange-fix.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/zepto.onpress.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/jo.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/MobileApp.js</source>
+                        <!--<source>${project.basedir}/src/main/webapp/js/backend/UserService.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/backend/BlogEntryService.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/BlogEntryFrontend.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/AboutView.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/BlogListView.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/BlogEntryView.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/LoginView.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/NewPostView.js</source>-->
+                        <!--<source>${project.basedir}/src/main/webapp/js/frontend/mobile/NewCommentView.js</source>-->
                     </preloadSources>
-                    <jsSrcDir>${project.basedir}\src\main\webapp\js</jsSrcDir>
-                    <jsTestSrcDir>${project.basedir}\src\test\webapp\js</jsTestSrcDir>
+                    <jsSrcDir>${project.basedir}/src/main/webapp/js</jsSrcDir>
+                    <jsTestSrcDir>${project.basedir}/src/test/webapp/js</jsTestSrcDir>
                     <haltOnFailure>true</haltOnFailure>
                 </configuration>
             </plugin>

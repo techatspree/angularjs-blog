@@ -26,6 +26,8 @@ App.BlogEntryFrontend = function() {
     };
 
     return {
+        changeEvent : new joSubject(this),
+
         updateWithBlogList : function(rootNode) {
             // TODO: Error handling
             App.BlogEntryService.retrieveBlogEntries(function(result){
@@ -36,9 +38,10 @@ App.BlogEntryFrontend = function() {
 
         updateWithBlogPost : function(rootNode, id) {
             // TODO: Error handling
-            App.BlogEntryService.retrieveBlogEntry(id, function(result){
+            App.BlogEntryService.retrieveBlogEntry(id, function(result) {
                 $(rootNode).empty();
                 appendBlogPost(rootNode, result);
+                $().toastmessage('showNoticeToast', 'some message here');
             });
         },
 

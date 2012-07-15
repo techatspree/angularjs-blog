@@ -13,6 +13,10 @@ joCache.set("BlogEntryView", function() {
         }
 	}
 
+    var refresh = function() {
+        App.BlogEntryFrontend.updateWithComments($('#commentList'));
+    }
+
 	var card = new joCard([
 		new joGroup(
 		    new joFlexcol([
@@ -38,9 +42,19 @@ joCache.set("BlogEntryView", function() {
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
-            App.BlogEntryFrontend.updateWithComments($('#commentList'))  ;
+            refresh();
         }
     });
+
+
+
+    App.BlogEntryFrontend.changeEvent.subscribe(function(data) {
+        if ($('#blogEntryContainer').length == 0) {
+            return;
+        }
+
+        refresh();
+    }, this);
 
 	card.setTitle("Blog Demo");
 

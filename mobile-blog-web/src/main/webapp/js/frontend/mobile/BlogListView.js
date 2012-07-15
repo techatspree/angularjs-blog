@@ -25,14 +25,26 @@ joCache.set("BlogListView", function() {
 		)
 	]);
 
+	var refresh = function() {
+        App.BlogEntryFrontend.updateWithBlogList($('#blogEntryList'));
+	}
+
     $.ajax({
         url: "../template/BlogListEntry.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
-            App.BlogEntryFrontend.updateWithBlogList($('#blogEntryList'))  ;
+            refresh();
         }
     });
+
+    App.BlogEntryFrontend.changeEvent.subscribe(function(data) {
+        if ($('#blogEntryList').length == 0) {
+            return;
+        }
+
+        refresh();
+    }, this);
 
 	card.setTitle("Blog Demo");
 
