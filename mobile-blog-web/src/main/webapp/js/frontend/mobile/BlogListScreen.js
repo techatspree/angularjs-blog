@@ -13,48 +13,47 @@ App.BlogListScreen = function() {
         view = new joCard([
             new joGroup(
                 new joFlexcol([
-                     new joButton('Add Post', 'btnAddPost')
+                     new joButton('Add Post')
                             .selectEvent.subscribe(onAddPostClicked),
                      new joDivider(),
                      new joHTML("<div id='blogEntryList' />")
                 ])
             )
         ]).setTitle("Blog Demo");
+
+        // Register event listener to refresh the screen when the data changes
+        $(document).on('BlogEntryService:change', function(e){
+            if ($('#blogEntryList').length == 0) {
+                return;
+            }
+
+            console.log("change!");
+            App.BlogListScreen.refresh();
+        });
     }
 
     /*
-     * Listeners
+     * interaction listeners
      */
     var onAddPostClicked = function() {
         if (!App.UserService.isLoggedIn()) {
             App.postLoginAction = function() {
-                App.stack.push(joCache.get("NewPostView"));
+                App.stack.push(App.BlogPostScreen.get());
             }
             App.scn.showPopup(joCache.get("LoginView"));
         }
         else {
-            App.stack.push(joCache.get("NewPostView"));
+            App.stack.push(App.BlogPostScreen.get());
         }
         return false;
     };
 
     /*
-     * Initializsation
+     * Public interface
      */
-
-    // Register event listener to refresh the screen when the data changes
-    $(document).on('BlogEntryService:change', function(e){
-        if ($('#blogEntryList').length == 0) {
-            return;
-        }
-
-        console.log("change!");
-        App.BlogListScreen.refresh();
-    });
-
     return {
         /*
-         * Manually refresh the list of blog entries
+         * Manually refresh the screen.
          */
         refresh : function() {
             if ($('#blogEntryList').length == 0) {

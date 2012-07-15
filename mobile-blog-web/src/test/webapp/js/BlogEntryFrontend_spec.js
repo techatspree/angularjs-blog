@@ -1,3 +1,5 @@
+// TODO: second test, some doc
+
 describe('the BlogEntryFrontend',function(){
     beforeEach(function() {
         loadFixtures("BlogListEntry.tmpl");
@@ -11,7 +13,7 @@ describe('the BlogEntryFrontend',function(){
     });
 
     it("updates a given node with the list of blog entries", function() {
-        var responseMock = JSON.parse('[ { "author":{"firstname":"Elvis", "lastname":"Presley"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" } ]');
+        var responseMock = JSON.parse('[ { "author":{"firstname":"Elvis", "lastname":"Presley"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" },{ "author":{"firstname":"John", "lastname":"Doe"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" } ]');
 
         spyOn($, "ajax").andCallFake(function(params) {
             params.success(responseMock);
@@ -26,7 +28,7 @@ describe('the BlogEntryFrontend',function(){
 
         App.BlogEntryFrontend.updateWithBlogList(node);
 
-        expect(node.children().size()).toBe(1);
+        expect(node.children().size()).toBe(2);
     });
 
 });

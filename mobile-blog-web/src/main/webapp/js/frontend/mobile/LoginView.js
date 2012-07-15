@@ -19,9 +19,7 @@ joCache.set("LoginView", function() {
 		console.log("hide popup");
 
         // perform login
-        App.UserService.login(inputUser.getData(), inputPass.getData(), function() {
-            App.postLoginAction();
-        });
+        App.UserService.login(inputUser.getData(), inputPass.getData(), App.postLoginAction);
         // TODO: failure case
 
         App.scn.hidePopup();
