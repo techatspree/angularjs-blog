@@ -18,10 +18,12 @@ App.BlogEntryFrontend = function() {
         root.append(template({"blogEntry": blogEntry}));
     };
 
-	/* Builds the updated table for the member list */
-    var buildBlogEntry = function(blogEntry) {
-        return
-    }
+    var appendComments = function(root, comments) {
+        _.each(comments, function(comment) {
+            var template = _.template( $( "#comment-tmpl" ).html());
+            root.append(template({"comment": comment}));
+        });
+    };
 
     return {
         updateWithBlogList : function(rootNode) {
@@ -38,6 +40,14 @@ App.BlogEntryFrontend = function() {
                 $(rootNode).empty();
                 appendBlogPost(rootNode, result);
             });
-        }
+        },
+
+        updateWithComments : function(rootNode) {
+            // TODO: Error handling
+            App.BlogEntryService.retrieveComments(App.currentBlogPostId, function(result){
+                $(rootNode).empty();
+                appendComments(rootNode, result);
+            });
+        },
     }
 }();

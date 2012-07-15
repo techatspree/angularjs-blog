@@ -1,3 +1,5 @@
+// TODO: make callbacks optional
+
 App.BlogEntryService = function() {
     return {
         addBlogEntry : function(blogEntry, callback, errorCallback) {
@@ -56,6 +58,26 @@ App.BlogEntryService = function() {
                 },
                 error: function(error) {
                     var errorMsg = "error retrieving blog post -" + error.status;
+                    console.log(errorMsg);
+                    if (errorCallback) {
+                        errorCallback(errorMsg);
+                    }
+                }
+            });
+        },
+
+        retrieveComments : function(id, callback, errorCallback) {
+            $.ajax({
+                // TODO: Replace with REST call
+                url: "../rest/blog/" + id + "/comment",
+                cache: false,
+                success: function(data) {
+                    // TODO: Remove next line when JSON media type is given by server
+//                    data = JSON.parse(data);
+                    callback(data);
+                },
+                error: function(error) {
+                    var errorMsg = "error retrieving comment -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
                         errorCallback(errorMsg);

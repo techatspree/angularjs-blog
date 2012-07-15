@@ -9,7 +9,7 @@ App = {
         });
 
         for(var i=0; i < $('article').length; i++) {
-            $("#postButton" + i).onpress(function() {
+            $("#postButton" + i).on('click', function() {
                 App.openBlogPost(i);
                 return false;
             });

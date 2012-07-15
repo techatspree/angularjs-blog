@@ -9,6 +9,7 @@ joCache.set("BlogListView", function() {
         else {
             App.stack.push(joCache.get("NewPostView"));
         }
+        return false;
     }
 
 	var btnAddPost;
@@ -16,10 +17,8 @@ joCache.set("BlogListView", function() {
 	var card = new joCard([
 		new joGroup(
             new joFlexcol([
-                 new joFlexrow([
-                 btnAddPost = new joButton('Add Post', 'btnAddPost')
-                        .selectEvent.subscribe(onAddPostClicked)
-                 ]),
+                 new joButton('Add Post', 'btnAddPost')
+                        .selectEvent.subscribe(onAddPostClicked),
                  new joDivider(),
                  new joHTML("<div id='blogEntryList' />")
             ])
@@ -35,9 +34,6 @@ joCache.set("BlogListView", function() {
         }
     });
 
-	// hey, you don't have to make messy chained and
-	// inlined code; that's a coding style decision
-	// Jo doesn't pretend it should make for you.
 	card.setTitle("Blog Demo");
 
 	return card;

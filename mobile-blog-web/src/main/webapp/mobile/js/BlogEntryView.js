@@ -18,6 +18,7 @@ joCache.set("BlogEntryView", function() {
 		    new joFlexcol([
 		        new joHTML("<div id='blogEntryContainer' />"),
 		        new joDivider(),
+		        new joHTML("<div id='commentList' />"),
 	    	    new joButton("Add comment").selectEvent.subscribe(onAddComClicked)
 		    ])
 		)
@@ -32,9 +33,15 @@ joCache.set("BlogEntryView", function() {
         }
     });
 
-	// hey, you don't have to make messy chained and
-	// inlined code; that's a coding style decision
-	// Jo doesn't pretend it should make for you.
+    $.ajax({
+        url: "../template/Comment.tmpl",
+        dataType: "html",
+        success: function( data ) {
+            $( "head" ).append( data );
+            App.BlogEntryFrontend.updateWithComments($('#commentList'))  ;
+        }
+    });
+
 	card.setTitle("Blog Demo");
 
 	return card;
