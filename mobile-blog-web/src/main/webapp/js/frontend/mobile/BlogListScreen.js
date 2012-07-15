@@ -40,7 +40,7 @@ App.BlogListScreen = function() {
             App.postLoginAction = function() {
                 App.stack.push(App.BlogPostScreen.get());
             }
-            App.scn.showPopup(joCache.get("LoginView"));
+            App.scn.showPopup(App.LoginScreen.get());
         }
         else {
             App.stack.push(App.BlogPostScreen.get());

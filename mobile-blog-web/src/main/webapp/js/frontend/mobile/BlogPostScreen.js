@@ -23,7 +23,7 @@ App.BlogPostScreen = function() {
             App.postLoginAction = function() {
                 App.stack.push(joCache.get("NewCommentView"));
             }
-            App.scn.showPopup(joCache.get("LoginView"));
+            App.scn.showPopup(App.LoginScreen.get());
         }
         else {
             App.stack.push(joCache.get("NewCommentView"));
