@@ -29,8 +29,13 @@ App.LoginScreen = function() {
         console.log("hide popup");
 
         // perform login
-        App.UserService.login(inputUser.getData(), inputPass.getData(), App.postLoginAction);
-        // TODO: failure case, token handling
+        App.UserService.login(inputUser.getData(), inputPass.getData(), App.postLoginAction,
+            function(data) {
+                // TODO: success case, token handling
+            },
+            function(error) {
+                // TODO: failure case
+            });
 
         App.scn.hidePopup();
     }

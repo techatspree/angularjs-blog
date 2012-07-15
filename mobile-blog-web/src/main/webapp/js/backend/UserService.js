@@ -8,13 +8,12 @@ App.UserService = function() {
         },
 
         // TODO: Error handling
-        login : function(username, password, callback, errorCallback) {
+        login : function(username, password, postLoginAction, callback, errorCallback) {
             console.log(username + ":" + password);
             loggedIn = true;
 
-
-
             callback();
+            postLoginAction();
         },
 
         register : function(user, callback, errorCallback) {
