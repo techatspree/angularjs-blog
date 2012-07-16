@@ -1,7 +1,7 @@
 App = {
 	load: function() {
         $.ajax({
-            url: "../template/BlogListEntry.tmpl",
+            url: "../js/template/BlogListEntry.tmpl",
             dataType: "html",
             success: function( data ) {
                 $( "head" ).append( data );
