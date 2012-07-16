@@ -23,9 +23,8 @@ public class AuthenticationService {
 	public User authenticate(@FormParam("username") String username,
 			@FormParam("password") String password) {
 		final User user = userDao.findByUsername(username);
-		boolean verifyPassword = user.verifyPassword(password);
 
-		if (!verifyPassword) {
+		if (user == null || !user.verifyPassword(password)) {
 			//TODO throw UnauthorizedException
 			throw new RuntimeException();
 		}

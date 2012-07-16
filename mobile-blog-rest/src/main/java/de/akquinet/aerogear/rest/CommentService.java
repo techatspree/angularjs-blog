@@ -82,9 +82,9 @@ public class CommentService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
-	public Comment saveBlogEntry(@PathParam("blogId") final long blogEntryId, final Comment comment) {
+	public Comment saveCommentEntry(@PathParam("blogId") final long blogEntryId, final Comment comment) {
 		final BlogEntry blogEntry = blogEntryDao.find(blogEntryId);
-		final Long id = blogEntry.getAuthor().getId();
+		final Long id = comment.getAuthor().getId();
 		final User author = userDao.find(id);
 		final Comment newComment = new Comment();
 		newComment.setAuthor(author);
