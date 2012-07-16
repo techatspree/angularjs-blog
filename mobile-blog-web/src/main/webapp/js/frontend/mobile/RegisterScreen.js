@@ -25,7 +25,7 @@ App.RegisterScreen = function() {
                 new joFlexrow([inputPhone = new joInput("", "number")]),
             ]),
             new joFlexrow([
-                new joButton("Register").setStyle({id:"btnRegister"}),
+                new joButton("Register").selectEvent.subscribe(onRegisterClicked),
             ])
         ]);
     };
@@ -64,11 +64,10 @@ App.RegisterScreen = function() {
         clearValidationErrors();
         App.UserService.register(user,
             function(data) {
-                console.log("success");
-                App.scn.hidePopup();
+                App.stack.pop();
             },
             function(error) {
-                 showError(JSON.parse(error.response));
+                showError(JSON.parse(error.response));
             });
 
         App.scn.hidePopup();
@@ -82,8 +81,6 @@ App.RegisterScreen = function() {
             inputSurname.setData("");
             inputEmail.setData("");
             inputPhone.setData("");
-
-            $("#btnRegister").onpress(onRegisterClicked);
         },
 
         /*

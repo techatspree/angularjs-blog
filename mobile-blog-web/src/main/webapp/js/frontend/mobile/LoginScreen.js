@@ -32,15 +32,17 @@ App.LoginScreen = function() {
     }
 
     var onLoginClicked = function() {
-        console.log("hide popup");
+        var user = {};
+        user.username = inputUser.getData();
+        user.password = inputPass.getData();
 
         // perform login
-        App.UserService.login(inputUser.getData(), inputPass.getData(), App.postLoginAction,
-            function(data) {
-                // TODO: success case, token handling
+        App.UserService.login(user,
+            function(user) {
+                App.stack.pop();
             },
             function(error) {
-                // TODO: failure case
+                App.scn.alert("Login", "Login failed");
             });
 
         App.scn.hidePopup();

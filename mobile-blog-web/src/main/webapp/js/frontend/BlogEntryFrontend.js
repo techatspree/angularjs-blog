@@ -10,8 +10,10 @@ App.BlogEntryFrontend = function() {
                 function(result) {
                     $(node).empty();
                     $.each(result, function(index, blogPost) {
-                        blogPost.content = $.trim(blogPost.content).substring(0, 300)
-                                .split(" ").slice(0, -1).join(" ") + "...";
+                        if (blogPost.content.length > 300) {
+                            blogPost.content = $.trim(blogPost.content).substring(0, 300)
+                                    .split(" ").slice(0, -1).join(" ") + "...";
+                        }
                         blogPost.content.replace(/\n/g, '<br />');
                         blogPost.created = new Date(blogPost.created).toUTCString();
 
