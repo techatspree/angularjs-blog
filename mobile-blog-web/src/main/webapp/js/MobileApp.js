@@ -59,12 +59,14 @@ App = {
 				new joFlexcol([
     			    this.nav = new joCustomNavbar(),
 					this.stack = new joStackScroller(),
+					new joToolbar("(c) akquinet AG")
 				]),
 			]).setStyle({position: "absolute", top: "0", left: "0", bottom: "0", right: "0"})
 		);
 		
 		this.nav.setStack(this.stack);
 		this.nav.setTitle('<img src="../images/aerogear_logo_150px.png" class="logo" /> ');
+		this.nav.row.push('<img id="akquinetLogo" src="../images/akquinet_logo.png" class="logo" style="float:right" /> ');
 
 		joGesture.backEvent.subscribe(this.stack.pop, this.stack);
 
@@ -72,6 +74,11 @@ App = {
 		this.stack.push(App.BlogListScreen.get());
         // Load the blog posts.
         App.BlogListScreen.refresh();
+
+        $('#akquinetLogo').onpress(function(){
+            document.location.href = "http://blog.akquinet.de/";
+            window.location.href = "http://blog.akquinet.de/";
+        });
 	},
 
 	openBlogPost: function(id) {

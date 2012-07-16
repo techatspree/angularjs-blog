@@ -53,6 +53,7 @@ App.BlogEntryFrontend = function() {
                     $(node).empty();
                     $.each(result, function(index, comment) {
                         comment.content.replace(/\n/g, '<br />');
+                        comment.created = new Date(comment.created).toUTCString();
                         appendTemplateDataToNode(node, comment, "#comment-tmpl");
                     });
                 },
