@@ -4,28 +4,33 @@ App.LoginScreen = function() {
     var view;
 
     var init = function() {
-        view = [
+        view = new joCard([
             new joTitle("Login"),
-            new joGroup([
-                new joCaption("User Name"),
-                new joFlexrow(inputUser = new joInput("")),
-                new joCaption("Password"),
-                new joFlexrow(inputPass = new joPasswordInput(""))
-            ]),
-            new joFlexrow([
-                new joButton("Login").selectEvent.subscribe(onLoginClicked),
-                new joButton("Cancel").selectEvent.subscribe(function() {
-                    App.LoginScreen.refresh();
-                    App.scn.hidePopup();
-            })
+            new joFlexcol([
+                new joDivider(),
+                new joButton("Register").selectEvent.subscribe(onRegisterClicked),
+                new joDivider(),
+                new joGroup([
+                    new joCaption("User Name"),
+                    new joFlexrow(inputUser = new joInput("")),
+                    new joCaption("Password"),
+                    new joFlexrow(inputPass = new joPasswordInput(""))
+                ]),
+                new joFlexrow([
+                    new joButton("Login").selectEvent.subscribe(onLoginClicked),
+                ])
             ])
-        ];
+        ]);
     };
 
     /*
      * Interaction listeners
      */
-    function onLoginClicked() {
+    var onRegisterClicked = function() {
+        App.stack.push(App.RegisterScreen.get());
+    }
+
+    var onLoginClicked = function() {
         console.log("hide popup");
 
         // perform login

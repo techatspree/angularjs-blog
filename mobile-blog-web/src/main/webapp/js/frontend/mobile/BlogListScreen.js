@@ -11,6 +11,7 @@ App.BlogListScreen = function() {
      */
     var init = function() {
         view = new joCard([
+            new joTitle("Blog Post Demo"),
             new joGroup(
                 new joFlexcol([
                      new joButton('Add Post')
@@ -40,7 +41,7 @@ App.BlogListScreen = function() {
             App.postLoginAction = function() {
                 App.stack.push(App.AddPostScreen.get());
             }
-            App.scn.showPopup(App.LoginScreen.get());
+            App.stack.push(App.LoginScreen.get());
         }
         else {
             App.stack.push(App.AddPostScreen.get());

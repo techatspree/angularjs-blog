@@ -18,7 +18,9 @@ App.UserService = function() {
 
         register : function(user, callback, errorCallback) {
             $.ajax({
-                url: "rest/user",
+                url: "../rest/user",
+                contentType: "application/json",
+                dataType: "json",
                 type: "POST",
                 cache: false,
                 data: user,
