@@ -23,16 +23,16 @@ App.UserService = function() {
                 dataType: "json",
                 type: "POST",
                 cache: false,
-                data: user,
+                data: JSON.stringify(user),
                 success: function(data) {
                     callback(data);
                 },
                 error: function(error) {
                     // TODO: Show error at correct position in UI?
-                    var errorMsg = "error registering user -" + error.status;
+                    var errorMsg = "error registering user - " + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
-                        errorCallback(errorMsg);
+                        errorCallback(error);
                     }
                 }
             });

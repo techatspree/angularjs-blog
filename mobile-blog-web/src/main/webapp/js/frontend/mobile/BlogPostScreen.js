@@ -10,7 +10,7 @@ App.BlogPostScreen = function() {
                 new joDivider(),
                 new joHTML("<h4>Comments</h4>"),
                 new joHTML("<div id='commentList' />"),
-                new joButton("Add comment").selectEvent.subscribe(onAddComClicked)
+                new joButton("Add comment").selectEvent.subscribe(onAddCommentClicked)
             ])
         ).setTitle("Blog Post")
     }
@@ -18,12 +18,12 @@ App.BlogPostScreen = function() {
     /*
      * interaction listeners
      */
-    var onAddComClicked = function() {
+    var onAddCommentClicked = function() {
         if (!App.UserService.isLoggedIn()) {
             App.postLoginAction = function() {
                 App.stack.push(App.AddCommentScreen.get());
             }
-            App.scn.showPopup(App.LoginScreen.get());
+            App.stack.push(App.LoginScreen.get());
         }
         else {
             App.stack.push(App.AddCommentScreen.get());

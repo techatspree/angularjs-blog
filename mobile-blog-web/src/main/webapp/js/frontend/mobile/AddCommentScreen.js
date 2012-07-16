@@ -16,7 +16,7 @@ App.AddCommentScreen = function() {
                new joFlexrow(inputComment = new joTextarea("")),
             ]),
             new joDivider(),
-            new joButton("Submit").selectEvent.subscribe(onSubmitClicked)
+            new joButton("Submit").selectEvent.subscribe(onSubmitClicked),
         ]);
     }
 

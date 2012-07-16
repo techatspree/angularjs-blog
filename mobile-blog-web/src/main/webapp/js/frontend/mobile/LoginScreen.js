@@ -17,7 +17,7 @@ App.LoginScreen = function() {
                     new joFlexrow(inputPass = new joPasswordInput(""))
                 ]),
                 new joFlexrow([
-                    new joButton("Login").selectEvent.subscribe(onLoginClicked),
+                    new joButton("Login").selectEvent.subscribe(onLoginClicked)
                 ])
             ])
         ]);
@@ -28,6 +28,7 @@ App.LoginScreen = function() {
      */
     var onRegisterClicked = function() {
         App.stack.push(App.RegisterScreen.get());
+        App.RegisterScreen.refresh();
     }
 
     var onLoginClicked = function() {

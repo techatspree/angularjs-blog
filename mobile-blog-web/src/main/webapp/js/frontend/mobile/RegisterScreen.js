@@ -2,37 +2,56 @@ App.RegisterScreen = function() {
     var inputUser, inputPass;
     var inputFirstname, inputSurname, inputEmail, inputPhone;
 
+    var validateUsername, validatePassword;
+    var validateFirstname, validateSurname, validateEmail, validatePhone;
+
     var view;
 
     var init = function() {
         view = new joCard([
             new joTitle("Register"),
             new joGroup([
-                new joCaption("User Name"),
-                new joFlexrow(inputUser = new joInput("")),
-                new joCaption("Password"),
-                new joFlexrow(inputPass = new joPasswordInput("")),
-                new joCaption("First Name"),
-                new joFlexrow(inputFirstname = new joInput("")),
-                new joCaption("Last Name"),
-                new joFlexrow(inputSurname = new joInput("")),
-                new joCaption("Email"),
-                new joFlexrow(inputEmail = new joInput("")),
-                new joCaption("Phone"),
-                new joFlexrow(inputPhone = new joInput("")),
+                new joFlexrow([new joCaption("User Name"), validateUsername = new joView()]),
+                new joFlexrow([inputUser = new joInput()]),
+                new joFlexrow([new joCaption("Password"), validatePassword = new joView()]),
+                new joFlexrow([inputPass = new joPasswordInput()]),
+                new joFlexrow([new joCaption("First Name"), validateFirstname = new joView()]),
+                new joFlexrow([inputFirstname = new joInput()]),
+                new joFlexrow([new joCaption("Surname"), validateSurname = new joView()]),
+                new joFlexrow([inputSurname = new joInput()]),
+                new joFlexrow([new joCaption("Email"), validateEmail = new joView()]),
+                new joFlexrow([inputEmail = new joInput("", "email")]),
+                new joFlexrow([new joCaption("Phone"), validatePhone = new joView()]),
+                new joFlexrow([inputPhone = new joInput("", "number")]),
             ]),
             new joFlexrow([
-                new joButton("Register").selectEvent.subscribe(onRegisterClicked)
+                new joButton("Register").setStyle({id:"btnRegister"}),
             ])
         ]);
+    };
+
+    var showError = function(error) {
+        if (error.username) {validateUsername.setData('<div class="validationError">' + error.username + '</div>');}
+        if (error.password) {validatePassword.setData('<div class="validationError">' + error.password + '</div>');}
+        if (error.firstname) {validateFirstname.setData('<div class="validationError">' + error.firstname + '</div>');}
+        if (error.surname) {validateSurname.setData('<div class="validationError">' + error.surname + '</div>');}
+        if (error.email) {validateEmail.setData('<div class="validationError">' + error.email + '</div>');}
+        if (error.phone) {validatePhone.setData('<div class="validationError">' + error.phone + '</div>');}
+    };
+
+    var clearValidationErrors = function() {
+        validateUsername.setData("");
+        validatePassword.setData("");
+        validateFirstname.setData("");
+        validateSurname.setData("");
+        validateEmail.setData("");
+        validatePhone.setData("");
     };
 
     /*
      * Interaction listeners
      */
     function onRegisterClicked() {
-        console.log("hide popup");
-
         var user = {};
         user.username = inputUser.getData();
         user.password = inputPass.getData();
@@ -42,13 +61,14 @@ App.RegisterScreen = function() {
         user.phone = inputPhone.getData();
 
         // perform login
+        clearValidationErrors();
         App.UserService.register(user,
             function(data) {
                 console.log("success");
                 App.scn.hidePopup();
             },
             function(error) {
-                // TODO: failure case
+                 showError(JSON.parse(error.response));
             });
 
         App.scn.hidePopup();
@@ -62,6 +82,8 @@ App.RegisterScreen = function() {
             inputSurname.setData("");
             inputEmail.setData("");
             inputPhone.setData("");
+
+            $("#btnRegister").onpress(onRegisterClicked);
         },
 
         /*

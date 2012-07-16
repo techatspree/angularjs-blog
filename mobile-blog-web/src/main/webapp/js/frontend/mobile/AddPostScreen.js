@@ -18,7 +18,7 @@ App.AddPostScreen = function() {
                new joFlexrow(inputContent = new joTextarea("")),
             ]),
             new joDivider(),
-            new joButton("Submit").selectEvent.subscribe(onSubmitClicked)
+            new joButton("Submit").selectEvent.subscribe(onSubmitClicked),
         ]);
     }
 
@@ -32,8 +32,6 @@ App.AddPostScreen = function() {
 
         App.BlogEntryService.addBlogEntry(blogPost, function() {
             console.log("success");
-
-            App.BlogEntryFrontend.changeEvent.fire();
             App.stack.pop();
         });
     }
