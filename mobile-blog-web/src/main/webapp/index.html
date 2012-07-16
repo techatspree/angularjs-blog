@@ -5,14 +5,21 @@
     <title>AeroGear Blog Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
+    <script type="text/javascript" src="js/lib/modernizr.min.js"></script>
+
     <script type="text/javascript">
-        var mq = window.matchMedia( "only screen and (max-device-width: 480px)" );
-        if (mq.matches) {
-        // mobile
+        var smallScreen = (window.matchMedia( "only screen and (max-device-width: 1024px)")).matches;
+        var touchScreen = Modernizr.touch;
+
+        if (smallScreen && touchScreen) {
+            // mobile
             document.location.href="mobile/";
+            window.location.href="mobile/";
         }
         else {
+            // desktop
             document.location.href="desktop/";
+            window.location.href="desktop/";
         }
     </script>
 </head>
