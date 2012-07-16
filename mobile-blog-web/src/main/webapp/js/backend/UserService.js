@@ -12,11 +12,11 @@ App.UserService = function() {
         },
 
         // TODO: Error handling
-        login : function(user, postLoginAction, callback, errorCallback) {
+        login : function(credentials, postLoginAction, callback, errorCallback) {
             $.ajax({
                 url: "../rest/authentication",
                 type: "POST",
-                data: user,
+                data: credentials,
                 cache: false,
                 success: function(data) {
                     loggedIn = true;
@@ -26,6 +26,7 @@ App.UserService = function() {
                 },
                 error: function(error) {
                     loggedIn = false;
+                    user = null;
                     // TODO: Show error at correct position in UI?
                     var errorMsg = "error adding blog post -" + error.status;
                     console.log(errorMsg);
@@ -34,8 +35,6 @@ App.UserService = function() {
                     }
                 }
             });
-
-            console.log(username + ":" + password);
 
             callback();
             postLoginAction();

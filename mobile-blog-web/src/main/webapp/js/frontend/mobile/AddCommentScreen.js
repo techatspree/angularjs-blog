@@ -6,6 +6,8 @@ App.AddCommentScreen = function() {
     var view;
     var inputComment;
 
+    var blogPostId;
+
     /*
      * UI
      */
@@ -27,7 +29,7 @@ App.AddCommentScreen = function() {
         var comment = {};
         comment.content = inputComment.getData();
 
-        App.BlogEntryService.addComment(App.currentBlogPostId, comment, function() {
+        App.BlogEntryService.addComment(blogPostId, comment, function() {
             App.stack.pop();
         });
     }
@@ -40,7 +42,8 @@ App.AddCommentScreen = function() {
         /*
          * Manually refresh the screen.
          */
-        refresh : function() {
+        refresh : function(id) {
+            blogPostId = id;
         },
 
         /*

@@ -45,7 +45,6 @@ App.BlogEntryService = function() {
                 data: JSON.stringify(comment),
                 cache: false,
                 success: function(data) {
-                    $(document.body).trigger(changeEventName);
                     callback(data);
                 },
                 error: function(error) {
