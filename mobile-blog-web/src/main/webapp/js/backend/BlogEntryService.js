@@ -7,6 +7,9 @@ App.BlogEntryService = function() {
 
     return {
         addBlogEntry : function(blogEntry, callback, errorCallback) {
+            blogEntry.user = {};
+            blogEntry.user.id = App.UserService.getUser().id;
+
             // TODO: all posts (e.g. add user, add post) are alike. use one function to do it?
             $.ajax({
                 url: "../rest/blog",
@@ -31,6 +34,9 @@ App.BlogEntryService = function() {
         },
 
         addComment : function(postId, comment, callback, errorCallback) {
+            comment.user = {};
+            comment.user.id = App.UserService.getUser().id;
+
             $.ajax({
                 url: "../rest/blog/" + postId + "/comment",
                 contentType: "application/json",

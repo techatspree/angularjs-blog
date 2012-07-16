@@ -1,16 +1,41 @@
 App.UserService = function() {
     var loggedIn = false;
+    var user;
 
     return {
+        getUser : function() {
+            return user;
+        },
+
         isLoggedIn : function() {
-            // TODO: implement
             return loggedIn;
         },
 
         // TODO: Error handling
-        login : function(username, password, postLoginAction, callback, errorCallback) {
+        login : function(user, postLoginAction, callback, errorCallback) {
+            $.ajax({
+                url: "../rest/authentication",
+                type: "POST",
+                data: user,
+                cache: false,
+                success: function(data) {
+                    loggedIn = true;
+                    user = data;
+                    callback(data);
+                    postLoginAction();
+                },
+                error: function(error) {
+                    loggedIn = false;
+                    // TODO: Show error at correct position in UI?
+                    var errorMsg = "error adding blog post -" + error.status;
+                    console.log(errorMsg);
+                    if (errorCallback) {
+                        errorCallback(errorMsg);
+                    }
+                }
+            });
+
             console.log(username + ":" + password);
-            loggedIn = true;
 
             callback();
             postLoginAction();
@@ -19,11 +44,9 @@ App.UserService = function() {
         register : function(user, callback, errorCallback) {
             $.ajax({
                 url: "../rest/user",
-                contentType: "application/json",
-                dataType: "json",
                 type: "POST",
                 cache: false,
-                data: JSON.stringify(user),
+                data: user,
                 success: function(data) {
                     callback(data);
                 },
