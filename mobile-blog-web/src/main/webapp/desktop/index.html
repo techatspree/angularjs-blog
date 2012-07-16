@@ -21,6 +21,8 @@
 
     <script type="text/javascript" src="../js/frontend/BlogEntryFrontend.js"></script>
 
+    <script src="../js/frontend/desktop/BlogPostNode.js"></script>
+
 </head>
 
 <body>
@@ -39,11 +41,40 @@
 <section id="content">
 </section>
 
-<aside>
-    <p>More info about aerogear.</p>
-    <p>Some other stuff</p>
-    <p>Even more stuff</p>
-</aside>
+    <aside id="info-aside" data-role="page" data-theme="a">
+        <!-- Header -->
+        <div data-role="header">
+            <h3>Find out more</h3>
+        </div>
+        <!-- /Header -->
+
+        <div data-role="content">
+            <p>Learn more about JBoss Enterprise Application Platform 6.</p>
+            <ul>
+                <li><a href="http://red.ht/jbeap-6-docs" target="_blank">Documentation</a></li>
+                <li><a href="http://red.ht/jbeap-6" target="_blank">Product Information</a></li>
+            </ul>
+            <p>Learn more about JBoss AS 7.</p>
+            <ul>
+                <li><a href="https://docs.jboss.org/author/display/AS7/Getting+Started+Developing+Applications+Guide" target="_blank">Getting Started Developing Applications Guide</a></li>
+                <li><a href="http://jboss.org/jbossas" target="_blank">Community Project Information</a></li>
+            </ul>
+            <p>Learn about <strong>AeroGear</strong> and HTML5/Mobile development on JBoss.</p>
+            <ul>
+                <li><a href="http://jboss.org/aerogear" target="_blank">AeroGear Project site</a></li>
+                <li><a href="https://community.jboss.org/wiki/WhatArePlainOldHTML5POH5Applications" target="_blank">More on <strong>POH5</strong></a></li>
+                <li><a href="https://community.jboss.org/wiki/GetStartedWithHTML5MobileWebDevelopmentWithJBoss" target="_blank">Get this application</a></li>
+                <li><a href="https://community.jboss.org/wiki/HTML5MobileQuickstartArchetypeDeepDive" target="_blank">Application deepdive</a></li>
+                <li><a href="https://community.jboss.org/community/aerogear" target="_blank">AeroGear user forums</a></li>
+                <li><a href="https://github.com/organizations/aerogear" target="_blank">Github</a></li>
+            </ul>
+            <p>More about the author of this demo.</p>
+            <ul>
+                <li><a href="http://blog.akquinet.de" target="_blank">akquinet blog</a></li>
+                <li><a href="https://github.com/akquinet/mobile-blog" target="_blank">Github</a></li>
+            </ul>
+        </div>
+    </aside>
 
 
 <footer>
@@ -53,7 +84,6 @@
 <script type="text/javascript">
     Zepto(function($) {
         App.load();
-        App.BlogEntryFrontend.updateWithBlogList($('#content'));
     })
 </script>
 </div>
