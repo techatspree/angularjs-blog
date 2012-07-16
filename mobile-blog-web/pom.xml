@@ -101,6 +101,9 @@
                         <source>${project.basedir}/src/test/webapp/js/lib/mock-ajax.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/zepto.onpress.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/jo.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/jo.customnavbar.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/jo.html5input.js</source>
                     </preloadSources>
                     <sourceIncludes>
                         <include>**/lib/*.js</include>

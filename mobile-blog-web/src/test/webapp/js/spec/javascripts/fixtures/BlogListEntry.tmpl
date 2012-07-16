@@ -1,18 +1,18 @@
 <script type="text/template" id="bloglistentry-tmpl">
 
-<article id="post<%=blogEntry.id%>">
+<article id="post<%=data.id%>">
     <div style="padding-bottom: 10px;">
-        <h2><%=blogEntry.title%></h2>
+        <h2><%=data.title%></h2>
 
         <div style="font-size: smaller;">
-            <%=blogEntry.author.firstname%> <%=blogEntry.author.surname%> - <%=blogEntry.created%>
+            <%=data.author.firstname%> <%=data.author.surname%> - <%=data.created%>
         </div>
     </div>
 
-    <div style="clear:both;"><%=blogEntry.content%></div>
+    <div style="clear:both;"><%=data.content%></div>
 
     <div style="padding-bottom: 10px; margin: 10px 0px 30px 0px; border-bottom: 1px solid; border-color: #AAAAAA;">
-        <a id="postButton<%=blogEntry.id%>" href="#">Read more &#187;</b>
+        <a id="postButton<%=data.id%>" href="#">Read more &#187;</b>
     </div>
 </article>
 
