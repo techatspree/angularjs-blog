@@ -19,19 +19,24 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import de.akquinet.aerogear.BlogEntry;
+import de.akquinet.aerogear.User;
 import de.akquinet.aerogear.dao.BlogEntryDao;
+import de.akquinet.aerogear.dao.UserDao;
 
 @Stateless
 @Path("/blog")
 public class BlogEntryService {
 
-	private static final int MAX_RESULTS = 5;
+	private static final int MAX_RESULTS = 1000;
 
 	@Inject
 	private Logger log;
 
 	@Inject
 	private BlogEntryDao blogEntryDao;
+
+	@Inject
+	private UserDao userDao;
 
 	@Inject
 	private ContraintValidator validator;
@@ -79,8 +84,16 @@ public class BlogEntryService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
-	public BlogEntry saveBlogEntry(final BlogEntry blogEntry){
-		return null;
+	public BlogEntry saveBlogEntry(final BlogEntry blogEntry) {
+		final Long id = blogEntry.getAuthor().getId();
+		final User author = userDao.find(id);
+		final BlogEntry newBlogEntry = new BlogEntry();
+		newBlogEntry.setAuthor(author);
+		newBlogEntry.setTitle(blogEntry.getTitle());
+		newBlogEntry.setContent(blogEntry.getContent());
+
+		blogEntryDao.persist(newBlogEntry);
+		return newBlogEntry;
 	}
 
 }
