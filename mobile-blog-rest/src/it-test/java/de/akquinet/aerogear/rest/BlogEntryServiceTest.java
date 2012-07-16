@@ -37,7 +37,7 @@ public class BlogEntryServiceTest {
 		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
 		BlogEntry[] users = response.getEntity();
-		Assert.assertEquals(5, users.length);
+		Assert.assertEquals(15, users.length);
 	}
 
 	@Test

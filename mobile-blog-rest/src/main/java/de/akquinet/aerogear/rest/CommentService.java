@@ -19,8 +19,10 @@ import javax.ws.rs.core.MediaType;
 
 import de.akquinet.aerogear.BlogEntry;
 import de.akquinet.aerogear.Comment;
+import de.akquinet.aerogear.User;
 import de.akquinet.aerogear.dao.BlogEntryDao;
 import de.akquinet.aerogear.dao.CommentDao;
+import de.akquinet.aerogear.dao.UserDao;
 
 @Stateless
 @Path("/blog/{blogId:[1-9][0-9]*}/comment")
@@ -34,6 +36,9 @@ public class CommentService {
 
 	@Inject
 	private CommentDao commentDao;
+
+	@Inject
+	private UserDao userDao;
 
 	@Inject
 	private ContraintValidator validator;
@@ -78,8 +83,16 @@ public class CommentService {
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
 	public Comment saveBlogEntry(@PathParam("blogId") final long blogEntryId, final Comment comment) {
-		BlogEntry blogEntry = blogEntryDao.find(blogEntryId);
-		return null;
+		final BlogEntry blogEntry = blogEntryDao.find(blogEntryId);
+		final Long id = blogEntry.getAuthor().getId();
+		final User author = userDao.find(id);
+		final Comment newComment = new Comment();
+		newComment.setAuthor(author);
+		newComment.setBlogEntry(blogEntry);
+		newComment.setContent(comment.getContent());
+
+		commentDao.persist(newComment);
+		return newComment;
 	}
 
 }
