@@ -3,16 +3,33 @@ App.BlogPostScreen = function() {
     var blogPostId = 0;
     var btnSubmit;
 
+    var refreshPost = function() {
+        if ($('#blogEntryContainer').length > 0) {
+            App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), blogPostId);
+        }
+    };
+
+    var refreshComments = function() {
+        if ($('#commentList').length > 0) {
+            App.BlogEntryFrontend.updateWithComments($('#commentList'), blogPostId);
+        }
+    };
+
     var init = function() {
-        view = new joGroup(
-            new joFlexcol([
-                new joHTML("<div id='blogEntryContainer' />"),
-                new joDivider(),
-                new joHTML("<h4>Comments</h4>"),
-                new joHTML("<div id='commentList' />"),
-                new joButton("Add comment").selectEvent.subscribe(onAddCommentClicked)
-            ])
-        ).setTitle("Blog Post")
+        view = new joCard([
+            new joGroup(
+                new joFlexcol([
+                    new joHTML("<div id='blogEntryContainer' />"),
+                    new joDivider(),
+                    new joHTML("<h4>Comments</h4>"),
+                    new joHTML("<div id='commentList' />"),
+                    new joButton("Add comment").selectEvent.subscribe(onAddCommentClicked)
+                ])
+            )]);
+
+        App.stack.popEvent.subscribe(function(){
+            refreshComments();
+        });
     }
 
     /*
@@ -20,10 +37,6 @@ App.BlogPostScreen = function() {
      */
     var onAddCommentClicked = function() {
         if (!App.UserService.isLoggedIn()) {
-            App.postLoginAction = function() {
-                App.stack.push(App.AddCommentScreen.get());
-                App.AddCommentScreen.refresh(blogPostId);
-            }
             App.stack.push(App.LoginScreen.get());
         }
         else {
@@ -41,12 +54,8 @@ App.BlogPostScreen = function() {
                 blogPostId = id;
             }
 
-            if ($('#blogEntryContainer').length > 0) {
-                App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), blogPostId);
-            }
-            if ($('#commentList').length > 0) {
-                App.BlogEntryFrontend.updateWithComments($('#commentList'), blogPostId);
-            }
+            refreshPost();
+            refreshComments();
         },
 
         get : function() {

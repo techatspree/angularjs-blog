@@ -30,6 +30,7 @@ App.AddCommentScreen = function() {
         comment.content = inputComment.getData();
 
         App.BlogEntryService.addComment(blogPostId, comment, function() {
+            inputComment.setData("");
             App.stack.pop();
         });
     }

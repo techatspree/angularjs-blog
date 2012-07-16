@@ -2,7 +2,6 @@
 
 App.BlogEntryService = function() {
     var changeEventName = "BlogEntryService:change";
-
     $.Event(changeEventName);
 
     return {
@@ -19,7 +18,7 @@ App.BlogEntryService = function() {
                 data: JSON.stringify(blogEntry),
                 cache: false,
                 success: function(data) {
-                    $(document.body).trigger(changeEventName);
+                    $(document).trigger(changeEventName);
                     callback(data);
                 },
                 error: function(error) {
@@ -45,6 +44,7 @@ App.BlogEntryService = function() {
                 data: JSON.stringify(comment),
                 cache: false,
                 success: function(data) {
+                    $(document).trigger(changeEventName);
                     callback(data);
                 },
                 error: function(error) {
@@ -60,13 +60,9 @@ App.BlogEntryService = function() {
 
         retrieveBlogEntries : function(callback, errorCallback) {
             $.ajax({
-                // TODO: Replace with REST call
-//                url: "../mockData/blogEntries.json",
                 url: "../rest/blog",
                 cache: false,
                 success: function(data) {
-                    // TODO: Remove next line when JSON media type is given by server
-//                    data = JSON.parse(data);
                     callback(data);
                 },
                 error: function(error) {
@@ -81,12 +77,9 @@ App.BlogEntryService = function() {
 
         retrieveBlogEntry : function(id, callback, errorCallback) {
             $.ajax({
-                // TODO: Replace with REST call
                 url: "../rest/blog/" + id,
                 cache: false,
                 success: function(data) {
-                    // TODO: Remove next line when JSON media type is given by server
-//                    data = JSON.parse(data);
                     callback(data);
                 },
                 error: function(error) {

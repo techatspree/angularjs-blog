@@ -12,7 +12,7 @@ App.UserService = function() {
         },
 
         // TODO: Error handling
-        login : function(credentials, postLoginAction, callback, errorCallback) {
+        login : function(credentials, callback, errorCallback) {
             $.ajax({
                 url: "../rest/authentication",
                 type: "POST",
@@ -22,7 +22,6 @@ App.UserService = function() {
                     loggedIn = true;
                     user = data;
                     callback(data);
-                    postLoginAction();
                 },
                 error: function(error) {
                     loggedIn = false;
@@ -35,9 +34,6 @@ App.UserService = function() {
                     }
                 }
             });
-
-            callback();
-            postLoginAction();
         },
 
         register : function(user, callback, errorCallback) {

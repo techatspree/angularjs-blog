@@ -20,6 +20,10 @@ App.BlogListScreen = function() {
                 ])
             )
         ]).setTitle("Blog Demo");
+
+        App.stack.popEvent.subscribe(function(){
+            App.BlogListScreen.refresh();
+        });
     }
 
     /*
@@ -27,9 +31,6 @@ App.BlogListScreen = function() {
      */
     var onAddPostClicked = function() {
         if (!App.UserService.isLoggedIn()) {
-            App.postLoginAction = function() {
-                App.stack.push(App.AddPostScreen.get());
-            }
             App.stack.push(App.LoginScreen.get());
         }
         else {
