@@ -58,8 +58,7 @@ App = {
 			new joContainer([
 				new joFlexcol([
     			    this.nav = new joCustomNavbar(),
-					this.stack = new joStackScroller(),
-					new joToolbar("(c) akquinet AG")
+					this.stack = new joStackScroller()
 				]),
 			]).setStyle({position: "absolute", top: "0", left: "0", bottom: "0", right: "0"})
 		);
