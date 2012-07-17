@@ -1,5 +1,3 @@
-// TODO: make callbacks optional
-
 App.BlogEntryService = function() {
     var changeEventName = "BlogEntryService:change";
     $.Event(changeEventName);
@@ -9,7 +7,6 @@ App.BlogEntryService = function() {
             blogEntry.author = {};
             blogEntry.author.id = App.UserService.getUser().id;
 
-            // TODO: all posts (e.g. add user, add post) are alike. use one function to do it?
             $.ajax({
                 url: "../rest/blog",
                 contentType: "application/json",
@@ -22,7 +19,6 @@ App.BlogEntryService = function() {
                     callback(data);
                 },
                 error: function(error) {
-                    // TODO: Show error at correct position in UI?
                     var errorMsg = "error adding blog post -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
@@ -48,7 +44,6 @@ App.BlogEntryService = function() {
                     callback(data);
                 },
                 error: function(error) {
-                    // TODO: Show error at correct position in UI?
                     var errorMsg = "error adding comment -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
@@ -94,12 +89,9 @@ App.BlogEntryService = function() {
 
         retrieveComments : function(id, callback, errorCallback) {
             $.ajax({
-                // TODO: Replace with REST call
                 url: "../rest/blog/" + id + "/comment",
                 cache: false,
                 success: function(data) {
-                    // TODO: Remove next line when JSON media type is given by server
-//                    data = JSON.parse(data);
                     callback(data);
                 },
                 error: function(error) {

@@ -4,34 +4,7 @@
  * @author Philipp Kumar
  */
 App = {
-     // Fetches all HTML templates and adds them to our DOM
-	fetchTemplates: function() {
-        $.ajax({
-            url: "../js/template/BlogListEntry.tmpl",
-            dataType: "html",
-            success: function(data) {
-                $("head").append(data);
-            }
-        });
-
-        $.ajax({
-            url: "../js/template/BlogEntry.tmpl",
-            dataType: "html",
-            success: function(data) {
-                $("head").append(data);
-            }
-        });
-
-        $.ajax({
-            url: "../js/template/Comment.tmpl",
-            dataType: "html",
-            success: function(data) {
-                $("head").append(data);
-            }
-        });
-	},
-
-	postLoginAction: function() {},
+    postLoginAction: function() {},
 
 	/*
 	 * This is the entry point into the app.
@@ -83,5 +56,32 @@ App = {
 	openBlogPost: function(id) {
 	    this.stack.push(App.BlogPostScreen.get());
 	    App.BlogPostScreen.refresh(id);
-	}
+	},
+	
+	 // Fetches all HTML templates and adds them to our DOM
+	fetchTemplates: function() {
+        $.ajax({
+            url: "../js/template/BlogListEntry.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+
+        $.ajax({
+            url: "../js/template/BlogEntry.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+
+        $.ajax({
+            url: "../js/template/Comment.tmpl",
+            dataType: "html",
+            success: function(data) {
+                $("head").append(data);
+            }
+        });
+	},
 };

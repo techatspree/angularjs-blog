@@ -1,5 +1,3 @@
-// TODO: second test, some doc
-
 describe('the BlogEntryFrontend',function(){
     beforeEach(function() {
         loadFixtures("BlogListEntry.tmpl");
@@ -19,13 +17,7 @@ describe('the BlogEntryFrontend',function(){
             params.success(responseMock);
         });
 
-//        var fakeData = "";
-//        spyOn($, "ajax").andCallFake(function(params) {
-//            params.success(fakeData);
-//        });
-
         var node = $('<div />');
-
         App.BlogEntryFrontend.updateWithBlogList(node);
 
         expect(node.children().size()).toBe(2);

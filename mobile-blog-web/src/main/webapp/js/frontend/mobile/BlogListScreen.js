@@ -24,7 +24,7 @@ App.BlogListScreen = function() {
         App.stack.popEvent.subscribe(function(){
             App.BlogListScreen.refresh();
         });
-    }
+    };
 
     /*
      * interaction listeners
@@ -63,5 +63,5 @@ App.BlogListScreen = function() {
 
             return view;
         }
-    }
+    };
 }();

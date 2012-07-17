@@ -11,7 +11,6 @@ App.UserService = function() {
             return loggedIn;
         },
 
-        // TODO: Error handling
         login : function(credentials, callback, errorCallback) {
             $.ajax({
                 url: "../rest/authentication",
@@ -26,7 +25,6 @@ App.UserService = function() {
                 error: function(error) {
                     loggedIn = false;
                     user = null;
-                    // TODO: Show error at correct position in UI?
                     var errorMsg = "error adding blog post -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
@@ -46,7 +44,6 @@ App.UserService = function() {
                     callback(data);
                 },
                 error: function(error) {
-                    // TODO: Show error at correct position in UI?
                     var errorMsg = "error registering user - " + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
@@ -58,7 +55,6 @@ App.UserService = function() {
 
         retrieveUser : function(id, callback, errorCallback) {
             $.ajax({
-                // TODO: Replace with REST call
                 url: "rest/user/" + id,
                 cache: false,
                 success: function(user) {

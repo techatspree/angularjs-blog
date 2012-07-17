@@ -2,7 +2,7 @@ App.BlogEntryFrontend = function() {
     var appendTemplateDataToNode = function(node, data, templateId) {
         var templateFunc = _.template($(templateId).html());
         node.append(templateFunc({"data": data}));
-    }
+    };
 
     return {
         updateWithBlogList : function(node) {
