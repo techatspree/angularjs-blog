@@ -1,8 +1,6 @@
-mobile-blog
-===========
-
-AeroGear example application
-
+Cross-Platform AeroGear example application
+============================
+[@akquinet](https://twitter.com/akquinet)
 
 Build the application
 -----------------
@@ -19,4 +17,14 @@ Executing the Arquillian tests
 Access the application on Openshift
 ------------------------------
 
- 	http://mobile-akquinet.rhcloud.com
+[http://mobile-akquinet.rhcloud.com](http://mobile-akquinet.rhcloud.com)
+
+ 	
+Further information
+---------------- 	
+ 	
+[http://blog.akquinet.de](http://blog.akquinet.de)
+[http://www.jboss.org/aerogear](http://www.jboss.org/aerogear)
+[https://openshift.redhat.com/](https://openshift.redhat.com/)
+ 	
+ 	
