@@ -12,6 +12,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javaee6.web.spec.version>2.0.0.Final</javaee6.web.spec.version>
 		<hibernate.jpamodelgen.version>1.2.0.CR1</hibernate.jpamodelgen.version>
+
+		<context.root>/blog</context.root>
+		<hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
+		<jta.data.source>java:jboss/datasources/ExampleDS</jta.data.source>
+		<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
 	</properties>
 
 	<dependencyManagement>
@@ -231,6 +236,10 @@
 					</configuration>
 				</plugin>
 
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
 
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
@@ -246,6 +255,42 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<properties>
+				<context.root>/</context.root>
+				<hibernate.hbm2ddl.auto>create</hibernate.hbm2ddl.auto>
+				<jta.data.source>java:jboss/datasources/PostgreSQLDS</jta.data.source>
+				<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<outputDirectory>deployments</outputDirectory>
+							<packagingExcludes>WEB-INF/lib/mobile-blog-bootstrap*.jar</packagingExcludes>
+
+							<webResources>
+								<resource>
+									<!-- this is relative to the pom.xml directory -->
+									<directory>src/main/webapp</directory>
+
+									<filtering>true</filtering>
+
+									<includes>
+										<include>**/jboss-web.xml</include>
+									</includes>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<modules>
 		<module>mobile-blog-jpa</module>

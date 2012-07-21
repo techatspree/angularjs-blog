@@ -7,11 +7,12 @@
    <persistence-unit name="primary">
       <!-- If you are running in a production environment, add a managed
          data source, the example data source is just for proofs of concept! -->
-      <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+      <jta-data-source>${jta.data.source}</jta-data-source>
       <properties>
          <!-- Properties for Hibernate -->
-         <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-         <property name="hibernate.show_sql" value="true" />
+         <property name="hibernate.dialect" value="${hibernate.dialect}"/>
+         <property name="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}" />
+         <property name="hibernate.show_sql" value="false" />
       </properties>
    </persistence-unit>
 </persistence>
