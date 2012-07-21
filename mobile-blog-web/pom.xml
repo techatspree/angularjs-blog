@@ -40,29 +40,6 @@
 			<type>ejb</type>
 		</dependency>
 
-		<!-- Import the CDI API, we use provided scope as the API is included in
-			JBoss AS 7 -->
-		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.spec.javax.servlet</groupId>
-			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-
-		<!-- Import the JPA API, we use provided scope as the API is included in
-			JBoss AS 7 -->
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
 
 		<!-- Test scope dependencies -->
 		<dependency>
@@ -76,19 +53,6 @@
 
 	<build>
 		<plugins>
-			<!-- The JBoss AS plugin deploys your ear to a local JBoss AS container -->
-			<!-- Due to Maven's lack of intelligence with EARs we need to configure
-				the jboss-as maven plugin to skip deployment for all modules. We then enable
-				it specifically in the ear module. -->
-			<plugin>
-				<groupId>org.jboss.as.plugins</groupId>
-				<artifactId>jboss-as-maven-plugin</artifactId>
-				<version>7.1.1.Final</version>
-				<inherited>true</inherited>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
