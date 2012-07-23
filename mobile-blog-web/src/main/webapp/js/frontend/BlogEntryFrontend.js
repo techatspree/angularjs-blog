@@ -60,6 +60,6 @@ App.BlogEntryFrontend = function() {
                 function(error) {
                     // TODO: error handling
                 });
-        },
+        }
     }
 }();

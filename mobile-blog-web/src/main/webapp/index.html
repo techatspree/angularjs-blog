@@ -8,7 +8,7 @@
     <script type="text/javascript" src="js/lib/modernizr.min.js"></script>
 
     <script type="text/javascript">
-        var smallScreen = (window.matchMedia( "only screen and (max-device-width: 1024px)")).matches;
+        var smallScreen = Modernizr.mq( "only screen and (max-device-width: 1024px)");
         var touchScreen = Modernizr.touch;
 
         if (smallScreen && touchScreen) {
