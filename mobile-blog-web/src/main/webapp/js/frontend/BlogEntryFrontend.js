@@ -57,6 +57,6 @@ App.BlogEntryFrontend = function() {
                 },
                 function(error) {
                 });
-        },
+        }
     }
 }();
