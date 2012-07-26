@@ -28,7 +28,6 @@ App.BlogEntryFrontend = function() {
                     });
                 },
                 function(error) {
-                    // TODO: error handling
                 }
             );
         },
@@ -43,7 +42,6 @@ App.BlogEntryFrontend = function() {
                     appendTemplateDataToNode(node, blogPost, "#blogentry-tmpl");
                 },
                 function(error){
-                    // TODO: error handling
                 });
         },
 
@@ -58,7 +56,6 @@ App.BlogEntryFrontend = function() {
                     });
                 },
                 function(error) {
-                    // TODO: error handling
                 });
         },
     }
