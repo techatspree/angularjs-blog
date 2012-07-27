@@ -60,7 +60,7 @@ public class MessagingService extends Service implements MessageListener {
             e.printStackTrace();
         }
 
-        stayConnected.execute();
+//        stayConnected.execute();
     }
 
     @Override
