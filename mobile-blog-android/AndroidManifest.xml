@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="de.akquinet.aerogear.android" android:versionCode="1" android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application android:icon="@drawable/icon"
+        android:label="mobile-blog notifications" android:debuggable="true">
+        <uses-library android:name="android.test.runner" />
+        <service android:name=".services.MessagingService"></service>
+        <activity android:name=".activities.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+    <uses-sdk android:minSdkVersion="4" />
+
+</manifest>

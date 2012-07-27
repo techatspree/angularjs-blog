@@ -257,6 +257,12 @@
 	</build>
 
 	<profiles>
+        <profile>
+            <id>android</id>
+            <modules>
+                <module>mobile-blog-android</module>
+            </modules>
+        </profile>
 		<profile>
 			<id>openshift</id>
 			<properties>
@@ -298,5 +304,5 @@
 		<module>mobile-blog-ejb</module>
 		<module>mobile-blog-rest</module>
 		<module>mobile-blog-web</module>
-	</modules>
+    </modules>
 </project>

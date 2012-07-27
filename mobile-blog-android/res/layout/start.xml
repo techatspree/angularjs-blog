@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A Layout with some views -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <EditText android:id="@+id/hostText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:hint="Hostname"
+              android:text="10.0.2.2"/>
+    <EditText android:id="@+id/portText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:hint="Port"
+              android:text="6163"/>
+    <EditText android:id="@+id/usernameText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:hint="Username"
+              android:text="guest"/>
+    <EditText android:id="@+id/passwordText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:hint="Password"
+              android:text="password"
+              android:password="true"/>
+    <EditText android:id="@+id/destinationText"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:hint="Destination"
+              android:text="jms.topic.testTopic"/>
+
+    <Button android:id="@+id/startButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start service"/>
+</LinearLayout>
