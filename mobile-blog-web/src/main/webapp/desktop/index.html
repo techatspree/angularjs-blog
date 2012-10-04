@@ -12,16 +12,22 @@
     <script type="text/javascript" src="../js/lib/underscore.min.js"></script>
     <script type="text/javascript" src="../js/lib/zepto.min.js"></script>
     <script type="text/javascript" src="../js/lib/zepto.onpress.js"></script>
+    <script type="text/javascript" src="../js/lib/zepto.cookie.min.js"></script>
     <script type="text/javascript" src="../js/lib/jo.min.js"></script>
 
     <!-- This is our main app and entry point -->
     <script type="text/javascript" src="../js/DesktopApp.js"></script>
 
     <script type="text/javascript" src="../js/backend/BlogEntryService.js"></script>
+    <script type="text/javascript" src="../js/backend/UserService.js"></script>
 
     <script type="text/javascript" src="../js/frontend/BlogEntryFrontend.js"></script>
 
-    <script src="../js/frontend/desktop/BlogPostNode.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/Login.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/Register.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/BlogPostNode.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/BlogAddPost.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/BlogAddComment.js"></script>
 
 </head>
 
@@ -37,12 +43,14 @@
     <img src="../images/akquinet-logo.jpg" />
 </div>
 
-
-<section id="content">
-</section>
-
+<div id="main">
+    <section id="content"></section>
+</div>
 
 <aside id="info-aside">
+    <!-- Login / logout button -->
+    <div id="user"></div>
+
     <!-- Header -->
     <div id="header">
         <h3>Find out more</h3>
