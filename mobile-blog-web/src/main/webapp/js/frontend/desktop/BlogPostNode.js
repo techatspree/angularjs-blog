@@ -1,10 +1,4 @@
 App.BlogPostNode = function() {
-    var view;
-    var btnSubmit;
-
-    var init = function() {
-        view = "<div id='blogEntryContainer'></div><br/><h4>Comments</h4><div id='commentList'></div>";
-    }
 
     return {
         /*
@@ -18,14 +12,24 @@ App.BlogPostNode = function() {
             if ($('#commentList').length > 0) {
                 App.BlogEntryFrontend.updateWithComments($('#commentList'), blogPostId);
             }
+
+            if (App.UserService.isLoggedIn()) {
+                var addCommentForm = $("#addCommentFormContainer");
+
+                if (addCommentForm) {
+                    addCommentForm.remove();
+                }
+
+                $("#commentList").after(_.template($("#desktopcommentform-tmpl").html(), {}));
+                $("#submitComment").on("click", function(e) {
+                    App.BlogAddComment.onSubmitClicked(blogPostId);
+                    return false;
+                });
+            }
         },
 
         get : function() {
-            if (!view) {
-                init();
-            }
-
-            return view;
+            return $("#desktopblogentry-tmpl").html();
         }
     }
 }();

@@ -4,10 +4,20 @@ App.UserService = function() {
 
     return {
         getUser : function() {
+            // check if user cookie is set
+            if ($.fn.cookie("user") != null) {
+                return JSON.parse($.fn.cookie("user"));
+            }
+
             return user;
         },
 
         isLoggedIn : function() {
+            // check if loggedIn cookie is set
+            if ($.fn.cookie("loggedIn") != null) {
+                return true;
+            }
+
             return loggedIn;
         },
 
@@ -20,6 +30,11 @@ App.UserService = function() {
                 success: function(data) {
                     loggedIn = true;
                     user = data;
+
+                    // set loggedIn and user cookie
+                    $.fn.cookie('loggedIn', 'true');
+                    $.fn.cookie('user', JSON.stringify(user));
+
                     callback(data);
                 },
                 error: function(error) {
@@ -32,6 +47,15 @@ App.UserService = function() {
                     }
                 }
             });
+        },
+
+        logout : function() {
+            if ($.fn.cookie("loggedIn") != null) {
+                $.fn.cookie("loggedIn", null);
+            }
+            if ($.fn.cookie("user") != null) {
+                $.fn.cookie("user", null);
+            }
         },
 
         register : function(user, callback, errorCallback) {
