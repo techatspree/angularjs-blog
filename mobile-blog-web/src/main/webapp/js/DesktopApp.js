@@ -1,47 +1,35 @@
 App = {
 
-    fetchTemplates: function(templates, callback) {
-        var loadTemplate = function (index) {
-            var template = templates[index];
-            $.ajax({
-                url: "../js/template/" + template + ".tmpl",
-                dataType: "html",
-                success: function(data) {
-                    $("head").append(data);
-                    index++;
-                    if (index < templates.length) {
-                        loadTemplate(index);
-                    } else {
-                        callback();
-                    }
-                }
-            });
-        }
-
-        loadTemplate(0);
-    },
+    templates : [
+        'BlogListEntry',
+        'BlogEntry',
+        'Comment',
+        'DesktopLoginForm',
+        'DesktopRegisterForm',
+        'DesktopAddPostForm',
+        'DesktopLoginLogoutBtn',
+        'DesktopFormValidationError',
+        'DesktopAddPostBtn',
+        'DesktopCommentForm',
+        'DesktopBlogEntry'
+    ],
 
     load: function() {
-        var templates = [
-            'BlogListEntry',
-            'BlogEntry',
-            'Comment',
-            'DesktopLoginForm',
-            'DesktopRegisterForm',
-            'DesktopAddPostForm',
-            'DesktopLoginLogoutBtn',
-            'DesktopFormValidationError',
-            'DesktopAddPostBtn',
-            'DesktopCommentForm',
-            'DesktopBlogEntry'
-        ];
+        // Component registrations
+        hub
+            .registerComponent(templateManager, {
+                name: 'templateManager'
+            });
+        // register more components here as required.
 
-        App.fetchTemplates(
-            templates, function() { App.start(); }
-        );
+        // before starting the hub, let the template manager
+        // do its async tasks.
+        hub.getComponent('templateManager').fetchTemplates(
+                this.templates, function() { App.start(); });
     },
 
 	start: function() {
+        hub.start();
 
 	    var searchString = window.location.search.substring(1),
                     params = searchString.split("&"),
