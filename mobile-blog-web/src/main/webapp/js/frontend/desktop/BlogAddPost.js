@@ -16,7 +16,7 @@ App.BlogAddPost = function() {
             blogPost.title   = postData[0].value;
             blogPost.content = postData[1].value;
 
-            App.BlogEntryService.addBlogEntry(blogPost, function() {
+            App.BlogEntryService.addBlogPost(blogPost, function() {
                 document.location.href = "/blog/desktop";
             });
         }

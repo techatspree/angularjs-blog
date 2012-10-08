@@ -30,7 +30,7 @@ App.AddPostScreen = function() {
         blogPost.title = inputTitle.getData();
         blogPost.content = inputContent.getData();
 
-        App.BlogEntryService.addBlogEntry(blogPost, function() {
+        App.BlogEntryService.addBlogPost(blogPost, function() {
             console.log("success");
             App.stack.pop();
         });

@@ -6,7 +6,7 @@ App.BlogEntryFrontend = function() {
 
     return {
         updateWithBlogList : function(node) {
-            App.BlogEntryService.retrieveBlogEntries(
+            App.BlogEntryService.retrieveBlogPosts(
                 function(result) {
                     $(node).empty();
                     $.each(result, function(index, blogPost) {
@@ -33,7 +33,7 @@ App.BlogEntryFrontend = function() {
         },
 
         updateWithBlogPost : function(node, id) {
-            App.BlogEntryService.retrieveBlogEntry(id,
+            App.BlogEntryService.retrieveBlogPost(id,
                 function(blogPost) {
                     $(node).empty();
                     blogPost.content.replace(/\n/g, '<br />');

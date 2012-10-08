@@ -3,16 +3,16 @@ App.BlogEntryService = function() {
     $.Event(changeEventName);
 
     return {
-        addBlogEntry : function(blogEntry, callback, errorCallback) {
-            blogEntry.author = {};
-            blogEntry.author.id = App.UserService.getUser().id;
+        addBlogPost : function(blogPost, callback, errorCallback) {
+            blogPost.author = {};
+            blogPost.author.id = App.UserService.getUser().id;
 
             $.ajax({
                 url: "../rest/blog",
                 contentType: "application/json",
                 dataType: "json",
                 type: "POST",
-                data: JSON.stringify(blogEntry),
+                data: JSON.stringify(blogPost),
                 cache: false,
                 success: function(data) {
                     $(document).trigger(changeEventName);
@@ -53,7 +53,7 @@ App.BlogEntryService = function() {
             });
         },
 
-        retrieveBlogEntries : function(callback, errorCallback) {
+        retrieveBlogPosts : function(callback, errorCallback) {
             $.ajax({
                 url: "../rest/blog",
                 cache: false,
@@ -70,9 +70,9 @@ App.BlogEntryService = function() {
             });
         },
 
-        retrieveBlogEntry : function(id, callback, errorCallback) {
+        retrieveBlogPost : function(postId, callback, errorCallback) {
             $.ajax({
-                url: "../rest/blog/" + id,
+                url: "../rest/blog/" + postId,
                 cache: false,
                 success: function(data) {
                     callback(data);
@@ -87,9 +87,9 @@ App.BlogEntryService = function() {
             });
         },
 
-        retrieveComments : function(id, callback, errorCallback) {
+        retrieveComments : function(postId, callback, errorCallback) {
             $.ajax({
-                url: "../rest/blog/" + id + "/comment",
+                url: "../rest/blog/" + postId + "/comment",
                 cache: false,
                 success: function(data) {
                     callback(data);
