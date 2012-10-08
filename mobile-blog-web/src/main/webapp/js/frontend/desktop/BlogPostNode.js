@@ -4,13 +4,13 @@ App.BlogPostNode = function() {
         /*
          * Manually refresh the screen.
          */
-        refresh : function(blogPostId) {
+        refresh : function(postId) {
 
             if ($('#blogEntryContainer').length > 0) {
-                App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), blogPostId);
+                hub.getComponent("blogPostFrontend").updateWithBlogPost(postId);
             }
             if ($('#commentList').length > 0) {
-                App.BlogEntryFrontend.updateWithComments($('#commentList'), blogPostId);
+                hub.getComponent("blogPostFrontend").updateWithComments(postId);
             }
 
             if (App.UserService.isLoggedIn()) {
@@ -22,7 +22,7 @@ App.BlogPostNode = function() {
 
                 $("#commentList").after(_.template($("#desktopcommentform-tmpl").html(), {}));
                 $("#submitComment").on("click", function(e) {
-                    App.BlogAddComment.onSubmitClicked(blogPostId);
+                    App.BlogAddComment.onSubmitClicked(postId);
                     return false;
                 });
             }

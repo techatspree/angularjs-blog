@@ -23,6 +23,15 @@ App = {
             .registerComponent(blogPostBackend, {
                 name: 'blogPostBackend'
             })
+            .registerComponent(blogPostFrontend, {
+                name: 'blogPostFrontend',
+                contentContainer: '#content',
+                blogPostContainer: '#blogEntryContainer',
+                commentsContainer: '#commentList'
+            });
+
+
+
         // register more components here as required.
 
         // before starting the hub, let the template manager
@@ -69,7 +78,7 @@ App = {
                 });
             }
 
-            App.BlogEntryFrontend.updateWithBlogList($('#content'));
+            hub.getComponent("blogPostFrontend").updateWithBlogList($('#content'));
 
 
             // add post button

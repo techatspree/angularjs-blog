@@ -20,6 +20,12 @@ App = {
             .registerComponent(blogPostBackend, {
                 name: 'blogPostBackend'
             })
+            .registerComponent(blogPostFrontend, {
+                name: 'blogPostFrontend',
+                contentContainer: '#blogEntryList',
+                blogPostContainer: '#blogEntryContainer',
+                commentsContainer: '#commentList'
+            })
             .start();
 
 		// Load jo framework for our mobile UI.

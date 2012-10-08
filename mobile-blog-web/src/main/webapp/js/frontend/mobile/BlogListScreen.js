@@ -50,7 +50,7 @@ App.BlogListScreen = function() {
             if ($('#blogEntryList').length == 0) {
                 return;
             }
-            App.BlogEntryFrontend.updateWithBlogList($('#blogEntryList'));
+            hub.getComponent("blogPostFrontend").updateWithBlogList();
         },
 
         /*

@@ -1,17 +1,16 @@
 App.BlogPostScreen = function() {
     var view;
-    var blogPostId = 0;
-    var btnSubmit;
+    var postId = 0;
 
     var refreshPost = function() {
         if ($('#blogEntryContainer').length > 0) {
-            App.BlogEntryFrontend.updateWithBlogPost($('#blogEntryContainer'), blogPostId);
+            hub.getComponent("blogPostFrontend").updateWithBlogPost(postId);
         }
     };
 
     var refreshComments = function() {
         if ($('#commentList').length > 0) {
-            App.BlogEntryFrontend.updateWithComments($('#commentList'), blogPostId);
+            hub.getComponent("blogPostFrontend").updateWithComments(postId);
         }
     };
 
@@ -41,7 +40,7 @@ App.BlogPostScreen = function() {
         }
         else {
             App.stack.push(App.AddCommentScreen.get());
-            App.AddCommentScreen.refresh(blogPostId);
+            App.AddCommentScreen.refresh(postId);
         }
     }
 
@@ -51,7 +50,7 @@ App.BlogPostScreen = function() {
          */
         refresh : function(id) {
             if (id) {
-                blogPostId = id;
+                postId = id;
             }
 
             refreshPost();

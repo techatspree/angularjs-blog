@@ -55,7 +55,6 @@ blogPostBackendContract = {
 blogPostBackend = {
 
     hub: null,
-    changeEventName: "BlogEntryService:change",
 
     /**
      * Method returning the component <b>unique</b>
@@ -87,8 +86,7 @@ blogPostBackend = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {
-    },
+    start: function() {},
 
     /**
      * The Stop method is called when the hub stops or
@@ -113,8 +111,6 @@ blogPostBackend = {
             data: JSON.stringify(blogPost),
             cache: false,
             success: function(data) {
-                // $(document).trigger(this.changeEventName);
-                $(document).trigger($.Event(this.changeEventName));
                 callback(data);
             },
             error: function(error) {
