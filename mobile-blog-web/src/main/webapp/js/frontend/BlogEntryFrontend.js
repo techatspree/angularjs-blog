@@ -6,7 +6,7 @@ App.BlogEntryFrontend = function() {
 
     return {
         updateWithBlogList : function(node) {
-            App.BlogEntryService.retrieveBlogPosts(
+            hub.getComponent('blogPostBackend').retrieveBlogPosts(
                 function(result) {
                     $(node).empty();
                     $.each(result, function(index, blogPost) {
@@ -33,7 +33,7 @@ App.BlogEntryFrontend = function() {
         },
 
         updateWithBlogPost : function(node, id) {
-            App.BlogEntryService.retrieveBlogPost(id,
+            hub.getComponent('blogPostBackend').retrieveBlogPost(id,
                 function(blogPost) {
                     $(node).empty();
                     blogPost.content.replace(/\n/g, '<br />');
@@ -46,7 +46,7 @@ App.BlogEntryFrontend = function() {
         },
 
         updateWithComments : function(node, id) {
-            App.BlogEntryService.retrieveComments(id,
+            hub.getComponent('blogPostBackend').retrieveComments(id,
                 function(result){
                     $(node).empty();
                     $.each(result, function(index, comment) {

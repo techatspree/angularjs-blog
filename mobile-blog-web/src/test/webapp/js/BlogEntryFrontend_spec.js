@@ -2,6 +2,14 @@ describe('the BlogEntryFrontend',function(){
     beforeEach(function() {
         loadFixtures("BlogListEntry.tmpl");
 
+        hub
+            .registerComponent(templateManager, {
+                name: 'templateManager'
+            })
+            .registerComponent(blogPostBackend, {
+                name: 'blogPostBackend'
+            }).start();
+
         // Mock AJAX template fetching that would have been
         // done in production code
         spyOn(App, 'fetchTemplates').andReturn(true);

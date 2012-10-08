@@ -19,7 +19,10 @@ App = {
         hub
             .registerComponent(templateManager, {
                 name: 'templateManager'
-            });
+            })
+            .registerComponent(blogPostBackend, {
+                name: 'blogPostBackend'
+            })
         // register more components here as required.
 
         // before starting the hub, let the template manager

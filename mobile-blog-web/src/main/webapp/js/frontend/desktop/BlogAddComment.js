@@ -6,7 +6,7 @@ App.BlogAddComment = function() {
 
     return {
 
-        onSubmitClicked : function(blogPostId) {
+        onSubmitClicked : function(postId) {
             console.log("comment submit clicked");
 
             var commentFormData = $("#addCommentForm").serializeArray();
@@ -14,8 +14,8 @@ App.BlogAddComment = function() {
             var comment = {};
             comment.content = commentFormData[0].value;
 
-            App.BlogEntryService.addComment(blogPostId, comment, function() {
-                App.BlogPostNode.refresh(blogPostId);
+            hub.getComponent("blogPostBackend").addComment(postId, comment, function() {
+                App.BlogPostNode.refresh(postId);
             });
 
         }
