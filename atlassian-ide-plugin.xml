@@ -8,6 +8,5 @@
         <shared>false</shared>
       </jira>
     </servers>
-    <default-jira-server>a623c905-4999-4e5a-8992-e70db8a8a40f</default-jira-server>
   </project-configuration>
 </atlassian-ide-plugin>
