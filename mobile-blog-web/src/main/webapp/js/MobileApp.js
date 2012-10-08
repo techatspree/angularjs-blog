@@ -12,6 +12,16 @@ App = {
 	load: function() {
 	    App.fetchTemplates();
 
+        // Component registrations
+        hub
+            .registerComponent(templateManager, {
+                name: 'templateManager'
+            })
+            .registerComponent(blogPostBackend, {
+                name: 'blogPostBackend'
+            })
+            .start();
+
 		// Load jo framework for our mobile UI.
 		// In jo, the UI is defined entirely via JavaScript.
 		jo.load();

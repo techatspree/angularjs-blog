@@ -55,7 +55,7 @@ blogPostBackendContract = {
 blogPostBackend = {
 
     hub: null,
-    changeEventName: null,
+    changeEventName: "BlogEntryService:change",
 
     /**
      * Method returning the component <b>unique</b>
@@ -75,7 +75,6 @@ blogPostBackend = {
     configure: function(theHub, configuration) {
         this.hub = theHub;
 
-//        this.changeEventName = "BlogEntryService:change";
         // We provide the UserContractService:
         this.hub.provideService({
             component: this,
@@ -89,7 +88,6 @@ blogPostBackend = {
      * after configure if the hub is already started.
      */
     start: function() {
-//        $.Event(this.changeEventName);
     },
 
     /**
@@ -98,6 +96,7 @@ blogPostBackend = {
      * not stopped. No events can be send in this method.
      */
     stop: function() {},
+
 
     /**
      * Contract methods.
@@ -114,7 +113,8 @@ blogPostBackend = {
             data: JSON.stringify(blogPost),
             cache: false,
             success: function(data) {
-//                $(document).trigger(this.changeEventName);
+                // $(document).trigger(this.changeEventName);
+                $(document).trigger($.Event(this.changeEventName));
                 callback(data);
             },
             error: function(error) {

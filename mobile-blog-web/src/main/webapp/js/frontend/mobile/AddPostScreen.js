@@ -30,7 +30,7 @@ App.AddPostScreen = function() {
         blogPost.title = inputTitle.getData();
         blogPost.content = inputContent.getData();
 
-        App.BlogEntryService.addBlogPost(blogPost, function() {
+        hub.getComponent("blogPostBackend").addBlogPost(blogPost, function() {
             console.log("success");
             App.stack.pop();
         });

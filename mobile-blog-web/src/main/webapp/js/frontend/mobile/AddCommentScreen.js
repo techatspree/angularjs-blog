@@ -29,7 +29,7 @@ App.AddCommentScreen = function() {
         var comment = {};
         comment.content = inputComment.getData();
 
-        App.BlogEntryService.addComment(blogPostId, comment, function() {
+        hub.getComponent("blogPostBackend").addComment(blogPostId, comment, function() {
             inputComment.setData("");
             App.stack.pop();
         });
