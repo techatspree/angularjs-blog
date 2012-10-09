@@ -38,12 +38,10 @@ App = {
                 blogPostContainer: '#blogEntryContainer',
                 commentsContainer: '#commentList'
             })
+            .registerComponent(blogListView, {
+                name: 'blogListView'
+            })
             .start();
-    },
-
-    // needs refactoring!!
-	openBlogPost: function(id) {
-        document.location.href = "?showPost=" + id;
     }
 
 };

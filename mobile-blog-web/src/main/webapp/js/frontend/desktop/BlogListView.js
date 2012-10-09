@@ -1,17 +1,24 @@
 /**
- * The Bootstrap-component starts the desktop app.
  *
  * @author Till Hermsen
- * @date 09.10.12
  */
-bootstrapContract = {}
+blogListViewContract = {
 
+    /**
+     *
+     */
+    init: function() {},
 
-bootstrap = {
+    /**
+     *
+     */
+    refresh: function() {}
+
+}
+
+blogListView = {
 
     hub: null,
-    router: null,
-//    svc: [],
 
     /**
      * Method returning the component <b>unique</b>
@@ -19,7 +26,7 @@ bootstrap = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'bootstrap';
+        return 'blogListView';
     },
 
     /**
@@ -31,17 +38,10 @@ bootstrap = {
     configure: function(theHub, configuration) {
         this.hub = theHub;
 
-        // Required service
-        this.hub.requireService({
-            component: this,
-            contract: routerContract,
-            field: "router"
-        });
-
         // We provide the UserContractService:
         this.hub.provideService({
             component: this,
-            contract: bootstrapContract
+            contract: templateManagerContract
         });
     },
 
@@ -51,8 +51,7 @@ bootstrap = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/templates/loaded", this.startApp);
-        console.log(this.svc);
+        console.log("blogListView compo")
     },
 
     /**
@@ -62,18 +61,36 @@ bootstrap = {
      */
     stop: function() {},
 
-
     /**
      * Contract methods.
      */
+
+    init: function() {
+        // add post button
+        if (App.UserService.isLoggedIn()) {
+            $($("#desktopaddpostbtn-tmpl").html()).insertBefore('#content');
+            $("#addPostBtn").on("click", function(e) {
+                document.location.href = "?page=addPost";
+            });
+        }
+    },
+
+    refresh: function() {
+        hub.getComponent("blogPostFrontend").updateWithBlogList();
+
+        for(var i=0; i < $('article').length; i++) {
+            $("#postButton" + i).on('click', function() {
+                App.openBlogPost(i);
+                return false;
+            });
+        }
+    },
 
 
     /**
      * Private methods.
      */
-
-    startApp: function(event) {
-        this.router.initRoute();
+    openBlogPost: function(id) {
+        document.location.href = "?showPost=" + id;
     }
-
 }

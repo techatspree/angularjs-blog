@@ -18,6 +18,11 @@ router = {
 
     hub: null,
 
+
+    // views
+//    svc: [],
+    blogListView: null,
+
     /**
      * Method returning the component <b>unique</b>
      * name. Using a fully qualified name is encouraged.
@@ -38,6 +43,11 @@ router = {
 
         // Required services
         // all desktop and mobile components??
+        this.hub.requireService({
+            component: this,
+            contract: blogPostBackend,
+            field: "blogListView"
+        });
 
         // We provide the UserContractService:
         this.hub.provideService({
@@ -51,7 +61,9 @@ router = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        console.log("router started");
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -89,22 +101,25 @@ router = {
         }
 
         else {
-            for(var i=0; i < $('article').length; i++) {
-                $("#postButton" + i).on('click', function() {
-                    App.openBlogPost(i);
-                    return false;
-                });
-            }
+//            this.blogListView.init();
+//            this.blogListView.refresh();
 
-            hub.getComponent("blogPostFrontend").updateWithBlogList($('#content'));
-
-            // add post button
-            if (App.UserService.isLoggedIn()) {
-                $($("#desktopaddpostbtn-tmpl").html()).insertBefore('#content');
-                $("#addPostBtn").on("click", function(e) {
-                    document.location.href = "?page=addPost";
-                });
-            }
+//            for(var i=0; i < $('article').length; i++) {
+//                $("#postButton" + i).on('click', function() {
+//                    App.openBlogPost(i);
+//                    return false;
+//                });
+//            }
+//
+//            hub.getComponent("blogPostFrontend").updateWithBlogList($('#content'));
+//
+//            // add post button
+//            if (App.UserService.isLoggedIn()) {
+//                $($("#desktopaddpostbtn-tmpl").html()).insertBefore('#content');
+//                $("#addPostBtn").on("click", function(e) {
+//                    document.location.href = "?page=addPost";
+//                });
+//            }
         }
 
         // add login / logout button
