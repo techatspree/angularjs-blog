@@ -15,6 +15,8 @@ App.BlogPostScreen = function() {
     };
 
     var init = function() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         view = new joCard([
             new joGroup(
                 new joFlexcol([
@@ -26,7 +28,7 @@ App.BlogPostScreen = function() {
                 ])
             )]);
 
-        App.stack.popEvent.subscribe(function(){
+        mainContainer.stack.popEvent.subscribe(function(){
             refreshComments();
         });
     }
@@ -35,11 +37,13 @@ App.BlogPostScreen = function() {
      * interaction listeners
      */
     var onAddCommentClicked = function() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         if (!App.UserService.isLoggedIn()) {
-            App.stack.push(App.LoginScreen.get());
+            mainContainer.stack.push(App.LoginScreen.get());
         }
         else {
-            App.stack.push(App.AddCommentScreen.get());
+            mainContainer.stack.push(App.AddCommentScreen.get());
             App.AddCommentScreen.refresh(postId);
         }
     }

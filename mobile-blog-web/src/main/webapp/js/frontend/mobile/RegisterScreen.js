@@ -52,6 +52,8 @@ App.RegisterScreen = function() {
      * Interaction listeners
      */
     function onRegisterClicked() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         var user = {};
         user.username = inputUser.getData();
         user.password = inputPass.getData();
@@ -64,13 +66,13 @@ App.RegisterScreen = function() {
         clearValidationErrors();
         App.UserService.register(user,
             function(data) {
-                App.stack.pop();
+                mainContainer.stack.pop();
             },
             function(error) {
                 showError(JSON.parse(error.response));
             });
 
-        App.scn.hidePopup();
+        mainContainer.scn.hidePopup();
     }
 
     return {

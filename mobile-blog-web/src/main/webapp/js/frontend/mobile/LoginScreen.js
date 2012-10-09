@@ -25,11 +25,15 @@ App.LoginScreen = function() {
      * Interaction listeners
      */
     var onRegisterClicked = function() {
-        App.stack.push(App.RegisterScreen.get());
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
+        mainContainer.stack.push(App.RegisterScreen.get());
         App.RegisterScreen.refresh();
     }
 
     var onLoginClicked = function() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         var user = {};
         user.username = inputUser.getData();
         user.password = inputPass.getData();
@@ -37,13 +41,13 @@ App.LoginScreen = function() {
         // perform login
         App.UserService.login(user,
             function(user) {
-                App.stack.pop();
+                mainContainer.stack.pop();
             },
             function(error) {
-                App.scn.alert("Login", "Login failed");
+                mainContainer.scn.alert("Login", "Login failed");
             });
 
-        App.scn.hidePopup();
+        mainContainer.scn.hidePopup();
     }
 
     return {

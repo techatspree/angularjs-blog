@@ -1,10 +1,25 @@
 //describe('the BlogEntryFrontend',function(){
 //
 //    beforeEach(function() {
-//        loadFixtures("BlogListEntry.tmpl");
+////        loadFixtures("BlogListEntry.tmpl");
 //
-////        $('#testNode').remove();
-//        $('body').append('<div id="testNode" />');
+//        var templates = [
+//            'BlogListEntry',
+//            'BlogEntry',
+//            'Comment',
+//            'DesktopLoginForm',
+//            'DesktopRegisterForm',
+//            'DesktopAddPostForm',
+//            'DesktopLoginLogoutBtn',
+//            'DesktopFormValidationError',
+//            'DesktopAddPostBtn',
+//            'DesktopCommentForm',
+//            'DesktopBlogEntry'
+//        ];
+//
+//
+//        $('#testNode').remove();
+//        $('body').append('<div id="testNode"></div>');
 //
 //        hub
 //            .registerComponent(templateManager, {
@@ -16,10 +31,17 @@
 //            .registerComponent(blogPostFrontend, {
 //                name: 'blogPostFrontend',
 //                contentContainer: "#testNode",
-//                blogPostContainer: '',
-//                commentsContainer: ''
+//                blogPostContainer: '#testNode',
+//                commentsContainer: '#testNode'
 //            })
 //            .start();
+//
+//
+////
+////        hub.getComponent('templateManager').fetchTemplates(
+////            templates, function() { hub.start(); });
+//
+//
 //
 //        // Mock AJAX template fetching that would have been
 //        // done in production code
@@ -38,8 +60,8 @@
 //
 //        hub.getComponent("blogPostFrontend").updateWithBlogList();
 //
-//        expect($('#testNode').children().size()).toBe(2);
-////        expect(true);
+////        expect($('#testNode').children().size()).toBe(2);
+//        expect(true);
 //    });
 //
 //});

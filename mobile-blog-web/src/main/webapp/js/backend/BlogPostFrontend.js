@@ -108,7 +108,6 @@ blogPostFrontend = {
 
                     self.appendTemplateDataToNode(self.contentContainer, blogPost, template);
                     var postButtons = $("#postButton" + blogPost.id);
-                    console.log("#postButton" + blogPost.id);
                     if (postButtons.length > 0) {
                         postButtons.onpress(function() {
                             App.openBlogPost(blogPost.id);

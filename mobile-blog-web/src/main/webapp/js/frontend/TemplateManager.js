@@ -9,7 +9,7 @@ templateManagerContract =  {
      * @param templateNames an array of the names of the templates to fetch
      * @param callback function to call on success
      */
-    fetchTemplates: function(templateNames, callback) {}
+//    fetchTemplates: function() {}
 }
 
 
@@ -53,7 +53,9 @@ templateManager = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.fetchTemplates();
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -66,19 +68,28 @@ templateManager = {
      * Contract methods.
      */
 
-    fetchTemplates: function(templateNames, callback) {
+
+
+    /**
+     * Private methods.
+     */
+
+    fetchTemplates: function() {
+        var self = this;
+
         var loadTemplate = function(index) {
-            var template = templateNames[index];
+            var template = self.templateNames[index];
             $.ajax({
                 url: "../js/template/" + template + ".tmpl",
                 dataType: "html",
                 success: function(data) {
                     $("head").append(data);
                     index++;
-                    if (index < templateNames.length) {
+                    if (index < self.templateNames.length) {
                         loadTemplate(index);
                     } else {
-                        callback();
+                        console.log("templates loaded");
+                        self.sendTemplatesLoadedEvent();
                     }
                 },
                 error: function(error) {
@@ -88,5 +99,12 @@ templateManager = {
         }
 
         loadTemplate(0);
+    },
+
+    sendTemplatesLoadedEvent: function() {
+        this.hub.publish(this, "/templates/loaded", {
+            templatesLoaded: true
+        });
     }
+
 }

@@ -10,6 +10,9 @@ App.BlogListScreen = function() {
      * UI
      */
     var init = function() {
+
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         view = new joCard([
             new joTitle("Blog Post Demo"),
             new joGroup(
@@ -21,7 +24,9 @@ App.BlogListScreen = function() {
             )
         ]).setTitle("Blog Demo");
 
-        App.stack.popEvent.subscribe(function(){
+
+
+        mainContainer.stack.popEvent.subscribe(function(){
             App.BlogListScreen.refresh();
         });
     };
@@ -30,11 +35,13 @@ App.BlogListScreen = function() {
      * interaction listeners
      */
     var onAddPostClicked = function() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         if (!App.UserService.isLoggedIn()) {
-            App.stack.push(App.LoginScreen.get());
+            mainContainer.stack.push(App.LoginScreen.get());
         }
         else {
-            App.stack.push(App.AddPostScreen.get());
+            mainContainer.stack.push(App.AddPostScreen.get());
         }
         return false;
     };
@@ -50,6 +57,7 @@ App.BlogListScreen = function() {
             if ($('#blogEntryList').length == 0) {
                 return;
             }
+            console.log("load blog posts...")
             hub.getComponent("blogPostFrontend").updateWithBlogList();
         },
 

@@ -26,13 +26,18 @@ App.AddPostScreen = function() {
      * interaction listeners
      */
     var onSubmitClicked = function() {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
         var blogPost = {};
         blogPost.title = inputTitle.getData();
         blogPost.content = inputContent.getData();
 
+        inputTitle.setData("");
+        inputContent.setData("");
+
         hub.getComponent("blogPostBackend").addBlogPost(blogPost, function() {
             console.log("success");
-            App.stack.pop();
+            mainContainer.stack.pop();
         });
     }
 
