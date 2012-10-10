@@ -10,8 +10,9 @@ bootstrapContract = {}
 bootstrap = {
 
     hub: null,
+
+    // Services
     router: null,
-//    svc: [],
 
     /**
      * Method returning the component <b>unique</b>
@@ -52,7 +53,6 @@ bootstrap = {
      */
     start: function() {
         this.hub.subscribe(this, "/templates/loaded", this.startApp);
-        console.log(this.svc);
     },
 
     /**

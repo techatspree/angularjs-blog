@@ -40,7 +40,7 @@ App.UserService = function() {
                 error: function(error) {
                     loggedIn = false;
                     user = null;
-                    var errorMsg = "error adding blog post -" + error.status;
+                    var errorMsg = "error login -" + error.status;
                     console.log(errorMsg);
                     if (errorCallback) {
                         errorCallback(errorMsg);

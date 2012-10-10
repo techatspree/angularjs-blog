@@ -47,7 +47,7 @@ a {
     margin: 0 auto;
 }
 
-#main {
+section {
     margin-bottom: 20px;
     float: left;
     width: 450px;
@@ -112,15 +112,16 @@ form p {
 
 
 
-#blogEntryContainer {
+#blogPostContainer {
     margin-bottom: 60px;
 }
 
 #addPostBtn {
+    margin-top: 20px;
     width: 100%;
     font-size: 14px;
     font-weight: bold;
-}
-#addPostContainer {
-    margin-top: 20px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
 }

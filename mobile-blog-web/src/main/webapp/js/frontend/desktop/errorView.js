@@ -1,28 +1,17 @@
 /**
- *
  * @author Till Hermsen
- * @date 09.10.12
+ * @date 10.10.12
  */
-blogListViewContract = {
+errorViewContract = {}
 
-    /**
-     *
-     */
-    init: function() {},
+errorView = {
 
-    /**
-     *
-     */
-    refresh: function() {}
-
-}
-
-blogListView = {
-
-    hub: null,
+    hub:null,
 
     // Services
-    blogPostFrontend: null,
+
+    // HTML templates
+    templates: null,
 
     // HTML selectors
     selectors: null,
@@ -33,7 +22,7 @@ blogListView = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'blogListView';
+        return 'errorView';
     },
 
     /**
@@ -46,19 +35,15 @@ blogListView = {
         this.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
-            contract: blogPostFrontendContract,
-            field: "blogPostFrontend"
-        });
 
-        // We provide the UserContractService:
+        // Provide service
         this.hub.provideService({
-            component: this,
-            contract: blogListViewContract
+            component:this,
+            contract: errorViewContract
         });
 
-        // Set HTML selectors
+        // Configuration
+        this.templates = configuration.templates;
         this.selectors = configuration.selectors;
     },
 
@@ -67,7 +52,9 @@ blogListView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/error", this.showErrorView);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -81,24 +68,26 @@ blogListView = {
      * Contract methods.
      */
 
-    init: function() {
-        // add post button
-        if (App.UserService.isLoggedIn()) {
-            $(this.selectors.addPostBtn).show();
-            $(this.selectors.addPostBtn).on("click", function(e) {
-                document.location.href = "?page=addPost";
-                return false;
-            });
-        }
-    },
-
-    refresh: function() {
-        this.blogPostFrontend.updateWithBlogList();
-    }
-
 
     /**
      * Private methods.
      */
+    showErrorView: function(event) {
+        switch(event.error) {
+            case "403":
+                var data = {
+                    message: "access denied"
+                };
+
+                $(this.selectors.content).html(
+                    _.template($(this.templates.error).html(), {"data":data})
+                );
+                break;
+
+            default:
+                console.log("showErrorView - error...");
+                break;
+        }
+    }
 
 }

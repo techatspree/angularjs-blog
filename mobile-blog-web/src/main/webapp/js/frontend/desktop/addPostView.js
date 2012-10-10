@@ -1,28 +1,24 @@
 /**
- *
  * @author Till Hermsen
- * @date 09.10.12
+ * @date 10.10.12
  */
-blogListViewContract = {
+addPostViewContract = {
 
-    /**
-     *
-     */
     init: function() {},
 
-    /**
-     *
-     */
     refresh: function() {}
 
 }
 
-blogListView = {
+addPostView = {
 
     hub: null,
 
     // Services
-    blogPostFrontend: null,
+    blogPostBackend: null,
+
+    // HTML Templates
+    templates: null,
 
     // HTML selectors
     selectors: null,
@@ -33,7 +29,7 @@ blogListView = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'blogListView';
+        return 'addPostView';
     },
 
     /**
@@ -48,17 +44,18 @@ blogListView = {
         // Required services
         this.hub.requireService({
             component: this,
-            contract: blogPostFrontendContract,
-            field: "blogPostFrontend"
+            contract: blogPostBackendContract,
+            field: "blogPostBackend"
         });
 
-        // We provide the UserContractService:
+        // Provide service
         this.hub.provideService({
-            component: this,
-            contract: blogListViewContract
+            component:this,
+            contract: addPostViewContract
         });
 
-        // Set HTML selectors
+        // Configuration
+        this.templates = configuration.templates;
         this.selectors = configuration.selectors;
     },
 
@@ -82,19 +79,26 @@ blogListView = {
      */
 
     init: function() {
-        // add post button
-        if (App.UserService.isLoggedIn()) {
-            $(this.selectors.addPostBtn).show();
-            $(this.selectors.addPostBtn).on("click", function(e) {
-                document.location.href = "?page=addPost";
-                return false;
+        var self = this;
+
+        $(self.selectors.content).html($(self.templates.addPostForm).html());
+
+        $(self.selectors.addPostForm).submit(function(e) {
+            var postData = $(self.selectors.addPostForm).serializeArray();
+            var blogPost = {};
+            blogPost.title   = postData[0].value;
+            blogPost.content = postData[1].value;
+
+            self.blogPostBackend.addBlogPost(blogPost, function() {
+                document.location.href = "/blog";
             });
-        }
+
+            return false;
+        });
+
     },
 
-    refresh: function() {
-        this.blogPostFrontend.updateWithBlogList();
-    }
+    refresh: function() {}
 
 
     /**

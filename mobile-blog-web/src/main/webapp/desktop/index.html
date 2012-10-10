@@ -29,13 +29,15 @@
 
     <script type="text/javascript" src="../js/frontend/TemplateManager.js"></script>
 
-    <script type="text/javascript" src="../js/frontend/desktop/BlogListView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/ErrorView.js"></script>
 
-    <script type="text/javascript" src="../js/frontend/desktop/Login.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/MainView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/LoginSubView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/BlogListView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/BlogPostView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/AddPostView.js"></script>
+
     <script type="text/javascript" src="../js/frontend/desktop/Register.js"></script>
-    <script type="text/javascript" src="../js/frontend/desktop/BlogPostNode.js"></script>
-    <script type="text/javascript" src="../js/frontend/desktop/BlogAddPost.js"></script>
-    <script type="text/javascript" src="../js/frontend/desktop/BlogAddComment.js"></script>
 </head>
 
 <body>
@@ -50,13 +52,21 @@
     <img src="../images/akquinet-logo.jpg" />
 </div>
 
-<div id="main">
-    <section id="content"></section>
-</div>
+<section id="main">
+    <div>
+        <a href="#"
+           id="addPostBtn"
+           class="formBtn"
+           style="display:none;">Add post</a>
+    </div>
+    <div id="content"></div>
+</section>
 
 <aside id="info-aside">
     <!-- Login / logout button -->
-    <div id="user"></div>
+    <div id="user">
+        <a href="#" id="loginLogoutBtn"></a>
+    </div>
 
     <!-- Header -->
     <div id="header">

@@ -82,7 +82,7 @@ App.Register = function() {
     return {
 
         loadRegisterForm : function() {
-                return $("#desktopregisterform-tmpl").html();
+                return $("#desktop-registerform-tmpl").html();
         },
 
         onRegisterClicked : function() {

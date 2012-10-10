@@ -31,17 +31,10 @@ App = {
                 name: 'blogPostFrontend',
                 contentContainer: '#blogEntryList',
                 blogPostContainer: '#blogEntryContainer',
-                commentsContainer: '#commentList'
+                commentsContainer: '#commentList',
+                device: 'mobile'
             })
             .start();
-	},
-
-    // needs refactoring!!
-	openBlogPost: function(id) {
-        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
-
-	    mainContainer.stack.push(App.BlogPostScreen.get());
-	    App.BlogPostScreen.refresh(id);
 	}
 
 };

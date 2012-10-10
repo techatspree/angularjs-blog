@@ -18,10 +18,12 @@ router = {
 
     hub: null,
 
-
-    // views
-//    svc: [],
+    // Services
+    mainView:     null,
     blogListView: null,
+    blogPostView: null,
+    addPostView:  null,
+
 
     /**
      * Method returning the component <b>unique</b>
@@ -42,11 +44,25 @@ router = {
         this.hub = theHub;
 
         // Required services
-        // all desktop and mobile components??
         this.hub.requireService({
             component: this,
-            contract: blogPostBackend,
+            contract: mainViewContract,
+            field: "mainView"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: blogListViewContract,
             field: "blogListView"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: blogPostViewContract,
+            field: "blogPostView"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: addPostViewContract,
+            field: "addPostView"
         });
 
         // We provide the UserContractService:
@@ -61,9 +77,7 @@ router = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {
-        console.log("router started");
-    },
+    start: function() {},
 
     /**
      * The Stop method is called when the hub stops or
@@ -78,97 +92,44 @@ router = {
      */
     // needs refactoring!!
     initRoute: function() {
-        var keyValueHash = this.getKeyValueHash();
+        var self = this;
 
-        var postID = keyValueHash['showPost'];
-        var pageID = keyValueHash['page'];
+        var keyValueHash = self.getKeyValueHash();
 
-        if (postID != null) {
-            $("#content").append(App.BlogPostNode.get());
-            App.BlogPostNode.refresh(postID);
+        var postId = keyValueHash['showPost'];
+        var pageId = keyValueHash['page'];
+
+        // load main view
+        self.mainView.init();
+        self.mainView.refresh();
+
+        // singe blog post route
+        if (postId != null) {
+            self.blogPostView.init(postId);
+            self.blogPostView.refresh(postId);
         }
 
-        else if(pageID != null && pageID == "addPost") {
+        // page routes
+        else if(pageId != null) {
+            // pages which require logged-in user
             if (App.UserService.isLoggedIn()) {
-                $("#content").html(_.template($("#desktopaddpostform-tmpl").html(), {}));
-                $("#addPostForm").submit(function(e) {
-                    App.BlogAddPost.onSubmitClicked();
-                    return false;
-                });
+                // add post route
+                if (pageId == "addPost") {
+                    self.addPostView.init();
+                    self.addPostView.refresh();
+                }
             } else {
-                $("#content").html("please login");
+                self.hub.publish(this, "/error", {error: "403"});
             }
+
+            // pages which don't require logged-in user
         }
 
+        // main route, lists all blog posts
         else {
-//            this.blogListView.init();
-//            this.blogListView.refresh();
-
-//            for(var i=0; i < $('article').length; i++) {
-//                $("#postButton" + i).on('click', function() {
-//                    App.openBlogPost(i);
-//                    return false;
-//                });
-//            }
-//
-//            hub.getComponent("blogPostFrontend").updateWithBlogList($('#content'));
-//
-//            // add post button
-//            if (App.UserService.isLoggedIn()) {
-//                $($("#desktopaddpostbtn-tmpl").html()).insertBefore('#content');
-//                $("#addPostBtn").on("click", function(e) {
-//                    document.location.href = "?page=addPost";
-//                });
-//            }
+            self.blogListView.init();
+            self.blogListView.refresh();
         }
-
-        // add login / logout button
-        if (App.UserService.isLoggedIn()) {
-            var data = {
-                id    : 'logoutBtn',
-                title : 'Logout'
-            };
-            $("#user").html(_.template($("#desktoploginlogoutbtn-tmpl").html(), data));
-
-        } else {
-            var data = {
-                id    : 'loginBtn',
-                title : 'Login'
-            };
-            $("#user").html(_.template($("#desktoploginlogoutbtn-tmpl").html(), data));
-        }
-
-        // load login form
-        $("#loginBtn").on("click", function(e) {
-            $("#user").html(_.template(App.Login.loadLoginForm(), {}));
-
-            // login
-            $("#loginSubmit").on("click", function(e) {
-                App.Login.onLoginClicked();
-                return false;
-            });
-
-            // load register form
-            $("#registerBtn").on("click", function(e) {
-                $("#user").html(_.template(App.Register.loadRegisterForm(), {}));
-
-                $("#registerSubmit").on("click", function(e) {
-                    App.Register.onRegisterClicked();
-                    return false;
-                });
-                return false;
-            });
-
-            return false;
-        });
-
-        // logout
-        $("#logoutBtn").on("click", function(e) {
-            App.UserService.logout();
-            location.reload()
-
-            return false;
-        });
     },
 
 

@@ -1,6 +1,6 @@
 /**
- * Author: Till Hermsen
- * Date: 08.10.12
+ * @author Till Hermsen
+ * @date 08.10.12
  */
 blogPostFrontendContract = {
 
@@ -30,11 +30,16 @@ blogPostFrontend = {
 
     hub: null,
 
+    device: null,
+
+    // Services
     blogPostBackend: null,
 
-    contentContainer: null,
-    blogPostContainer: null,
-    commentsContainer: null,
+    // HTML templates
+    templates: null,
+
+    // HTML selectors
+    selectors: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -61,16 +66,16 @@ blogPostFrontend = {
             field: "blogPostBackend"
         });
 
-        // set nodeIds
-        this.contentContainer  = configuration.contentContainer;
-        this.blogPostContainer = configuration.blogPostContainer;
-        this.commentsContainer = configuration.commentsContainer;
-
         // We provide the UserContractService:
         this.hub.provideService({
             component: this,
             contract: blogPostFrontendContract
         });
+
+        // Configuration
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
+        this.device    = configuration.device;
     },
 
     /**
@@ -93,11 +98,10 @@ blogPostFrontend = {
      */
     updateWithBlogList : function() {
         var self = this;
-        var template = "#bloglistentry-tmpl";
 
-        this.blogPostBackend.retrieveBlogPosts(
+        self.blogPostBackend.retrieveBlogPosts(
             function(result) {
-                $(self.contentContainer).empty();
+                $(self.selectors.contentContainer).empty();
                 $.each(result, function(index, blogPost) {
                     if (blogPost.content.length > 300) {
                         blogPost.content = $.trim(blogPost.content).substring(0, 300)
@@ -106,11 +110,23 @@ blogPostFrontend = {
                     blogPost.content.replace(/\n/g, '<br />');
                     blogPost.created = new Date(blogPost.created).toUTCString();
 
-                    self.appendTemplateDataToNode(self.contentContainer, blogPost, template);
-                    var postButtons = $("#postButton" + blogPost.id);
+                    self.appendTemplateDataToNode(
+                        self.selectors.contentContainer,
+                        blogPost,
+                        self.templates.blogListPost
+                    );
+
+                    var postButtons = $("#readMoreBtn" + blogPost.id);
                     if (postButtons.length > 0) {
                         postButtons.onpress(function() {
-                            App.openBlogPost(blogPost.id);
+                            switch (self.device) {
+                                case "desktop":
+                                    self.openBlogPostDesktop(blogPost.id);
+                                    break;
+                                case "mobile":
+                                    self.openBlogPostMobile(blogPost.id);
+                                    break;
+                            }
                             return false;
                         });
                     }
@@ -122,15 +138,18 @@ blogPostFrontend = {
 
     updateWithBlogPost : function(postId) {
         var self = this;
-        var template = "#blogentry-tmpl";
 
-        this.blogPostBackend.retrieveBlogPost(postId,
+        self.blogPostBackend.retrieveBlogPost(postId,
             function(blogPost) {
-                $(self.blogPostContainer).empty();
+                $(self.selectors.blogPostContainer).empty();
                 blogPost.content.replace(/\n/g, '<br />');
                 blogPost.created = new Date(blogPost.created).toUTCString();
 
-                self.appendTemplateDataToNode(self.blogPostContainer, blogPost, template);
+                self.appendTemplateDataToNode(
+                    self.selectors.blogPostContainer,
+                    blogPost,
+                    self.templates.blogPost
+                );
             },
             function(error){}
         );
@@ -138,15 +157,18 @@ blogPostFrontend = {
 
     updateWithComments : function(postId) {
         var self = this;
-        var template = "#comment-tmpl";
 
-        this.blogPostBackend.retrieveComments(postId,
+        self.blogPostBackend.retrieveComments(postId,
             function(result){
-                $(self.commentsContainer).empty();
+                $(self.selectors.commentsContainer).empty();
                 $.each(result, function(index, comment) {
                     comment.content.replace(/\n/g, '<br />');
                     comment.created = new Date(comment.created).toUTCString();
-                    self.appendTemplateDataToNode(self.commentsContainer, comment, template);
+                    self.appendTemplateDataToNode(
+                        self.selectors.commentsContainer,
+                        comment,
+                        self.templates.comment
+                    );
                 });
             },
             function(error) {}
@@ -166,6 +188,17 @@ blogPostFrontend = {
     appendTemplateDataToNode : function(nodeId, data, templateId) {
         var templateFunc = _.template($(templateId).html());
         $(nodeId).append(templateFunc({"data": data}));
+    },
+
+    openBlogPostDesktop: function(id) {
+        document.location.href = "?showPost=" + id;
+    },
+
+    openBlogPostMobile:function(id) {
+        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+
+        mainContainer.stack.push(App.BlogPostScreen.get());
+        App.BlogPostScreen.refresh(id);
     }
 
 }
