@@ -1,5 +1,5 @@
 /**
- *  * The Bootstrap-component starts the mobile app.
+ * The Bootstrap-component starts the mobile app.
  *
  * @author Till Hermsen
  * @date 09.10.12
@@ -10,7 +10,10 @@ bootstrapContract = {}
 bootstrap = {
 
     hub: null,
-    mainScreen: null,
+
+    // Services
+    mainScreenService: null,
+    blogListScreenService: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -28,18 +31,25 @@ bootstrap = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required service
+        self.hub.requireService({
+            component: self,
+            contract: mainScreenContract,
+            field: "mainScreenService"
+        });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreen"
+            contract: blogListScreenContract,
+            field: "blogListScreenService"
         });
 
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: bootstrapContract
         });
 
@@ -51,7 +61,8 @@ bootstrap = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/templates/loaded", this.startApp);
+        var self = this;
+        self.hub.subscribe(self, "/templates/loaded", self.startApp);
     },
 
     /**
@@ -72,7 +83,8 @@ bootstrap = {
      */
 
     startApp: function(event) {
-        this.mainScreen.initMainScreen();
+        this.mainScreenService.init();
+        this.blogListScreenService.init();
     }
 
 }

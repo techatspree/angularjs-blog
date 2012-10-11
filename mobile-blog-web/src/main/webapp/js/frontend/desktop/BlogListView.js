@@ -108,7 +108,12 @@ blogListView = {
 
     refresh: function(event) {
         var self = this;
-        self.blogPostFrontendService.updateWithBlogList();
+
+        var readMoreBtnTarget = function(id) {
+            document.location.href = "?showPost=" + id;
+        }
+
+        self.blogPostFrontendService.updateWithBlogList(readMoreBtnTarget);
     }
 
 }

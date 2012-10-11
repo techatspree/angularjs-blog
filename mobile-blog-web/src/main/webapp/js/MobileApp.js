@@ -13,26 +13,51 @@ App = {
         hub .registerComponent(templateManager, {
                 name: 'templateManager',
                 templateNames: [
-                    'BlogListEntry',
-                    'BlogEntry',
+                    'BlogListPost',
+                    'BlogPost',
                     'Comment'
                 ]
             })
             .registerComponent(bootstrap, {
                 name: 'bootstrap'
             })
-            .registerComponent(mainScreen, {
-                name: 'mainScreen'
+            .registerComponent(userService, {
+                name: 'userService'
             })
             .registerComponent(blogPostBackend, {
                 name: 'blogPostBackend'
             })
             .registerComponent(blogPostFrontend, {
-                name: 'blogPostFrontend',
-                contentContainer: '#blogEntryList',
-                blogPostContainer: '#blogEntryContainer',
-                commentsContainer: '#commentList',
-                device: 'mobile'
+                name:   'blogPostFrontend',
+                device: 'mobile',
+                selectors: {
+                    contentContainer:  '#blogPostList',
+                    blogPostContainer: '#blogPostContainer',
+                    commentsContainer: '#commentList'
+                },
+                templates: {
+                    blogListPost: "#bloglistpost-tmpl",
+                    blogPost:     "#blogpost-tmpl",
+                    comment:      "#comment-tmpl"
+                }
+            })
+            .registerComponent(mainScreen, {
+                name: 'mainScreen'
+            })
+            .registerComponent(loginScreen, {
+                name: 'loginScreen'
+            })
+            .registerComponent(blogListScreen, {
+                name: 'blogListScreen'
+            })
+            .registerComponent(blogPostScreen, {
+                name: 'blogPostScreen'
+            })
+            .registerComponent(addPostScreen, {
+                name: 'addPostScreen'
+            })
+            .registerComponent(registerScreen, {
+                name: 'registerScreen'
             })
             .start();
 	}

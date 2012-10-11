@@ -2,21 +2,24 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-blogPostScreenContract = {
+loginScreenContract = {
 
     init: function() {}
 
 }
 
-blogPostScreen = {
+loginScreen = {
 
     hub: null,
 
+    // joApp elements
+    inputUser: null,
+    inputPass: null,
+
     // Services
     userService: null,
-    blogPostFrontendService: null,
     mainScreenService: null,
-    loginScreenService: null,
+    registerScreenService: null,
 
     // HTML Templates
 
@@ -29,7 +32,7 @@ blogPostScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'blogPostScreen';
+        return 'loginScreen';
     },
 
     /**
@@ -49,24 +52,19 @@ blogPostScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: blogPostFrontendContract,
-            field: "blogPostFrontendService"
-        });
-        this.hub.requireService({
-            component: this,
             contract: mainScreenContract,
             field: "mainScreenService"
         });
         this.hub.requireService({
             component: this,
-            contract: loginScreenContract,
-            field: "loginScreenService"
+            contract: registerScreenContract,
+            field: "registerScreenService"
         });
 
         // Provide service
         this.hub.provideService({
             component: this,
-            contract: blogPostScreenContract
+            contract:  loginScreenContract
         });
 
         // Configuration
@@ -91,48 +89,57 @@ blogPostScreen = {
      * Contract methods.
      */
 
-    init: function(postId) {
+    init: function() {
         var self = this;
 
-        self.hub.publish(self, "/blogPostScreen/refresh", self.refresh);
+        self.hub.subscribe(this, "/loginScreen/refresh", self.refresh);
 
         var mainContainer = self.mainScreenService.getMainContainer();
 
         /**
          * Interaction listeners
          */
-        var onAddCommentClicked = function() {
-            if (!self.userService.isLoggedIn()) {
-                mainContainer.stack.push(self.loginScreenService.init());
-            }
-            else {
-                mainContainer.stack.push(App.AddCommentScreen.get());
-                App.AddCommentScreen.refresh(null);
-            }
+        var onRegisterClicked = function() {
+            self.registerScreenService.init();
+        }
+
+        var onLoginClicked = function() {
+            var user = {};
+            user.username = self.inputUser.getData();
+            user.password = self.inputPass.getData();
+
+            // perform login
+            self.userService.login(user,
+                function(user) {
+                    mainContainer.stack.pop();
+                },
+                function(error) {
+                    mainContainer.scn.alert("Login", "Login failed");
+                });
+
+            mainContainer.scn.hidePopup();
         }
 
 
         var view = new joCard([
-            new joGroup(
-                new joFlexcol([
-                    new joHTML("<div id='blogPostContainer' />"),
-                    new joDivider(),
-                    new joHTML("<h4>Comments</h4>"),
-                    new joHTML("<div id='commentList' />"),
-                    new joButton("Add comment").selectEvent.subscribe(onAddCommentClicked)
-                ])
-            )
+            new joTitle("Login"),
+            new joFlexcol([
+                new joDivider(),
+                new joGroup([
+                    new joCaption("User Name"),
+                    new joFlexrow(self.inputUser = new joInput("")),
+                    new joCaption("Password"),
+                    new joFlexrow(self.inputPass = new joPasswordInput(""))
+                ]),
+                new joButton("Login").selectEvent.subscribe(onLoginClicked),
+                new joDivider(),
+                new joButton("Register").selectEvent.subscribe(onRegisterClicked)
+            ])
         ]);
 
         mainContainer.stack.push(view);
 
-        var data = {
-            data: {
-                postId: postId
-            }
-        }
-
-        self.refresh(data);
+        self.refresh(null);
     },
 
 
@@ -141,16 +148,8 @@ blogPostScreen = {
      */
 
     refresh: function(event) {
-        var postId = (event.data.postId) ? event.data.postId : null;
-        if (postId === null) { return; }
-
-        if ($('#blogPostContainer').length > 0) {
-            this.blogPostFrontendService.updateWithBlogPost(postId);
-        }
-
-        if ($('#commentList').length > 0) {
-            this.blogPostFrontendService.updateWithComments(postId);
-        }
+        this.inputUser.setData("");
+        this.inputPass.setData("");
     }
 
 }

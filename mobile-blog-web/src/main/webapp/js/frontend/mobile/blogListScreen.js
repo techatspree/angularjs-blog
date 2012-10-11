@@ -2,21 +2,24 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-blogPostScreenContract = {
+blogListScreenContract = {
 
     init: function() {}
 
 }
 
-blogPostScreen = {
+blogListScreen = {
 
     hub: null,
 
     // Services
     userService: null,
-    blogPostFrontendService: null,
     mainScreenService: null,
+    blogPostScreenService: null,
+    blogPostFrontendService: null,
     loginScreenService: null,
+    addPostScreenService: null,
+
 
     // HTML Templates
 
@@ -29,7 +32,7 @@ blogPostScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'blogPostScreen';
+        return 'blogListScreen';
     },
 
     /**
@@ -49,13 +52,23 @@ blogPostScreen = {
         });
         this.hub.requireService({
             component: this,
+            contract: mainScreenContract,
+            field: "mainScreenService"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: blogPostScreenContract,
+            field: "blogPostScreenService"
+        });
+        this.hub.requireService({
+            component: this,
             contract: blogPostFrontendContract,
             field: "blogPostFrontendService"
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: addPostScreenContract,
+            field: "addPostScreenService"
         });
         this.hub.requireService({
             component: this,
@@ -66,7 +79,7 @@ blogPostScreen = {
         // Provide service
         this.hub.provideService({
             component: this,
-            contract: blogPostScreenContract
+            contract:  blogListScreenContract
         });
 
         // Configuration
@@ -90,67 +103,58 @@ blogPostScreen = {
     /**
      * Contract methods.
      */
-
-    init: function(postId) {
+    init: function() {
         var self = this;
 
-        self.hub.publish(self, "/blogPostScreen/refresh", self.refresh);
+        self.hub.subscribe(self, "/blogListScreen/refresh", self.refresh);
 
         var mainContainer = self.mainScreenService.getMainContainer();
 
-        /**
-         * Interaction listeners
-         */
-        var onAddCommentClicked = function() {
+        // Interactions listener
+        var onAddPostClicked = function() {
             if (!self.userService.isLoggedIn()) {
-                mainContainer.stack.push(self.loginScreenService.init());
+                self.loginScreenService.init();
             }
             else {
-                mainContainer.stack.push(App.AddCommentScreen.get());
-                App.AddCommentScreen.refresh(null);
+                self.addPostScreenService.init();
             }
-        }
+            return false;
+        };
 
-
+        // View
         var view = new joCard([
+            new joTitle("Blog Post Demo"),
             new joGroup(
                 new joFlexcol([
-                    new joHTML("<div id='blogPostContainer' />"),
+                    new joButton('Add Post').selectEvent.subscribe(onAddPostClicked),
                     new joDivider(),
-                    new joHTML("<h4>Comments</h4>"),
-                    new joHTML("<div id='commentList' />"),
-                    new joButton("Add comment").selectEvent.subscribe(onAddCommentClicked)
+                    new joHTML("<div id='blogPostList' />")
                 ])
             )
-        ]);
+        ]).setTitle("Blog Demo");
 
         mainContainer.stack.push(view);
 
-        var data = {
-            data: {
-                postId: postId
-            }
-        }
-
-        self.refresh(data);
+        self.refresh(null);
     },
 
 
     /**
      * Private methods.
      */
-
     refresh: function(event) {
-        var postId = (event.data.postId) ? event.data.postId : null;
-        if (postId === null) { return; }
+        if ($('#blogPostList').length == 0) {
+            return;
+        }
+        var self = this;
 
-        if ($('#blogPostContainer').length > 0) {
-            this.blogPostFrontendService.updateWithBlogPost(postId);
+        var mainContainer = self.mainScreenService.getMainContainer();
+
+        var readMoreBtnTarget = function(id) {
+            self.blogPostScreenService.init(id);
         }
 
-        if ($('#commentList').length > 0) {
-            this.blogPostFrontendService.updateWithComments(postId);
-        }
+        self.blogPostFrontendService.updateWithBlogList(readMoreBtnTarget);
     }
 
 }

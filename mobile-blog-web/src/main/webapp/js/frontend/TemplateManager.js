@@ -1,23 +1,14 @@
 /*
  * The TemplateManager enables access to all HTML templates we require.
  */
-templateManagerContract =  {
-    /**
-     * Fetches the templates with the given names from the template location on
-     * the server and adds it to the DOM.
-     *
-     * @param templateNames an array of the names of the templates to fetch
-     * @param callback function to call on success
-     */
-//    fetchTemplates: function() {}
-}
+templateManagerContract =  {}
 
 
 templateManager = {
     hub: null,
+
     templateNames: null,
 
-    // First we are a component, so we need to implement the 4 methods required to be a valid component:
 
     /**
      * Method returning the component <b>unique</b>
@@ -35,17 +26,19 @@ templateManager = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: templateManagerContract
         });
 
         if (configuration.templateNames === null) {
             throw "templates was null";
         }
-        this.templateNames = configuration.templateNames;
+        self.templateNames = configuration.templateNames;
     },
 
     /**
@@ -54,7 +47,8 @@ templateManager = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.fetchTemplates();
+        var self = this;
+        self.fetchTemplates();
     },
 
     /**
@@ -88,8 +82,9 @@ templateManager = {
                     if (index < self.templateNames.length) {
                         loadTemplate(index);
                     } else {
-                        console.log("templates loaded");
-                        self.sendTemplatesLoadedEvent();
+                        self.hub.publish(self, "/templates/loaded", {
+                            templatesLoaded: true
+                        });
                     }
                 },
                 error: function(error) {
@@ -99,12 +94,6 @@ templateManager = {
         }
 
         loadTemplate(0);
-    },
-
-    sendTemplatesLoadedEvent: function() {
-        this.hub.publish(this, "/templates/loaded", {
-            templatesLoaded: true
-        });
     }
 
 }

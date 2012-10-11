@@ -9,7 +9,7 @@ mainScreenContract = {
     /**
      * Initializes the main screen (lists all blog posts).
      */
-    initMainScreen: function() {},
+    init: function() {},
 
     /**
      * Returns the jo-framework main container.
@@ -23,6 +23,7 @@ mainScreen = {
 
     hub: null,
     mainContainer: null,
+
 
     /**
      * Method returning the component <b>unique</b>
@@ -43,6 +44,7 @@ mainScreen = {
         this.hub = theHub;
 
         // Required service
+
 
         // We provide the UserContractService:
         this.hub.provideService({
@@ -70,7 +72,9 @@ mainScreen = {
      * Contract methods.
      */
 
-    initMainScreen: function() {
+    init: function() {
+        this.hub.subscribe(this, "/mainScreen/refresh", this.refresh);
+
         // Load jo framework for our mobile UI.
         // In jo, the UI is defined entirely via JavaScript.
         jo.load();
@@ -91,36 +95,39 @@ mainScreen = {
         this.mainContainer.scn = new joScreen(
             new joContainer([
                 new joFlexcol([
-                    this.mainContainer.nav = new joCustomNavbar(),
+                    this.mainContainer.nav   = new joCustomNavbar(),
                     this.mainContainer.stack = new joStackScroller()
                 ])
             ]).setStyle({position: "absolute", top: "0", left: "0", bottom: "0", right: "0"})
         );
 
         this.mainContainer.nav.setStack(this.mainContainer.stack);
-        this.mainContainer.nav.setTitle('<img src="../images/aerogear_logo_150px.png" class="logo" /> ');
-        this.mainContainer.nav.row.push('<img id="akquinetLogo" src="../images/akquinet_logo.png" class="logo" style="float:right" /> ');
 
         joGesture.backEvent.subscribe(this.mainContainer.stack.pop, this.mainContainer.stack);
 
-        $('#akquinetLogo').onpress(function(){
-            document.location.href = "http://blog.akquinet.de/";
-            window.location.href = "http://blog.akquinet.de/";
-        });
-
-        // Push our first screen on the stack: The blog post list.
-        this.mainContainer.stack.push(App.BlogListScreen.get());
-        // Load the blog posts.
-        App.BlogListScreen.refresh();
+        this.refresh(null);
     },
 
     getMainContainer: function() {
         return this.mainContainer;
-    }
+    },
 
 
     /**
      * Private methods.
      */
+    refresh: function (event) {
+        this.mainContainer.nav.setTitle(
+            '<img src="../images/aerogear_logo_150px.png" class="logo" /> '
+        );
+        this.mainContainer.nav.row.push(
+            '<img id="akquinetLogo" src="../images/akquinet_logo.png" class="logo" style="float:right" /> '
+        );
+
+        $('#akquinetLogo').onpress(function(){
+            document.location.href = "http://blog.akquinet.de/";
+            window.location.href = "http://blog.akquinet.de/";
+        });
+    }
 
 }

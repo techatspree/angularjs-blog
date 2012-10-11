@@ -9,7 +9,7 @@ blogPostFrontendContract = {
     /**
      * Lists all blog posts.
      */
-    updateWithBlogList : function() {},
+    updateWithBlogList : function(readMoreBtnTarget) {},
 
     /**
      * Lists blog post with given postId.
@@ -101,7 +101,7 @@ blogPostFrontend = {
      * Contract methods.
      */
 
-    updateWithBlogList : function() {
+    updateWithBlogList : function(readMoreBtnTarget) {
         var self = this;
 
         self.blogPostBackendService.retrieveBlogPosts(
@@ -121,18 +121,10 @@ blogPostFrontend = {
                         self.templates.blogListPost
                     );
 
-                    var postButtons = $("#readMoreBtn" + blogPost.id);
-                    if (postButtons.length > 0) {
-                        postButtons.onpress(function() {
-                            switch (self.device) {
-                                case "desktop":
-                                    self.openBlogPostDesktop(blogPost.id);
-                                    break;
-                                case "mobile":
-                                    self.openBlogPostMobile(blogPost.id);
-                                    break;
-                            }
-                            return false;
+                    var readMoreBtn = $("#readMoreBtn" + blogPost.id);
+                    if (readMoreBtn.length > 0) {
+                        readMoreBtn.onpress(function() {
+                            readMoreBtnTarget(blogPost.id);
                         });
                     }
                 });
@@ -193,17 +185,6 @@ blogPostFrontend = {
     appendTemplateDataToNode : function(nodeId, data, templateId) {
         var templateFunc = _.template($(templateId).html());
         $(nodeId).append(templateFunc({"data": data}));
-    },
-
-    openBlogPostDesktop: function(id) {
-        document.location.href = "?showPost=" + id;
-    },
-
-    openBlogPostMobile:function(id) {
-        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
-
-        mainContainer.stack.push(App.BlogPostScreen.get());
-        App.BlogPostScreen.refresh(id);
     }
 
 }
