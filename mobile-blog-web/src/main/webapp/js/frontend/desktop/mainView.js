@@ -1,12 +1,15 @@
 /**
+ * Blog MainView (static content)
+ *
  * @author Till Hermsen
  * @date 10.10.12
  */
 mainViewContract = {
 
-    init: function() {},
-
-    refresh: function() {}
+    /**
+     * Initializes the view.
+     */
+    init: function() {}
 
 }
 
@@ -15,7 +18,9 @@ mainView = {
     hub:null,
 
     // Services
-    loginSubView: null,
+    userService: null,
+    loginSubViewService: null,
+    registerSubViewService: null,
 
     // HTML Templates
     templates: null,
@@ -40,24 +45,36 @@ mainView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
+            contract: userServiceContract,
+            field: "userService"
+        });
+        self.hub.requireService({
+            component: self,
             contract: loginSubViewContract,
-            field: "loginSubView"
+            field: "loginSubViewService"
+        });
+        self.hub.requireService({
+            component: self,
+            contract: registerSubViewContract,
+            field: "registerSubViewService"
         });
 
         // Provide service
-        this.hub.provideService({
-            component:this,
+        self.hub.provideService({
+            component: self,
             contract: mainViewContract
         });
 
         // Configuration
-        this.templates = configuration.templates;
-        this.selectors = configuration.selectors;
+        self.templates = configuration.templates;
+        self.selectors = configuration.selectors;
     },
 
     /**
@@ -81,19 +98,20 @@ mainView = {
     init: function() {
         var self = this;
 
-        if (!App.UserService.isLoggedIn()) {
+        // Registering event listener
+        self.hub.subscribe(self, "/mainView/refresh", self.refresh);
+
+        $(self.selectors.body).prepend($(self.templates.main).html());
+
+        if (!self.userService.isLoggedIn()) {
             // bind on click event
             $(self.selectors.loginLogoutBtn).on("click", function(e) {
-                self.loginSubView.init();
+                self.loginSubViewService.init();
 
                 // load register form
                 $(self.selectors.registerBtn).on("click", function(e) {
-                    $(self.selectors.userContainer).html(_.template(App.Register.loadRegisterForm(), {}));
+                    self.registerSubViewService.init();
 
-                    $(self.selectors.registerSubmitBtn).on("click", function(e) {
-                        App.Register.onRegisterClicked();
-                        return false;
-                    });
                     return false;
                 });
 
@@ -103,25 +121,27 @@ mainView = {
 
         else {
             $(self.selectors.loginLogoutBtn).on("click", function(e) {
-                App.UserService.logout();
+                self.userService.logout();
                 location.reload()
                 return false;
             });
         }
     },
 
-    refresh: function() {
-        if (!App.UserService.isLoggedIn()) {
-            $(this.selectors.loginLogoutBtn).html("Login");
-        }
-        else {
-            $(this.selectors.loginLogoutBtn).html("Logout");
-        }
-    }
-
 
     /**
      * Private methods.
      */
+
+    refresh: function(event) {
+        var self = this;
+
+        if (!self.userService.isLoggedIn()) {
+            $(self.selectors.loginLogoutBtn).html("Login");
+        }
+        else {
+            $(self.selectors.loginLogoutBtn).html("Logout");
+        }
+    }
 
 }

@@ -1,4 +1,6 @@
 /**
+ * The BlogPostFrontend
+ *
  * @author Till Hermsen
  * @date 08.10.12
  */
@@ -33,7 +35,7 @@ blogPostFrontend = {
     device: null,
 
     // Services
-    blogPostBackend: null,
+    blogPostBackendService: null,
 
     // HTML templates
     templates: null,
@@ -57,25 +59,27 @@ blogPostFrontend = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
             contract: blogPostBackendContract,
-            field: "blogPostBackend"
+            field: "blogPostBackendService"
         });
 
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: blogPostFrontendContract
         });
 
         // Configuration
-        this.templates = configuration.templates;
-        this.selectors = configuration.selectors;
-        this.device    = configuration.device;
+        self.templates = configuration.templates;
+        self.selectors = configuration.selectors;
+        self.device    = configuration.device;
     },
 
     /**
@@ -96,10 +100,11 @@ blogPostFrontend = {
     /**
      * Contract methods.
      */
+
     updateWithBlogList : function() {
         var self = this;
 
-        self.blogPostBackend.retrieveBlogPosts(
+        self.blogPostBackendService.retrieveBlogPosts(
             function(result) {
                 $(self.selectors.contentContainer).empty();
                 $.each(result, function(index, blogPost) {
@@ -139,7 +144,7 @@ blogPostFrontend = {
     updateWithBlogPost : function(postId) {
         var self = this;
 
-        self.blogPostBackend.retrieveBlogPost(postId,
+        self.blogPostBackendService.retrieveBlogPost(postId,
             function(blogPost) {
                 $(self.selectors.blogPostContainer).empty();
                 blogPost.content.replace(/\n/g, '<br />');
@@ -158,7 +163,7 @@ blogPostFrontend = {
     updateWithComments : function(postId) {
         var self = this;
 
-        self.blogPostBackend.retrieveComments(postId,
+        self.blogPostBackendService.retrieveComments(postId,
             function(result){
                 $(self.selectors.commentsContainer).empty();
                 $.each(result, function(index, comment) {

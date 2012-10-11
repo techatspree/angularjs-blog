@@ -1,19 +1,20 @@
 /**
  * @author Till Hermsen
- * @date 10.10.12
+ * @date 11.10.12
  */
-loginSubViewContract = {
+addCommentSubViewContract = {
 
-    init: function() {}
+    init: function() {postId}
 
 }
 
-loginSubView = {
+addCommentSubView = {
 
     hub: null,
 
     // Services
     userService: null,
+    blogPostBackendService: null,
 
     // HTML Templates
     templates: null,
@@ -28,7 +29,7 @@ loginSubView = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'loginSubView';
+        return 'addCommentSubView';
     },
 
     /**
@@ -48,11 +49,16 @@ loginSubView = {
             contract: userServiceContract,
             field: "userService"
         });
+        self.hub.requireService({
+            component: self,
+            contract: blogPostBackendContract,
+            field: "blogPostBackendService"
+        });
 
         // Provide service
         self.hub.provideService({
             component: self,
-            contract:  loginSubViewContract
+            contract:  addCommentSubViewContract
         });
 
         // Configuration
@@ -79,33 +85,33 @@ loginSubView = {
      * Contract methods.
      */
 
-    init: function() {
+    init: function(postId) {
         var self = this;
 
         // Registering event listener
-        self.hub.subscribe(self, "/loginSubView/refresh", self.refresh);
+        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refresh);
 
-        $(self.selectors.userContainer).html($(self.templates.loginForm).html());
+        if (self.userService.isLoggedIn()) {
+            $(self.selectors.commentList).after($(self.templates.commentForm).html());
 
-        $(self.selectors.loginForm).submit(function(e) {
-            self.clearValidationError();
+            // bind click event to the submit comment button
+            $(self.selectors.commentForm).submit(function (e) {
+                var commentFormData = $(self.selectors.commentForm).serializeArray();
+                var comment = {};
+                comment.content = commentFormData[0].value;
 
-            var credentials = $(self.selectors.loginForm).serializeArray();
-            var user = {};
-            user.username = credentials[0].value;
-            user.password = credentials[1].value
+                self.blogPostBackendService.addComment(postId, comment, function() {
+                    self.hub.publish(self, "/blogPostView/refresh", {
+                        postId: postId
+                    });
+                });
 
-            self.userService.login(user,
-                function(user) {
-                    location.reload();
-                },
-                function(error) {
-                    self.showValidationError(error);
-                }
-            );
+                self.resetForm();
 
-            return false;
-        });
+                return false;
+            });
+        }
+
     },
 
 
@@ -115,23 +121,12 @@ loginSubView = {
 
     refresh: function(event) {
         var self = this;
-        self.clearValidationError();
+        self.resetForm();
     },
 
-    showValidationError: function(error) {
+    resetForm: function() {
         var self = this;
-
-        var data = {
-            id: "errorLogin",
-            errorMessage: "Login failed!"
-        };
-        $(_.template($(self.templates.formValidationError).html(), {"data": data}))
-            .insertAfter(self.selectors.loginForm);
-    },
-
-    clearValidationError: function() {
-        var self = this;
-        $(self.selectors.error).remove();
+        $(self.selectors.commentTextarea).val("");
     }
 
 }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/desktop.css"/>
 	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 
+    <!-- Javascript libs -->
     <script type="text/javascript" src="../js/lib/underscore.min.js"></script>
     <script type="text/javascript" src="../js/lib/zepto.min.js"></script>
     <script type="text/javascript" src="../js/lib/zepto.onpress.js"></script>
@@ -21,6 +22,7 @@
 
     <script type="text/javascript" src="../js/backend/desktop/Bootstrap.js"></script>
     <script type="text/javascript" src="../js/backend/desktop/Router.js"></script>
+    <script type="text/javascript" src="../js/backend/ErrorController.js"></script>
 
     <script type="text/javascript" src="../js/backend/BlogPostBackend.js"></script>
     <script type="text/javascript" src="../js/backend/BlogPostFrontend.js"></script>
@@ -33,79 +35,14 @@
 
     <script type="text/javascript" src="../js/frontend/desktop/MainView.js"></script>
     <script type="text/javascript" src="../js/frontend/desktop/LoginSubView.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/RegisterSubView.js"></script>
     <script type="text/javascript" src="../js/frontend/desktop/BlogListView.js"></script>
     <script type="text/javascript" src="../js/frontend/desktop/BlogPostView.js"></script>
     <script type="text/javascript" src="../js/frontend/desktop/AddPostView.js"></script>
-
-    <script type="text/javascript" src="../js/frontend/desktop/Register.js"></script>
+    <script type="text/javascript" src="../js/frontend/desktop/AddCommentSubView.js"></script>
 </head>
 
 <body>
-
-<div id="page">
-
-<div class="logo">
-    <img src="../images/aerogear_logo_150px.png" />
-</div>
-
-<div class="dualbrand">
-    <img src="../images/akquinet-logo.jpg" />
-</div>
-
-<section id="main">
-    <div>
-        <a href="#"
-           id="addPostBtn"
-           class="formBtn"
-           style="display:none;">Add post</a>
-    </div>
-    <div id="content"></div>
-</section>
-
-<aside id="info-aside">
-    <!-- Login / logout button -->
-    <div id="user">
-        <a href="#" id="loginLogoutBtn"></a>
-    </div>
-
-    <!-- Header -->
-    <div id="header">
-        <h3>Find out more</h3>
-    </div>
-    <!-- /Header -->
-
-    <div id="sidebar-content">
-        <p>More about the author of this demo.</p>
-        <ul>
-            <li><a href="http://blog.akquinet.de" target="_blank">akquinet blog</a></li>
-            <li><a href="https://github.com/akquinet/mobile-blog" target="_blank">The source of this demo on Github</a></li>
-        </ul>
-        <p>Learn more about JBoss Enterprise Application Platform 6.</p>
-        <ul>
-            <li><a href="http://red.ht/jbeap-6-docs" target="_blank">Documentation</a></li>
-            <li><a href="http://red.ht/jbeap-6" target="_blank">Product Information</a></li>
-        </ul>
-        <p>Learn more about JBoss AS 7.</p>
-        <ul>
-            <li><a href="https://docs.jboss.org/author/display/AS7/Getting+Started+Developing+Applications+Guide" target="_blank">Getting Started Developing Applications Guide</a></li>
-            <li><a href="http://jboss.org/jbossas" target="_blank">Community Project Information</a></li>
-        </ul>
-        <p>Learn about <strong>AeroGear</strong> and HTML5/Mobile development on JBoss.</p>
-        <ul>
-            <li><a href="http://jboss.org/aerogear" target="_blank">AeroGear Project site</a></li>
-            <li><a href="https://community.jboss.org/wiki/WhatArePlainOldHTML5POH5Applications" target="_blank">More on <strong>POH5</strong></a></li>
-            <li><a href="https://community.jboss.org/community/aerogear" target="_blank">AeroGear user forums</a></li>
-            <li><a href="https://github.com/organizations/aerogear" target="_blank">Github</a></li>
-        </ul>
-    </div>
-</aside>
-
-<footer>
-    (c) akquinet AG
-</footer>
-
-</div>
-
 
 <script type="text/javascript">
     Zepto(function($) {

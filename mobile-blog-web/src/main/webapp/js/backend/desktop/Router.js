@@ -19,10 +19,11 @@ router = {
     hub: null,
 
     // Services
-    mainView:     null,
-    blogListView: null,
-    blogPostView: null,
-    addPostView:  null,
+    userService:         null,
+    mainViewService:     null,
+    blogListViewService: null,
+    blogPostViewService: null,
+    addPostViewService:  null,
 
 
     /**
@@ -41,32 +42,39 @@ router = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
+        self.hub.requireService({
+            component: this,
+            contract: userServiceContract,
+            field: "userService"
+        });
+        self.hub.requireService({
             component: this,
             contract: mainViewContract,
-            field: "mainView"
+            field: "mainViewService"
         });
-        this.hub.requireService({
+        self.hub.requireService({
             component: this,
             contract: blogListViewContract,
-            field: "blogListView"
+            field: "blogListViewService"
         });
-        this.hub.requireService({
+        self.hub.requireService({
             component: this,
             contract: blogPostViewContract,
-            field: "blogPostView"
+            field: "blogPostViewService"
         });
-        this.hub.requireService({
+        self.hub.requireService({
             component: this,
             contract: addPostViewContract,
-            field: "addPostView"
+            field: "addPostViewService"
         });
 
         // We provide the UserContractService:
-        this.hub.provideService({
+        self.hub.provideService({
             component: this,
             contract: routerContract
         });
@@ -100,35 +108,41 @@ router = {
         var pageId = keyValueHash['page'];
 
         // load main view
-        self.mainView.init();
-        self.mainView.refresh();
+        self.mainViewService.init();
+        self.hub.publish(self, "/mainView/refresh", {});
+
 
         // singe blog post route
         if (postId != null) {
-            self.blogPostView.init(postId);
-            self.blogPostView.refresh(postId);
+            self.blogPostViewService.init(postId);
+            self.hub.publish(self, "/blogPostView/refresh", {
+                postId: postId
+            });
         }
 
         // page routes
         else if(pageId != null) {
-            // pages which require logged-in user
-            if (App.UserService.isLoggedIn()) {
+            // following pages require logged-in user
+            if (self.userService.isLoggedIn()) {
                 // add post route
                 if (pageId == "addPost") {
-                    self.addPostView.init();
-                    self.addPostView.refresh();
+                    self.addPostViewService.init();
+                    self.hub.publish(self, "/addPostView/refresh", {});
                 }
             } else {
-                self.hub.publish(this, "/error", {error: "403"});
+                self.hub.publish(this, "/error", {
+                    data: {
+                        errorId: "403",
+                        message: "access denied"
+                    }
+                });
             }
-
-            // pages which don't require logged-in user
         }
 
         // main route, lists all blog posts
         else {
-            self.blogListView.init();
-            self.blogListView.refresh();
+            self.blogListViewService.init();
+            self.hub.publish(self, "/blogListView/refresh", {});
         }
     },
 

@@ -8,12 +8,7 @@ blogListViewContract = {
     /**
      *
      */
-    init: function() {},
-
-    /**
-     *
-     */
-    refresh: function() {}
+    init: function() {}
 
 }
 
@@ -22,7 +17,8 @@ blogListView = {
     hub: null,
 
     // Services
-    blogPostFrontend: null,
+    userService: null,
+    blogPostFrontendService: null,
 
     // HTML selectors
     selectors: null,
@@ -43,23 +39,30 @@ blogListView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
+            contract: userServiceContract,
+            field: "userService"
+        });
+        self.hub.requireService({
+            component: self,
             contract: blogPostFrontendContract,
-            field: "blogPostFrontend"
+            field: "blogPostFrontendService"
         });
 
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: blogListViewContract
         });
 
         // Set HTML selectors
-        this.selectors = configuration.selectors;
+        self.selectors = configuration.selectors;
     },
 
     /**
@@ -82,23 +85,30 @@ blogListView = {
      */
 
     init: function() {
+        var self = this;
+
+        // Registering event listener
+        self.hub.subscribe(self, "/blogListView/refresh", self.refresh);
+
+
         // add post button
-        if (App.UserService.isLoggedIn()) {
-            $(this.selectors.addPostBtn).show();
-            $(this.selectors.addPostBtn).on("click", function(e) {
+        if (self.userService.isLoggedIn()) {
+            $(self.selectors.addPostBtn).show();
+            $(self.selectors.addPostBtn).on("click", function(e) {
                 document.location.href = "?page=addPost";
                 return false;
             });
         }
     },
 
-    refresh: function() {
-        this.blogPostFrontend.updateWithBlogList();
-    }
-
 
     /**
      * Private methods.
      */
+
+    refresh: function(event) {
+        var self = this;
+        self.blogPostFrontendService.updateWithBlogList();
+    }
 
 }

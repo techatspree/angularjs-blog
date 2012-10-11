@@ -1,4 +1,11 @@
 /**
+ * The BlogPostBackend enables access to all blog post functions.
+ *  - add new post
+ *  - add new comment
+ *  - retrieve blog post
+ *  - retrieve all blog posts
+ *  - retrieve all comments
+ *
  * Author: Till Hermsen
  * Date: 08.10.12
  */
@@ -41,7 +48,7 @@ blogPostBackendContract = {
     retrieveBlogPost : function(postId, callback, errorCallback) {},
 
     /**
-     * Retrieves all comments for the given postId.
+     * Retrieves all comments by the given postId.
      *
      * @param postId
      * @param callback function to call on success
@@ -55,6 +62,9 @@ blogPostBackendContract = {
 blogPostBackend = {
 
     hub: null,
+
+    // Services
+    userService: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -72,11 +82,20 @@ blogPostBackend = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
+
+        // Required services
+        self.hub.requireService({
+            component: self,
+            contract: userServiceContract,
+            field: "userService"
+        });
 
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: blogPostBackendContract
         });
     },
@@ -99,9 +118,12 @@ blogPostBackend = {
     /**
      * Contract methods.
      */
+
     addBlogPost : function(blogPost, callback, errorCallback) {
+        var self = this;
+
         blogPost.author = {};
-        blogPost.author.id = App.UserService.getUser().id;
+        blogPost.author.id = self.userService.getUser().id;
 
         $.ajax({
             url: "../rest/blog",
@@ -124,8 +146,10 @@ blogPostBackend = {
     },
 
     addComment : function(postId, comment, callback, errorCallback) {
+        var self = this;
+
         comment.author = {};
-        comment.author.id = App.UserService.getUser().id;
+        comment.author.id = self.userService.getUser().id;
 
         $.ajax({
             url: "../rest/blog/" + postId + "/comment",
@@ -135,7 +159,6 @@ blogPostBackend = {
             data: JSON.stringify(comment),
             cache: false,
             success: function(data) {
-//                $(document).trigger(this.changeEventName);
                 callback(data);
             },
             error: function(error) {

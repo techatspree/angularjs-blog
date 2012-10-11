@@ -63,6 +63,23 @@ footer {
     color: #999;
 }
 
+
+/* Page elements */
+#blogPostContainer {
+    margin-bottom: 60px;
+}
+
+#addPostBtn {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+
 /* Form elements */
 form {
     margin: 0;
@@ -108,20 +125,4 @@ form p {
     font-size: 12px;
     color: red;
     margin-bottom: 10px;
-}
-
-
-
-#blogPostContainer {
-    margin-bottom: 60px;
-}
-
-#addPostBtn {
-    margin-top: 20px;
-    width: 100%;
-    font-size: 14px;
-    font-weight: bold;
-    display: block;
-    text-align: center;
-    text-decoration: none;
 }

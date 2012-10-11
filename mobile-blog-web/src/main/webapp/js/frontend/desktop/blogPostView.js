@@ -9,14 +9,7 @@ blogPostViewContract = {
      *
      * @param postId
      */
-    init: function (postId) {},
-
-    /**
-     * Loads data into the blog post view.
-     *
-     * @param postId
-     */
-    refresh: function (postId) {}
+    init: function (postId) {}
 
 }
 
@@ -26,8 +19,8 @@ blogPostView = {
     hub: null,
 
     // Services
-    blogPostBackend: null,
-    blogPostFrontend: null,
+    blogPostFrontendService: null,
+    addCommentSubViewService: null,
 
     // Templates
     templates: null,
@@ -52,29 +45,31 @@ blogPostView = {
      * @param the object used to configure this component
      */
     configure: function (theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
-            contract:  blogPostBackendContract,
-            field:     "blogPostBackend"
-        });
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
             contract:  blogPostFrontendContract,
-            field:     "blogPostFrontend"
+            field:     "blogPostFrontendService"
+        });
+        self.hub.requireService({
+            component: self,
+            contract: addCommentSubViewContract,
+            field: "addCommentSubViewService"
         });
 
         // Provide service
-        this.hub.provideService({
-            component:this,
+        self.hub.provideService({
+            component:self,
             contract: blogPostViewContract
         });
 
         // Configuration
-        this.templates = configuration.templates;
-        this.selectors = configuration.selectors;
+        self.templates = configuration.templates;
+        self.selectors = configuration.selectors;
     },
 
     /**
@@ -99,45 +94,31 @@ blogPostView = {
     init: function (postId) {
         var self = this;
 
+        // Registering event listener
+        self.hub.subscribe(self, "/blogPostView/refresh", self.refresh);
+
         // adding blog post template
         $(self.selectors.content).append($(self.templates.blogPost).html());
 
-        // adding add comment form
-        if (App.UserService.isLoggedIn()) {
-            $(self.selectors.commentList).after($(self.templates.commentForm).html());
 
-            // bind click event to the submit comment button
-            $(self.selectors.submitCommentBtn).on("click", function (e) {
-                var commentFormData = $(self.selectors.commentForm).serializeArray();
-                var comment = {};
-                comment.content = commentFormData[0].value;
-
-                $(self.selectors.commentTextarea).val("");
-
-                self.blogPostBackend.addComment(postId, comment, function() {
-                   self.refresh(postId);
-                });
-
-                return false;
-            });
-        }
+        self.addCommentSubViewService.init(postId);
     },
-
-    refresh: function (postId) {
-        var self = this;
-
-        if ($(self.selectors.blogPostContainer).length > 0) {
-            self.blogPostFrontend.updateWithBlogPost(postId);
-        }
-
-        if ($(self.selectors.commentList).length > 0) {
-            self.blogPostFrontend.updateWithComments(postId);
-        }
-    }
 
 
     /**
      * Private methods.
      */
+    refresh: function (event) {
+        var self = this,
+            postId = event.postId;
+
+        if ($(self.selectors.blogPostContainer).length > 0) {
+            self.blogPostFrontendService.updateWithBlogPost(postId);
+        }
+
+        if ($(self.selectors.commentList).length > 0) {
+            self.blogPostFrontendService.updateWithComments(postId);
+        }
+    }
 
 }

@@ -12,7 +12,7 @@ bootstrap = {
     hub: null,
 
     // Services
-    router: null,
+    routerService: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -30,18 +30,20 @@ bootstrap = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required service
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
             contract: routerContract,
-            field: "router"
+            field: "routerService"
         });
 
         // We provide the UserContractService:
-        this.hub.provideService({
-            component: this,
+        self.hub.provideService({
+            component: self,
             contract: bootstrapContract
         });
     },
@@ -52,7 +54,8 @@ bootstrap = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/templates/loaded", this.startApp);
+        var self = this;
+        self.hub.subscribe(self, "/templates/loaded", self.startApp);
     },
 
     /**
@@ -73,7 +76,8 @@ bootstrap = {
      */
 
     startApp: function(event) {
-        this.router.initRoute();
+        var self = this;
+        self.routerService.initRoute();
     }
 
 }

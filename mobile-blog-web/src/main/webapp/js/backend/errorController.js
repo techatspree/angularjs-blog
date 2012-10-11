@@ -1,24 +1,16 @@
 /**
- *
- *
  * @author Till Hermsen
- * @date 10.10.12
+ * @date 11.10.12
  */
-errorViewContract = {
+errorControllerContract = {}
 
-    init: function(data) {}
+errorController = {
 
-}
+    hub: null,
 
-errorView = {
+    // Services
+    errorViewService: null,
 
-    hub:null,
-
-    // HTML templates
-    templates: null,
-
-    // HTML selectors
-    selectors: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -26,7 +18,7 @@ errorView = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'errorView';
+        return 'errorController';
     },
 
     /**
@@ -40,15 +32,18 @@ errorView = {
 
         self.hub = theHub;
 
-        // Provide service
-        self.hub.provideService({
-            component:self,
-            contract: errorViewContract
+        // Required services
+        self.hub.requireService({
+            component: self,
+            contract: errorViewContract,
+            field: 'errorViewService'
         });
 
-        // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        // Provide service
+        self.hub.provideService({
+            component: self,
+            contract:  errorControllerContract
+        });
     },
 
     /**
@@ -56,7 +51,12 @@ errorView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        var self = this;
+
+        // Registering event listener
+        self.hub.subscribe(self, "/error", self.eventCallback);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -70,24 +70,15 @@ errorView = {
      * Contract methods.
      */
 
-    init: function() {
-        var self = this;
-
-        // Registering event listener
-        self.hub.subscribe(self, "/errorView/refresh", self.refresh);
-
-    },
 
     /**
      * Private methods.
      */
 
-    refresh: function(event) {
+    eventCallback: function(event) {
         var self = this;
-
-        $(self.selectors.content).html(
-            _.template($(self.templates.error).html(), {"data":event.data})
-        );
+        self.errorViewService.init();
+        self.hub.publish(self, "/errorView/refresh", {"data": event.data});
     }
 
 }

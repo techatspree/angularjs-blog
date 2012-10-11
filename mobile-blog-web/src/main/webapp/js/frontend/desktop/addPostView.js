@@ -4,9 +4,7 @@
  */
 addPostViewContract = {
 
-    init: function() {},
-
-    refresh: function() {}
+    init: function() {}
 
 }
 
@@ -15,7 +13,7 @@ addPostView = {
     hub: null,
 
     // Services
-    blogPostBackend: null,
+    blogPostBackendService: null,
 
     // HTML Templates
     templates: null,
@@ -39,24 +37,26 @@ addPostView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        this.hub = theHub;
+        var self = this;
+
+        self.hub = theHub;
 
         // Required services
-        this.hub.requireService({
-            component: this,
+        self.hub.requireService({
+            component: self,
             contract: blogPostBackendContract,
-            field: "blogPostBackend"
+            field: "blogPostBackendService"
         });
 
         // Provide service
-        this.hub.provideService({
-            component:this,
+        self.hub.provideService({
+            component:self,
             contract: addPostViewContract
         });
 
         // Configuration
-        this.templates = configuration.templates;
-        this.selectors = configuration.selectors;
+        self.templates = configuration.templates;
+        self.selectors = configuration.selectors;
     },
 
     /**
@@ -81,6 +81,9 @@ addPostView = {
     init: function() {
         var self = this;
 
+        // Registering event listener
+        self.hub.subscribe(self, "/addPostView", self.refresh);
+
         $(self.selectors.content).html($(self.templates.addPostForm).html());
 
         $(self.selectors.addPostForm).submit(function(e) {
@@ -89,7 +92,7 @@ addPostView = {
             blogPost.title   = postData[0].value;
             blogPost.content = postData[1].value;
 
-            self.blogPostBackend.addBlogPost(blogPost, function() {
+            self.blogPostBackendService.addBlogPost(blogPost, function() {
                 document.location.href = "/blog";
             });
 
@@ -98,11 +101,19 @@ addPostView = {
 
     },
 
-    refresh: function() {}
-
 
     /**
      * Private methods.
      */
+
+    refresh: function(event) {
+        var self = this;
+        self.resetForm();
+    },
+
+    resetForm: function() {
+        var self = this;
+        $(self.selectors.addPostForm).reset();
+    }
 
 }
