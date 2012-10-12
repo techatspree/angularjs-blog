@@ -26,19 +26,17 @@ var templateManager = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
         // We provide the UserContractService:
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: templateManagerContract
         });
 
         if (configuration.templateNames === null) {
             throw "templates was null";
         }
-        self.templateNames = configuration.templateNames;
+        this.templateNames = configuration.templateNames;
     },
 
     /**
@@ -47,8 +45,7 @@ var templateManager = {
      * after configure if the hub is already started.
      */
     start: function() {
-        var self = this;
-        self.fetchTemplates();
+        this.fetchTemplates();
     },
 
     /**
