@@ -2,13 +2,13 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-addPostViewContract = {
+var addPostViewContract = {
 
     init: function() {}
 
 }
 
-addPostView = {
+var addPostView = {
 
     hub: null,
 
@@ -37,26 +37,24 @@ addPostView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: blogPostBackendContract,
             field: "blogPostBackendService"
         });
 
         // Provide service
-        self.hub.provideService({
-            component:self,
+        this.hub.provideService({
+            component:this,
             contract: addPostViewContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -81,12 +79,11 @@ addPostView = {
     init: function() {
         var self = this;
 
-        // Registering event listener
-        self.hub.subscribe(self, "/addPostView", self.refresh);
-
         $(self.selectors.content).html($(self.templates.addPostForm).html());
 
         $(self.selectors.addPostForm).submit(function(e) {
+            e.preventDefault();
+
             var postData = $(self.selectors.addPostForm).serializeArray();
             var blogPost = {};
             blogPost.title   = postData[0].value;
@@ -95,10 +92,12 @@ addPostView = {
             self.blogPostBackendService.addBlogPost(blogPost, function() {
                 document.location.href = "/blog";
             });
-
-            return false;
         });
 
+        // Registering event listener
+        self.hub.subscribe(self, "/addPostView", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -106,14 +105,10 @@ addPostView = {
      * Private methods.
      */
 
-    refresh: function(event) {
-        var self = this;
-        self.resetForm();
+    refreshEvent: function(event) {
+        this.refresh();
     },
 
-    resetForm: function() {
-        var self = this;
-        $(self.selectors.addPostForm).reset();
-    }
+    refresh: function() {}
 
 }

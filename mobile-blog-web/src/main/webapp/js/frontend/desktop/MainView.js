@@ -4,7 +4,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-mainViewContract = {
+var mainViewContract = {
 
     /**
      * Initializes the view.
@@ -13,14 +13,12 @@ mainViewContract = {
 
 }
 
-mainView = {
+var mainView = {
 
     hub:null,
 
     // Services
     userService: null,
-    loginSubViewService: null,
-    registerSubViewService: null,
 
     // HTML Templates
     templates: null,
@@ -45,36 +43,24 @@ mainView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: userServiceContract,
             field: "userService"
         });
-        self.hub.requireService({
-            component: self,
-            contract: loginSubViewContract,
-            field: "loginSubViewService"
-        });
-        self.hub.requireService({
-            component: self,
-            contract: registerSubViewContract,
-            field: "registerSubViewService"
-        });
 
         // Provide service
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: mainViewContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -98,27 +84,19 @@ mainView = {
     init: function() {
         var self = this;
 
-        // Registering event listener
-        self.hub.subscribe(self, "/mainView/refresh", self.refresh);
-
+        // Template
         $(self.selectors.body).prepend($(self.templates.main).html());
 
+        /**
+         * Interaction listeners
+         */
         if (!self.userService.isLoggedIn()) {
             // bind on click event
             $(self.selectors.loginLogoutBtn).on("click", function(e) {
-                self.loginSubViewService.init();
-
-                // load register form
-                $(self.selectors.registerBtn).on("click", function(e) {
-                    self.registerSubViewService.init();
-
-                    return false;
-                });
-
+                self.hub.publish(self, "/loginSubView/init", {});
                 return false;
             });
         }
-
         else {
             $(self.selectors.loginLogoutBtn).on("click", function(e) {
                 self.userService.logout();
@@ -126,6 +104,11 @@ mainView = {
                 return false;
             });
         }
+
+        // Registering event listener
+        self.hub.subscribe(self, "/mainView/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -133,14 +116,16 @@ mainView = {
      * Private methods.
      */
 
-    refresh: function(event) {
-        var self = this;
+    refreshEvent: function(event) {
+        this.refresh();
+    },
 
-        if (!self.userService.isLoggedIn()) {
-            $(self.selectors.loginLogoutBtn).html("Login");
+    refresh: function() {
+        if (!this.userService.isLoggedIn()) {
+            $(this.selectors.loginLogoutBtn).html("Login");
         }
         else {
-            $(self.selectors.loginLogoutBtn).html("Logout");
+            $(this.selectors.loginLogoutBtn).html("Logout");
         }
     }
 

@@ -2,13 +2,17 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-addCommentSubViewContract = {
+var addCommentSubViewContract = {
 
-    init: function() {postId}
+    /**
+     *
+     * @param postId
+     */
+    init: function(postId) {}
 
 }
 
-addCommentSubView = {
+var addCommentSubView = {
 
     hub: null,
 
@@ -39,31 +43,29 @@ addCommentSubView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: userServiceContract,
             field: "userService"
         });
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: blogPostBackendContract,
             field: "blogPostBackendService"
         });
 
         // Provide service
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract:  addCommentSubViewContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -88,14 +90,13 @@ addCommentSubView = {
     init: function(postId) {
         var self = this;
 
-        // Registering event listener
-        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refresh);
-
         if (self.userService.isLoggedIn()) {
             $(self.selectors.commentList).after($(self.templates.commentForm).html());
 
             // bind click event to the submit comment button
             $(self.selectors.commentForm).submit(function (e) {
+                e.preventDefault();
+
                 var commentFormData = $(self.selectors.commentForm).serializeArray();
                 var comment = {};
                 comment.content = commentFormData[0].value;
@@ -106,12 +107,14 @@ addCommentSubView = {
                     });
                 });
 
-                self.resetForm();
-
-                return false;
+                self.refresh();
             });
         }
 
+        // Registering event listener
+        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -119,14 +122,16 @@ addCommentSubView = {
      * Private methods.
      */
 
-    refresh: function(event) {
-        var self = this;
-        self.resetForm();
+    refreshEvent: function(event) {
+        this.refresh();
+    },
+
+    refresh: function() {
+        this.resetForm();
     },
 
     resetForm: function() {
-        var self = this;
-        $(self.selectors.commentTextarea).val("");
+        $(this.selectors.commentTextarea).val("");
     }
 
 }

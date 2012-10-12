@@ -72,8 +72,7 @@ var errorController = {
      */
 
     loadView: function(event) {
-        this.errorViewService.init();
-        this.hub.publish(this, "/errorView/refresh", {"data": event.data});
+        this.errorViewService.init(event.data);
     }
 
 }

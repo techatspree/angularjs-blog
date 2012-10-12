@@ -4,7 +4,7 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-routerContract = {
+var routerContract = {
 
     /**
      * Detects and initializes requested route.
@@ -14,7 +14,7 @@ routerContract = {
 }
 
 
-router = {
+var router = {
 
     hub: null,
 
@@ -109,15 +109,11 @@ router = {
 
         // load main view
         self.mainViewService.init();
-        self.hub.publish(self, "/mainView/refresh", {});
 
 
         // singe blog post route
         if (postId != null) {
             self.blogPostViewService.init(postId);
-            self.hub.publish(self, "/blogPostView/refresh", {
-                postId: postId
-            });
         }
 
         // page routes
@@ -127,7 +123,6 @@ router = {
                 // add post route
                 if (pageId == "addPost") {
                     self.addPostViewService.init();
-                    self.hub.publish(self, "/addPostView/refresh", {});
                 }
             } else {
                 self.hub.publish(this, "/error", {
@@ -142,7 +137,6 @@ router = {
         // main route, lists all blog posts
         else {
             self.blogListViewService.init();
-            self.hub.publish(self, "/blogListView/refresh", {});
         }
     },
 

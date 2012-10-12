@@ -3,7 +3,7 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-blogListViewContract = {
+var blogListViewContract = {
 
     /**
      *
@@ -12,7 +12,7 @@ blogListViewContract = {
 
 }
 
-blogListView = {
+var blogListView = {
 
     hub: null,
 
@@ -39,30 +39,28 @@ blogListView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: userServiceContract,
             field: "userService"
         });
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: blogPostFrontendContract,
             field: "blogPostFrontendService"
         });
 
         // We provide the UserContractService:
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: blogListViewContract
         });
 
         // Set HTML selectors
-        self.selectors = configuration.selectors;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -87,10 +85,6 @@ blogListView = {
     init: function() {
         var self = this;
 
-        // Registering event listener
-        self.hub.subscribe(self, "/blogListView/refresh", self.refresh);
-
-
         // add post button
         if (self.userService.isLoggedIn()) {
             $(self.selectors.addPostBtn).show();
@@ -99,6 +93,11 @@ blogListView = {
                 return false;
             });
         }
+
+        // Registering event listener
+        self.hub.subscribe(self, "/blogListView/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -106,14 +105,12 @@ blogListView = {
      * Private methods.
      */
 
-    refresh: function(event) {
-        var self = this;
+    refreshEvent: function(event) {
+        this.refresh();
+    },
 
-        var readMoreBtnTarget = function(id) {
-            document.location.href = "?showPost=" + id;
-        }
-
-        self.blogPostFrontendService.updateWithBlogList(readMoreBtnTarget);
+    refresh: function() {
+        this.blogPostFrontendService.updateWithBlogList();
     }
 
 }

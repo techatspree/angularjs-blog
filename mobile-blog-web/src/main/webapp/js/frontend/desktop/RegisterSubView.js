@@ -1,19 +1,25 @@
 /**
  * @author Till Hermsen
- * @date 10.10.12
+ * @date 11.10.12
  */
-var loginSubViewContract = {
+var registerSubViewContract = {
 
-    /**
-     *
-     */
     init: function() {}
 
 }
 
-var loginSubView = {
+var registerSubView = {
 
     hub: null,
+
+    validationViews: {
+        username:  null,
+        password:  null,
+        firstname: null,
+        surname:   null,
+        email:     null,
+        phone:     null
+    },
 
     // Services
     userService: null,
@@ -31,7 +37,7 @@ var loginSubView = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'loginSubView';
+        return 'registerSubView';
     },
 
     /**
@@ -53,7 +59,7 @@ var loginSubView = {
         // Provide service
         this.hub.provideService({
             component: this,
-            contract:  loginSubViewContract
+            contract:  registerSubViewContract
         });
 
         // Configuration
@@ -67,7 +73,7 @@ var loginSubView = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/loginSubView/init", this.initEvent);
+        this.hub.subscribe(this, "/registerSubView/init", this.initEvent);
     },
 
     /**
@@ -85,35 +91,35 @@ var loginSubView = {
     init: function() {
         var self = this;
 
-        $(self.selectors.userContainer).html($(self.templates.loginForm).html());
+        $(self.selectors.userContainer).html($(self.templates.registerForm).html());
 
-        $(self.selectors.loginForm).submit(function(e) {
+        $(self.selectors.registerForm).submit(function(e) {
             e.preventDefault();
 
             self.clearValidationError();
 
-            var credentials = $(self.selectors.loginForm).serializeArray();
-            var user = {};
-            user.username = credentials[0].value;
-            user.password = credentials[1].value
+            var formData = $(self.selectors.registerForm).serializeArray();
 
-            self.userService.login(user,
-                function(user) {
+            var userData = {};
+            userData.username  = formData[0].value;
+            userData.password  = formData[1].value;
+            userData.firstname = formData[2].value;
+            userData.surname   = formData[3].value;
+            userData.email     = formData[4].value;
+            userData.phone     = formData[5].value;
+
+            self.userService.register(userData,
+                function() {
                     location.reload();
                 },
                 function(error) {
-                    self.showValidationError(error);
+                    self.showValidationError(JSON.parse(error.response));
                 }
             );
         });
 
-        $(self.selectors.registerBtn).on("click", function(e) {
-            e.preventDefault();
-            self.hub.publish(self, "/registerSubView/init", {});
-        });
-
         // Registering event listener
-        self.hub.subscribe(self, "/loginSubView/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/registerSubView/refresh", self.refreshEvent);
 
         self.refresh();
     },
@@ -136,17 +142,37 @@ var loginSubView = {
     },
 
     showValidationError: function(error) {
-        var data = {
-            id: "errorLogin",
-            errorMessage: "Login failed!"
-        };
+        var self = this;
 
-        $(_.template($(this.templates.formValidationError).html(),data))
-            .insertAfter(this.selectors.loginForm);
+        $.each(this.validationViews, function(index, item) {
+            if (error[index]) {
+                var data = {
+                    id: "error" + self.capitalize(index),
+                    errorMessage: error[index]
+                }
+
+                self.validationViews[index] = _.template(
+                    $(self.templates.formValidationError).html(), data
+                );
+
+                $(self.validationViews[index]).insertAfter(
+                    self.selectors["input" + self.capitalize(index)]
+                );
+            }
+        });
     },
 
     clearValidationError: function() {
-        $(this.selectors.error).remove();
+        var self = this;
+        $.each(this.validationViews, function(index, item) {
+            if (item != null) {
+                $(self.selectors["error" + self.capitalize(index)]).remove();
+            }
+        });
+    },
+
+    capitalize: function(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
 }

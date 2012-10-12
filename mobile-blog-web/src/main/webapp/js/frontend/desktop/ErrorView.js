@@ -4,13 +4,13 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-errorViewContract = {
+var errorViewContract = {
 
     init: function(data) {}
 
 }
 
-errorView = {
+var errorView = {
 
     hub:null,
 
@@ -36,19 +36,17 @@ errorView = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Provide service
-        self.hub.provideService({
-            component:self,
-            contract: errorViewContract
+        this.hub.provideService({
+            component: this,
+            contract:  errorViewContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -70,23 +68,24 @@ errorView = {
      * Contract methods.
      */
 
-    init: function() {
-        var self = this;
-
+    init: function(data) {
         // Registering event listener
-        self.hub.subscribe(self, "/errorView/refresh", self.refresh);
+        this.hub.subscribe(this, "/errorView/refresh", this.refreshEvent);
 
+        this.refresh(data);
     },
 
     /**
      * Private methods.
      */
 
-    refresh: function(event) {
-        var self = this;
+    refreshEvent: function(event) {
+        this.refresh(event.data);
+    },
 
-        $(self.selectors.content).html(
-            _.template($(self.templates.error).html(), {"data":event.data})
+    refresh: function(data) {
+        $(this.selectors.content).html(
+            _.template($(this.templates.error).html(), {"data":data})
         );
     }
 

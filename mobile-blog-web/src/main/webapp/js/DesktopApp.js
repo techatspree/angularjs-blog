@@ -66,9 +66,6 @@ var App = {
                 selectors: {
                     body:              "body",
                     loginLogoutBtn:    "#loginLogoutBtn",
-                    loginSubmitBtn:    "#loginSubmitBtn",
-                    registerBtn:       "#registerBtn",
-                    registerSubmitBtn: "#registerSubmitBtn",
                     userContainer:     "#user"
                 },
                 templates: {
@@ -80,7 +77,8 @@ var App = {
                 selectors: {
                     userContainer: '#user',
                     loginForm:     '#loginForm',
-                    error:         '#errorLogin'
+                    error:         '#errorLogin',
+                    registerBtn:       "#registerBtn"
                 },
                 templates: {
                     loginForm:           '#desktop-loginform-tmpl',
@@ -92,14 +90,14 @@ var App = {
                 selectors: {
                     userContainer:  '#user',
                     registerForm:   '#registerForm',
-                    inputUser:      '#inputUser',
-                    inputPass:      '#inputPass',
+                    inputUsername:  '#inputUser',
+                    inputPassword:  '#inputPass',
                     inputFirstname: '#inputFirstname',
                     inputSurname:   '#inputSurname',
                     inputEmail:     '#inputEmail',
                     inputPhone:     '#inputPhone',
-                    errorUser:      '#errorUser',
-                    errorPass:      '#errorPass',
+                    errorUsername:  '#errorUsername',
+                    errorPassword:  '#errorPassword',
                     errorFirstname: '#errorFirstname',
                     errorSurname:   '#errorSurname',
                     errorEmail:     '#errorEmail',

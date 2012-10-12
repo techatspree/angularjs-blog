@@ -2,7 +2,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-blogPostViewContract = {
+var blogPostViewContract = {
 
     /**
      * Initializes blog post view.
@@ -14,7 +14,7 @@ blogPostViewContract = {
 }
 
 
-blogPostView = {
+var blogPostView = {
 
     hub: null,
 
@@ -45,31 +45,29 @@ blogPostView = {
      * @param the object used to configure this component
      */
     configure: function (theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract:  blogPostFrontendContract,
             field:     "blogPostFrontendService"
         });
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: addCommentSubViewContract,
             field: "addCommentSubViewService"
         });
 
         // Provide service
-        self.hub.provideService({
-            component:self,
+        this.hub.provideService({
+            component:this,
             contract: blogPostViewContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -77,7 +75,9 @@ blogPostView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function () {},
+    start: function () {
+        this.hub.subscribe(this, "/blogPost/init", this.initEvent);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -92,32 +92,41 @@ blogPostView = {
      */
 
     init: function (postId) {
-        var self = this;
-
-        // Registering event listener
-        self.hub.subscribe(self, "/blogPostView/refresh", self.refresh);
+        if (postId == null) { throw "BlogPostView could not be initialized."; }
 
         // adding blog post template
-        $(self.selectors.content).append($(self.templates.blogPost).html());
+        $(this.selectors.content).append($(this.templates.blogPost).html());
 
+        this.addCommentSubViewService.init(postId);
 
-        self.addCommentSubViewService.init(postId);
+        // Registering event listener
+        this.hub.subscribe(this, "/blogPostView/refresh", this.refreshEvent);
+
+        this.refresh(postId);
     },
 
 
     /**
      * Private methods.
      */
-    refresh: function (event) {
-        var self = this,
-            postId = event.postId;
 
-        if ($(self.selectors.blogPostContainer).length > 0) {
-            self.blogPostFrontendService.updateWithBlogPost(postId);
+    initEvent: function(event) {
+        document.location.href= "?showPost=" + event.postId;
+    },
+
+    refreshEvent: function(event) {
+        this.refresh(event.postId);
+    },
+
+    refresh: function(postId) {
+        if (postId == null) { throw "BlogPostView could not be refreshed."; }
+
+        if ($(this.selectors.blogPostContainer).length > 0) {
+            this.blogPostFrontendService.updateWithBlogPost(postId);
         }
 
-        if ($(self.selectors.commentList).length > 0) {
-            self.blogPostFrontendService.updateWithComments(postId);
+        if ($(this.selectors.commentList).length > 0) {
+            this.blogPostFrontendService.updateWithComments(postId);
         }
     }
 

@@ -4,10 +4,10 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-bootstrapContract = {}
+var bootstrapContract = {}
 
 
-bootstrap = {
+var bootstrap = {
 
     hub: null,
 
