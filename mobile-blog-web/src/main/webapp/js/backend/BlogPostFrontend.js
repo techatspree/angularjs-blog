@@ -4,12 +4,12 @@
  * @author Till Hermsen
  * @date 08.10.12
  */
-blogPostFrontendContract = {
+var blogPostFrontendContract = {
 
     /**
      * Lists all blog posts.
      */
-    updateWithBlogList : function(readMoreBtnTarget) {},
+    updateWithBlogList : function() {},
 
     /**
      * Lists blog post with given postId.
@@ -28,7 +28,7 @@ blogPostFrontendContract = {
 }
 
 
-blogPostFrontend = {
+var blogPostFrontend = {
 
     hub: null,
 
@@ -59,27 +59,25 @@ blogPostFrontend = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: blogPostBackendContract,
             field: "blogPostBackendService"
         });
 
         // We provide the UserContractService:
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: blogPostFrontendContract
         });
 
         // Configuration
-        self.templates = configuration.templates;
-        self.selectors = configuration.selectors;
-        self.device    = configuration.device;
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
+        this.device    = configuration.device;
     },
 
     /**
@@ -101,7 +99,7 @@ blogPostFrontend = {
      * Contract methods.
      */
 
-    updateWithBlogList : function(readMoreBtnTarget) {
+    updateWithBlogList : function() {
         var self = this;
 
         self.blogPostBackendService.retrieveBlogPosts(
@@ -124,7 +122,7 @@ blogPostFrontend = {
                     var readMoreBtn = $("#readMoreBtn" + blogPost.id);
                     if (readMoreBtn.length > 0) {
                         readMoreBtn.onpress(function() {
-                            readMoreBtnTarget(blogPost.id);
+                            self.hub.publish(self, "/blogPost/init", {postId: blogPost.id});
                         });
                     }
                 });

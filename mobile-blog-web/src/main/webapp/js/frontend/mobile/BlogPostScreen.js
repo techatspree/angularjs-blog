@@ -2,13 +2,18 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-blogPostScreenContract = {
+var blogPostScreenContract = {
 
-    init: function() {}
+    /**
+     * Initializes the blog post screen.
+     *
+     * @param postId
+     */
+    init: function(postId) {}
 
 }
 
-blogPostScreen = {
+var blogPostScreen = {
 
     hub: null,
 
@@ -16,11 +21,9 @@ blogPostScreen = {
     userService: null,
     blogPostFrontendService: null,
     mainScreenService: null,
-    loginScreenService: null,
-
-    // HTML Templates
 
     // HTML selectors
+    selectors: null,
 
 
     /**
@@ -57,11 +60,7 @@ blogPostScreen = {
             contract: mainScreenContract,
             field: "mainScreenService"
         });
-        this.hub.requireService({
-            component: this,
-            contract: loginScreenContract,
-            field: "loginScreenService"
-        });
+
 
         // Provide service
         this.hub.provideService({
@@ -70,6 +69,7 @@ blogPostScreen = {
         });
 
         // Configuration
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -77,7 +77,9 @@ blogPostScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/blogPost/init", this.initEvent)
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -92,9 +94,9 @@ blogPostScreen = {
      */
 
     init: function(postId) {
-        var self = this;
+        if (postId == null) { throw "BlogPostScreen could not be initialized."; }
 
-        self.hub.publish(self, "/blogPostScreen/refresh", self.refresh);
+        var self = this;
 
         var mainContainer = self.mainScreenService.getMainContainer();
 
@@ -103,15 +105,19 @@ blogPostScreen = {
          */
         var onAddCommentClicked = function() {
             if (!self.userService.isLoggedIn()) {
-                mainContainer.stack.push(self.loginScreenService.init());
+                self.hub.publish(self, "/loginScreen/init", {});
             }
             else {
-                mainContainer.stack.push(App.AddCommentScreen.get());
-                App.AddCommentScreen.refresh(null);
+                self.hub.publish(self, "/addCommentScreen/init", {postId: postId});
             }
-        }
+        };
+
+        mainContainer.stack.popEvent.subscribe(function(){
+            self.refresh(postId);
+        });
 
 
+        // View
         var view = new joCard([
             new joGroup(
                 new joFlexcol([
@@ -126,13 +132,11 @@ blogPostScreen = {
 
         mainContainer.stack.push(view);
 
-        var data = {
-            data: {
-                postId: postId
-            }
-        }
 
-        self.refresh(data);
+        // Registering event listener
+        self.hub.publish(self, "/blogPostScreen/refresh", self.refreshEvent);
+
+        self.refresh(postId);
     },
 
 
@@ -140,15 +144,22 @@ blogPostScreen = {
      * Private methods.
      */
 
-    refresh: function(event) {
-        var postId = (event.data.postId) ? event.data.postId : null;
-        if (postId === null) { return; }
+    initEvent: function(event) {
+        this.init(event.postId);
+    },
 
-        if ($('#blogPostContainer').length > 0) {
+    refreshEvent: function(event) {
+        this.refresh(event.postId);
+    },
+
+    refresh: function(postId) {
+        if (postId == null) { throw "BlogPostScreen could not be refreshed."; }
+
+        if ($(this.selectors.blogPostContainer).length > 0) {
             this.blogPostFrontendService.updateWithBlogPost(postId);
         }
 
-        if ($('#commentList').length > 0) {
+        if ($(this.selectors.commentList).length > 0) {
             this.blogPostFrontendService.updateWithComments(postId);
         }
     }

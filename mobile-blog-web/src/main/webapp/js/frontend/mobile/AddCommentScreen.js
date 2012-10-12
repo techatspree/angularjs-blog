@@ -1,65 +1,142 @@
-/*
- * Screen to write a new comment.
+/**
+ * @author Till Hermsen
+ * @date 12.10.12
  */
+var addCommentScreenContract = {
 
-App.AddCommentScreen = function() {
-    var view;
-    var inputComment;
+    init: function(postId) {}
 
-    var blogPostId;
+}
 
-    /*
-     * UI
+var addCommentScreen = {
+
+    hub: null,
+
+    // joApp elements
+    inputComment: null,
+
+    // Services
+    mainScreenService: null,
+    blogPostBackendService: null,
+
+    // HTML Templates
+
+    // HTML selectors
+
+
+    /**
+     * Method returning the component <b>unique</b>
+     * name. Using a fully qualified name is encouraged.
+     * @return the component unique name
      */
-    var init = function() {
-        view =  new joCard([
+    getComponentName: function() {
+        return 'addCommentScreen';
+    },
+
+    /**
+     * Configure method. This method is called when the
+     * component is registered on the hub.
+     * @param theHub the hub
+     * @param the object used to configure this component
+     */
+    configure: function(theHub, configuration) {
+        this.hub = theHub;
+
+        // Required services
+        this.hub.requireService({
+            component: this,
+            contract: mainScreenContract,
+            field: "mainScreenService"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: blogPostBackendContract,
+            field: "blogPostBackendService"
+        });
+
+        // Provide service
+        this.hub.provideService({
+            component: this,
+            contract:  addCommentScreenContract
+        });
+
+        // Configuration
+    },
+
+    /**
+     * The Start function
+     * This method is called when the hub starts or just
+     * after configure if the hub is already started.
+     */
+    start: function() {
+        this.hub.subscribe(this, "/addCommentScreen/init", this.initEvent);
+    },
+
+    /**
+     * The Stop method is called when the hub stops or
+     * just after the component removal if the hub is
+     * not stopped. No events can be send in this method.
+     */
+    stop: function() {},
+
+
+    /**
+     * Contract methods.
+     */
+    init: function(postId) {
+        if (postId == null) { throw "AddCommentScreen could not be initialized."; }
+
+        var self = this;
+
+        var mainContainer = self.mainScreenService.getMainContainer();
+
+        /**
+         * Interaction listeners
+         */
+        var onSubmitClicked = function() {
+            var comment = {};
+            comment.content = self.inputComment.getData();
+
+            self.inputComment.setData("");
+
+            self.blogPostBackendService.addComment(postId, comment, function() {
+                mainContainer.stack.pop();
+            });
+        }
+
+
+        // View
+        var view =  new joCard([
             new joGroup([
-               new joLabel("Content"),
-               new joFlexrow(inputComment = new joTextarea(""))
+                new joLabel("Content"),
+                new joFlexrow(self.inputComment = new joTextarea(""))
             ]),
             new joDivider(),
             new joButton("Submit").selectEvent.subscribe(onSubmitClicked)
         ]);
-    }
 
-    /*
-     * interaction listeners
+        mainContainer.stack.push(view);
+
+        // Registering event listener
+        self.hub.subscribe(self, "/addCommentScreen/refresh", self.refreshEvent);
+
+        self.refresh();
+    },
+
+
+    /**
+     * Private methods.
      */
-    var onSubmitClicked = function() {
-        var mainContainer = hub.getComponent("mainScreen").getMainContainer();
+    initEvent: function(event) {
+        this.init(event.postId);
+    },
 
-        var comment = {};
-        comment.content = inputComment.getData();
+    refreshEvent: function(event) {
+        this.refresh();
+    },
 
-        inputComment.setData("");
-
-        hub.getComponent("blogPostBackend").addComment(blogPostId, comment, function() {
-            inputComment.setData("");
-            mainContainer.stack.pop();
-        });
+    refresh: function() {
+        this.inputComment.setData("");
     }
 
-
-    /*
-     * Public interface
-     */
-    return {
-        /*
-         * Manually refresh the screen.
-         */
-        refresh : function(id) {
-            blogPostId = id;
-        },
-
-        /*
-         * Return the root view. Initialize if necessary.
-         */
-        get : function() {
-            if (!view) {
-                init();
-            }
-
-            return view;
-        }
-    }
-}();
+}

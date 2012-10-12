@@ -2,13 +2,16 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-loginScreenContract = {
+var loginScreenContract = {
 
+    /**
+     * Initializes the login screen.
+     */
     init: function() {}
 
 }
 
-loginScreen = {
+var loginScreen = {
 
     hub: null,
 
@@ -19,11 +22,6 @@ loginScreen = {
     // Services
     userService: null,
     mainScreenService: null,
-    registerScreenService: null,
-
-    // HTML Templates
-
-    // HTML selectors
 
 
     /**
@@ -55,19 +53,13 @@ loginScreen = {
             contract: mainScreenContract,
             field: "mainScreenService"
         });
-        this.hub.requireService({
-            component: this,
-            contract: registerScreenContract,
-            field: "registerScreenService"
-        });
+
 
         // Provide service
         this.hub.provideService({
             component: this,
             contract:  loginScreenContract
         });
-
-        // Configuration
     },
 
     /**
@@ -75,7 +67,9 @@ loginScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/loginScreen/init", this.initEvent);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -92,15 +86,13 @@ loginScreen = {
     init: function() {
         var self = this;
 
-        self.hub.subscribe(this, "/loginScreen/refresh", self.refresh);
-
         var mainContainer = self.mainScreenService.getMainContainer();
 
         /**
          * Interaction listeners
          */
         var onRegisterClicked = function() {
-            self.registerScreenService.init();
+            self.hub.publish(self, "/registerScreen/init", {});
         }
 
         var onLoginClicked = function() {
@@ -121,6 +113,7 @@ loginScreen = {
         }
 
 
+        // View
         var view = new joCard([
             new joTitle("Login"),
             new joFlexcol([
@@ -139,7 +132,11 @@ loginScreen = {
 
         mainContainer.stack.push(view);
 
-        self.refresh(null);
+
+        // Registering event listener
+        self.hub.subscribe(this, "/loginScreen/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -147,7 +144,15 @@ loginScreen = {
      * Private methods.
      */
 
-    refresh: function(event) {
+    initEvent: function(event) {
+        this.init();
+    },
+
+    refreshEvent: function(event) {
+        this.refresh();
+    },
+
+    refresh: function() {
         this.inputUser.setData("");
         this.inputPass.setData("");
     }

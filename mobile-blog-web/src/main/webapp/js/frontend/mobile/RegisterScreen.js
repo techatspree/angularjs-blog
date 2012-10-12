@@ -2,39 +2,39 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-registerScreenContract = {
+var registerScreenContract = {
 
     init: function() {}
 
 }
 
-registerScreen = {
+var registerScreen = {
 
     hub: null,
 
     // joApp elements
-    inputUser:      null,
-    inputPass:      null,
-    inputFirstname: null,
-    inputSurname:   null,
-    inputEmail:     null,
-    inputPhone:     null,
+    inputFields: {
+        inputUser:      null,
+        inputPass:      null,
+        inputFirstname: null,
+        inputSurname:   null,
+        inputEmail:     null,
+        inputPhone:     null
+    },
 
-    validateUsername:  null,
-    validatePassword:  null,
-    validateFirstname: null,
-    validateSurname:   null,
-    validateEmail:     null,
-    validatePhone:     null,
+    validationViews: {
+        username:  null,
+        password:  null,
+        firstname: null,
+        surname:   null,
+        email:     null,
+        phone:     null
+    },
 
 
     // Services
     userService: null,
     mainScreenService: null,
-
-    // HTML Templates
-
-    // HTML selectors
 
 
     /**
@@ -72,8 +72,6 @@ registerScreen = {
             component: this,
             contract: registerScreenContract
         });
-
-        // Configuration
     },
 
     /**
@@ -81,7 +79,9 @@ registerScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/registerScreen/init", this.initEvent);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -98,8 +98,6 @@ registerScreen = {
     init: function() {
         var self = this;
 
-        self.hub.subscribe(self, "/registerScreen/refresh", self.refresh);
-
         var mainContainer = self.mainScreenService.getMainContainer();
 
         /**
@@ -107,15 +105,16 @@ registerScreen = {
          */
         var onRegisterClicked = function() {
             var user = {};
-            user.username  = self.inputUser.getData();
-            user.password  = self.inputPass.getData();
-            user.firstname = self.inputFirstname.getData();
-            user.surname   = self.inputSurname.getData();
-            user.email     = self.inputEmail.getData();
-            user.phone     = self.inputPhone.getData();
+            user.username  = self.inputFields.inputUser.getData();
+            user.password  = self.inputFields.inputPass.getData();
+            user.firstname = self.inputFields.inputFirstname.getData();
+            user.surname   = self.inputFields.inputSurname.getData();
+            user.email     = self.inputFields.inputEmail.getData();
+            user.phone     = self.inputFields.inputPhone.getData();
 
             // perform login
             self.clearValidationErrors();
+
             self.userService.register(user,
                 function(data) {
                     mainContainer.stack.pop();
@@ -128,31 +127,53 @@ registerScreen = {
         }
 
 
+        // View
         var view = new joCard([
             new joTitle("Register"),
             new joGroup([
-                new joFlexrow([new joCaption("User Name"), self.validateUsername = new joView()]),
-                new joFlexrow([self.inputUser = new joInput()]),
-                new joFlexrow([new joCaption("Password"), self.validatePassword = new joView()]),
-                new joFlexrow([self.inputPass = new joPasswordInput()]),
-                new joFlexrow([new joCaption("First Name"), self.validateFirstname = new joView()]),
-                new joFlexrow([self.inputFirstname = new joInput()]),
-                new joFlexrow([new joCaption("Surname"), self.validateSurname = new joView()]),
-                new joFlexrow([self.inputSurname = new joInput()]),
-                new joFlexrow([new joCaption("Email"), self.validateEmail = new joView()]),
-                new joFlexrow([self.inputEmail = new joInput("", "email")]),
-                new joFlexrow([new joCaption("Phone"), self.validatePhone = new joView()]),
-                new joFlexrow([self.inputPhone = new joInput("", "number")]),
+                new joFlexrow([
+                    new joCaption("User Name"),
+                    self.validationViews.username = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputUser = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Password"),
+                    self.validationViews.password = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputPass = new joPasswordInput()]),
+                new joFlexrow([
+                    new joCaption("First Name"),
+                    self.validationViews.firstname = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputFirstname = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Surname"),
+                    self.validationViews.surname = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputSurname = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Email"),
+                    self.validationViews.email = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputEmail = new joInput("", "email")]),
+                new joFlexrow([
+                    new joCaption("Phone"),
+                    self.validationViews.phone = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputPhone = new joInput("", "number")])
             ]),
             new joFlexrow([
-                new joButton("Register").selectEvent.subscribe(onRegisterClicked),
+                new joButton("Register").selectEvent.subscribe(onRegisterClicked)
             ])
         ]);
 
         mainContainer.stack.push(view);
 
 
-        self.refresh(null);
+        // Registering event listener
+        self.hub.subscribe(self, "/registerScreen/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -160,26 +181,36 @@ registerScreen = {
      * Private methods.
      */
 
-    refresh: function(event) {
+    initEvent: function(event) {
+        this.init();
+    },
 
+    refreshEvent: function(event) {
+        this.refresh();
+    },
+
+    refresh: function() {
+        $.each(this.inputFields, function(index, item) {
+            item.setData("");
+        });
+        
+        this.clearValidationErrors();
     },
 
     showError: function(error) {
-        if (error.username)  {this.validateUsername.setData('<div class="validationError">' + error.username + '</div>');}
-        if (error.password)  {this.validatePassword.setData('<div class="validationError">' + error.password + '</div>');}
-        if (error.firstname) {this.validateFirstname.setData('<div class="validationError">' + error.firstname + '</div>');}
-        if (error.surname)   {this.validateSurname.setData('<div class="validationError">' + error.surname + '</div>');}
-        if (error.email)     {this.validateEmail.setData('<div class="validationError">' + error.email + '</div>');}
-        if (error.phone)     {this.validatePhone.setData('<div class="validationError">' + error.phone + '</div>');}
+        $.each(this.validationViews, function(index, item) {
+            if (error[index]) {
+                item.setData(
+                    '<div class="validationError">' + error[index] + '</div>'
+                );
+            }
+        });
     },
 
     clearValidationErrors: function() {
-        this.validateUsername.setData("");
-        this.validatePassword.setData("");
-        this.validateFirstname.setData("");
-        this.validateSurname.setData("");
-        this.validateEmail.setData("");
-        this.validatePhone.setData("");
+        $.each(this.validationViews, function(index, item) {
+            item.setData("");
+        });
     }
 
 }

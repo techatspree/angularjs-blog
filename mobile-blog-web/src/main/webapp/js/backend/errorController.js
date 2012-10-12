@@ -2,9 +2,9 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-errorControllerContract = {}
+var errorControllerContract = {}
 
-errorController = {
+var errorController = {
 
     hub: null,
 
@@ -28,20 +28,18 @@ errorController = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: errorViewContract,
             field: 'errorViewService'
         });
 
         // Provide service
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract:  errorControllerContract
         });
     },
@@ -52,10 +50,8 @@ errorController = {
      * after configure if the hub is already started.
      */
     start: function() {
-        var self = this;
-
         // Registering event listener
-        self.hub.subscribe(self, "/error", self.eventCallback);
+        this.hub.subscribe(this, "/error", this.loadView);
     },
 
     /**
@@ -75,10 +71,9 @@ errorController = {
      * Private methods.
      */
 
-    eventCallback: function(event) {
-        var self = this;
-        self.errorViewService.init();
-        self.hub.publish(self, "/errorView/refresh", {"data": event.data});
+    loadView: function(event) {
+        this.errorViewService.init();
+        this.hub.publish(this, "/errorView/refresh", {"data": event.data});
     }
 
 }

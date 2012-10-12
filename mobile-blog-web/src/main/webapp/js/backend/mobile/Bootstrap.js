@@ -4,10 +4,10 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-bootstrapContract = {}
+var bootstrapContract = {}
 
 
-bootstrap = {
+var bootstrap = {
 
     hub: null,
 
@@ -31,13 +31,11 @@ bootstrap = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required service
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: mainScreenContract,
             field: "mainScreenService"
         });
@@ -48,8 +46,8 @@ bootstrap = {
         });
 
         // We provide the UserContractService:
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: bootstrapContract
         });
 
@@ -61,8 +59,7 @@ bootstrap = {
      * after configure if the hub is already started.
      */
     start: function() {
-        var self = this;
-        self.hub.subscribe(self, "/templates/loaded", self.startApp);
+        this.hub.subscribe(this, "/templates/loaded", this.startApp);
     },
 
     /**

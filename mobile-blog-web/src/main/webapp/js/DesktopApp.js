@@ -3,7 +3,7 @@
  *
  * @author Till Hermsen
  */
-App = {
+var App = {
 
     init: function() {
         // h-ubu components registration

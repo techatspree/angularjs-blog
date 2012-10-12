@@ -9,7 +9,7 @@
  * Author: Till Hermsen
  * Date: 08.10.12
  */
-blogPostBackendContract = {
+var blogPostBackendContract = {
 
     /**
      * Adds new blog post.
@@ -59,7 +59,7 @@ blogPostBackendContract = {
 }
 
 
-blogPostBackend = {
+var blogPostBackend = {
 
     hub: null,
 
@@ -82,20 +82,18 @@ blogPostBackend = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Required services
-        self.hub.requireService({
-            component: self,
+        this.hub.requireService({
+            component: this,
             contract: userServiceContract,
             field: "userService"
         });
 
         // We provide the UserContractService:
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract: blogPostBackendContract
         });
     },
@@ -120,10 +118,8 @@ blogPostBackend = {
      */
 
     addBlogPost : function(blogPost, callback, errorCallback) {
-        var self = this;
-
         blogPost.author = {};
-        blogPost.author.id = self.userService.getUser().id;
+        blogPost.author.id = this.userService.getUser().id;
 
         $.ajax({
             url: "../rest/blog",
@@ -146,10 +142,8 @@ blogPostBackend = {
     },
 
     addComment : function(postId, comment, callback, errorCallback) {
-        var self = this;
-
         comment.author = {};
-        comment.author.id = self.userService.getUser().id;
+        comment.author.id = this.userService.getUser().id;
 
         $.ajax({
             url: "../rest/blog/" + postId + "/comment",

@@ -1,14 +1,14 @@
 /**
  * @author Till Hermsen
- * @date ${DATE}
+ * @date 11.10.12
  */
-addPostScreenContract = {
+var addPostScreenContract = {
 
     init: function() {}
 
 }
 
-addPostScreen = {
+var addPostScreen = {
 
     hub: null,
 
@@ -19,10 +19,6 @@ addPostScreen = {
     // Services
     blogPostBackendService: null,
     mainScreenService: null,
-
-    // HTML Templates
-
-    // HTML selectors
 
 
     /**
@@ -69,7 +65,9 @@ addPostScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/addPostScreen/init", this.initEvent);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -85,8 +83,6 @@ addPostScreen = {
 
     init: function() {
         var self = this;
-
-        self.hub.subscribe(self, "/addPostScreen/refresh", self.refresh);
 
         var mainContainer = self.mainScreenService.getMainContainer();
 
@@ -106,6 +102,7 @@ addPostScreen = {
         };
 
 
+        // View
         var view = new joCard([
             new joGroup([
                 new joLabel("Title"),
@@ -120,7 +117,10 @@ addPostScreen = {
         mainContainer.stack.push(view);
 
 
-        self.refresh(null);
+        // Registering event listener
+        self.hub.subscribe(self, "/addPostScreen/refresh", self.refreshEvent);
+
+        self.refresh();
     },
 
 
@@ -128,7 +128,15 @@ addPostScreen = {
      * Private methods.
      */
 
-    refresh: function(event) {
+    initEvent: function(event) {
+        this.init();
+    },
+
+    refreshEvent: function(event) {
+        this.event();
+    },
+
+    refresh: function() {
         this.inputTitle.setData("");
         this.inputContent.setData("");
     }

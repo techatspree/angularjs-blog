@@ -3,7 +3,7 @@
  *
  * @author Philipp Kumar
  */
-App = {
+var App = {
 
 	/**
 	 * Registers all h-ubu components.
@@ -47,17 +47,27 @@ App = {
             .registerComponent(loginScreen, {
                 name: 'loginScreen'
             })
+            .registerComponent(registerScreen, {
+                name: 'registerScreen'
+            })
             .registerComponent(blogListScreen, {
-                name: 'blogListScreen'
+                name: 'blogListScreen',
+                selectors: {
+                    blogPostList: '#blogPostList'
+                }
             })
             .registerComponent(blogPostScreen, {
-                name: 'blogPostScreen'
+                name: 'blogPostScreen',
+                selectors: {
+                    blogPostContainer: '#blogPostContainer',
+                    commentList:       '#commentList'
+                }
             })
             .registerComponent(addPostScreen, {
                 name: 'addPostScreen'
             })
-            .registerComponent(registerScreen, {
-                name: 'registerScreen'
+            .registerComponent(addCommentScreen, {
+                name: 'addCommentScreen'
             })
             .start();
 	}

@@ -1,10 +1,10 @@
 /*
  * The TemplateManager enables access to all HTML templates we require.
  */
-templateManagerContract =  {}
+var templateManagerContract =  {}
 
 
-templateManager = {
+var templateManager = {
     hub: null,
 
     templateNames: null,

@@ -8,7 +8,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-userServiceContract = {
+var userServiceContract = {
 
     /**
      * Returns user data.
@@ -54,7 +54,7 @@ userServiceContract = {
 
 }
 
-userService = {
+var userService = {
 
     hub: null,
 
@@ -75,13 +75,11 @@ userService = {
      * @param the object used to configure this component
      */
     configure: function(theHub, configuration) {
-        var self = this;
-
-        self.hub = theHub;
+        this.hub = theHub;
 
         // Provide service
-        self.hub.provideService({
-            component: self,
+        this.hub.provideService({
+            component: this,
             contract:  userServiceContract
         });
     },

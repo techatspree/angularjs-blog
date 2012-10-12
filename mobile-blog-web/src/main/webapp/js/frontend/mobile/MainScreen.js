@@ -4,7 +4,7 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-mainScreenContract = {
+var mainScreenContract = {
 
     /**
      * Initializes the main screen (lists all blog posts).
@@ -19,7 +19,7 @@ mainScreenContract = {
 }
 
 
-mainScreen = {
+var mainScreen = {
 
     hub: null,
     mainContainer: null,
@@ -42,9 +42,6 @@ mainScreen = {
      */
     configure: function(theHub, configuration) {
         this.hub = theHub;
-
-        // Required service
-
 
         // We provide the UserContractService:
         this.hub.provideService({
@@ -73,8 +70,6 @@ mainScreen = {
      */
 
     init: function() {
-        this.hub.subscribe(this, "/mainScreen/refresh", this.refresh);
-
         // Load jo framework for our mobile UI.
         // In jo, the UI is defined entirely via JavaScript.
         jo.load();
@@ -84,7 +79,6 @@ mainScreen = {
             e.preventDefault();
             joEvent.stop(e);
         }, false);
-
 
         this.mainContainer = new joStack();
 
@@ -105,7 +99,10 @@ mainScreen = {
 
         joGesture.backEvent.subscribe(this.mainContainer.stack.pop, this.mainContainer.stack);
 
-        this.refresh(null);
+        // Registering event listener
+        this.hub.subscribe(this, "/mainScreen/refresh", this.refreshEvent);
+
+        this.refresh();
     },
 
     getMainContainer: function() {
@@ -116,7 +113,12 @@ mainScreen = {
     /**
      * Private methods.
      */
-    refresh: function (event) {
+
+    refreshEvent: function() {
+        this.refresh();
+    },
+
+    refresh: function () {
         this.mainContainer.nav.setTitle(
             '<img src="../images/aerogear_logo_150px.png" class="logo" /> '
         );
