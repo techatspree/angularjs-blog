@@ -1,97 +1,216 @@
-App.RegisterScreen = function() {
-    var inputUser, inputPass;
-    var inputFirstname, inputSurname, inputEmail, inputPhone;
+/**
+ * @author Till Hermsen
+ * @date 11.10.12
+ */
+var registerScreenContract = {
 
-    var validateUsername, validatePassword;
-    var validateFirstname, validateSurname, validateEmail, validatePhone;
+    init: function() {}
 
-    var view;
+}
 
-    var init = function() {
-        view = new joCard([
+var registerScreen = {
+
+    hub: null,
+
+    // joApp elements
+    inputFields: {
+        inputUser:      null,
+        inputPass:      null,
+        inputFirstname: null,
+        inputSurname:   null,
+        inputEmail:     null,
+        inputPhone:     null
+    },
+
+    validationViews: {
+        username:  null,
+        password:  null,
+        firstname: null,
+        surname:   null,
+        email:     null,
+        phone:     null
+    },
+
+
+    // Services
+    userService: null,
+    mainScreenService: null,
+
+
+    /**
+     * Method returning the component <b>unique</b>
+     * name. Using a fully qualified name is encouraged.
+     * @return the component unique name
+     */
+    getComponentName: function() {
+        return 'registerScreen';
+    },
+
+    /**
+     * Configure method. This method is called when the
+     * component is registered on the hub.
+     * @param theHub the hub
+     * @param the object used to configure this component
+     */
+    configure: function(theHub, configuration) {
+        this.hub = theHub;
+
+        // Required services
+        this.hub.requireService({
+            component: this,
+            contract: userServiceContract,
+            field: "userService"
+        });
+        this.hub.requireService({
+            component: this,
+            contract: mainScreenContract,
+            field: "mainScreenService"
+        });
+
+        // Provide service
+        this.hub.provideService({
+            component: this,
+            contract: registerScreenContract
+        });
+    },
+
+    /**
+     * The Start function
+     * This method is called when the hub starts or just
+     * after configure if the hub is already started.
+     */
+    start: function() {
+        this.hub.subscribe(this, "/registerScreen/init", this.initEvent);
+    },
+
+    /**
+     * The Stop method is called when the hub stops or
+     * just after the component removal if the hub is
+     * not stopped. No events can be send in this method.
+     */
+    stop: function() {},
+
+
+    /**
+     * Contract methods.
+     */
+
+    init: function() {
+        var self = this;
+
+        var mainContainer = self.mainScreenService.getMainContainer();
+
+        /**
+         * Interaction listeners
+         */
+        var onRegisterClicked = function() {
+            var user = {};
+            user.username  = self.inputFields.inputUser.getData();
+            user.password  = self.inputFields.inputPass.getData();
+            user.firstname = self.inputFields.inputFirstname.getData();
+            user.surname   = self.inputFields.inputSurname.getData();
+            user.email     = self.inputFields.inputEmail.getData();
+            user.phone     = self.inputFields.inputPhone.getData();
+
+            // perform login
+            self.clearValidationErrors();
+
+            self.userService.register(user,
+                function(data) {
+                    mainContainer.stack.pop();
+                },
+                function(error) {
+                    self.showError(JSON.parse(error.response));
+                });
+
+            mainContainer.scn.hidePopup();
+        }
+
+
+        // View
+        var view = new joCard([
             new joTitle("Register"),
             new joGroup([
-                new joFlexrow([new joCaption("User Name"), validateUsername = new joView()]),
-                new joFlexrow([inputUser = new joInput()]),
-                new joFlexrow([new joCaption("Password"), validatePassword = new joView()]),
-                new joFlexrow([inputPass = new joPasswordInput()]),
-                new joFlexrow([new joCaption("First Name"), validateFirstname = new joView()]),
-                new joFlexrow([inputFirstname = new joInput()]),
-                new joFlexrow([new joCaption("Surname"), validateSurname = new joView()]),
-                new joFlexrow([inputSurname = new joInput()]),
-                new joFlexrow([new joCaption("Email"), validateEmail = new joView()]),
-                new joFlexrow([inputEmail = new joInput("", "email")]),
-                new joFlexrow([new joCaption("Phone"), validatePhone = new joView()]),
-                new joFlexrow([inputPhone = new joInput("", "number")]),
+                new joFlexrow([
+                    new joCaption("User Name"),
+                    self.validationViews.username = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputUser = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Password"),
+                    self.validationViews.password = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputPass = new joPasswordInput()]),
+                new joFlexrow([
+                    new joCaption("First Name"),
+                    self.validationViews.firstname = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputFirstname = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Surname"),
+                    self.validationViews.surname = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputSurname = new joInput()]),
+                new joFlexrow([
+                    new joCaption("Email"),
+                    self.validationViews.email = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputEmail = new joInput("", "email")]),
+                new joFlexrow([
+                    new joCaption("Phone"),
+                    self.validationViews.phone = new joView()
+                ]),
+                new joFlexrow([self.inputFields.inputPhone = new joInput("", "number")])
             ]),
             new joFlexrow([
-                new joButton("Register").selectEvent.subscribe(onRegisterClicked),
+                new joButton("Register").selectEvent.subscribe(onRegisterClicked)
             ])
         ]);
-    };
 
-    var showError = function(error) {
-        if (error.username) {validateUsername.setData('<div class="validationError">' + error.username + '</div>');}
-        if (error.password) {validatePassword.setData('<div class="validationError">' + error.password + '</div>');}
-        if (error.firstname) {validateFirstname.setData('<div class="validationError">' + error.firstname + '</div>');}
-        if (error.surname) {validateSurname.setData('<div class="validationError">' + error.surname + '</div>');}
-        if (error.email) {validateEmail.setData('<div class="validationError">' + error.email + '</div>');}
-        if (error.phone) {validatePhone.setData('<div class="validationError">' + error.phone + '</div>');}
-    };
+        mainContainer.stack.push(view);
 
-    var clearValidationErrors = function() {
-        validateUsername.setData("");
-        validatePassword.setData("");
-        validateFirstname.setData("");
-        validateSurname.setData("");
-        validateEmail.setData("");
-        validatePhone.setData("");
-    };
 
-    /*
-     * Interaction listeners
+        // Registering event listener
+        self.hub.subscribe(self, "/registerScreen/refresh", self.refreshEvent);
+
+        self.refresh();
+    },
+
+
+    /**
+     * Private methods.
      */
-    function onRegisterClicked() {
-        var user = {};
-        user.username = inputUser.getData();
-        user.password = inputPass.getData();
-        user.firstname = inputFirstname.getData();
-        user.surname = inputSurname.getData();
-        user.email = inputEmail.getData();
-        user.phone = inputPhone.getData();
 
-        // perform login
-        clearValidationErrors();
-        App.UserService.register(user,
-            function(data) {
-                App.stack.pop();
-            },
-            function(error) {
-                showError(JSON.parse(error.response));
-            });
+    initEvent: function(event) {
+        this.init();
+    },
 
-        App.scn.hidePopup();
-    }
+    refreshEvent: function(event) {
+        this.refresh();
+    },
 
-    return {
-        refresh: function() {
-            inputUser.setData("");
-            inputPass.setData("");
-            inputFirstname.setData("");
-            inputSurname.setData("");
-            inputEmail.setData("");
-            inputPhone.setData("");
-        },
+    refresh: function() {
+        $.each(this.inputFields, function(index, item) {
+            item.setData("");
+        });
+        
+        this.clearValidationErrors();
+    },
 
-        /*
-         * Return the root view. Initialize if necessary.
-         */
-        get : function() {
-            if (!view) {
-                init();
+    showError: function(error) {
+        $.each(this.validationViews, function(index, item) {
+            if (error[index]) {
+                item.setData(
+                    '<div class="validationError">' + error[index] + '</div>'
+                );
             }
+        });
+    },
 
-            return view;
-        }
+    clearValidationErrors: function() {
+        $.each(this.validationViews, function(index, item) {
+            item.setData("");
+        });
     }
-}();
+
+}

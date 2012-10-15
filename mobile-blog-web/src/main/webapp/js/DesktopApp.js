@@ -1,148 +1,156 @@
-App = {
+/**
+ * The central app object registers all h-ubu components.
+ *
+ * @author Till Hermsen
+ */
+var App = {
 
-    fetchTemplates: function(templates, callback) {
-        var loadTemplate = function (index) {
-            var template = templates[index];
-            $.ajax({
-                url: "../js/template/" + template + ".tmpl",
-                dataType: "html",
-                success: function(data) {
-                    $("head").append(data);
-                    index++;
-                    if (index < templates.length) {
-                        loadTemplate(index);
-                    } else {
-                        callback();
-                    }
+    init: function() {
+        // h-ubu components registration
+        hub.registerComponent(templateManager, {
+                name: 'templateManager',
+                templateNames: [
+                    'BlogListPost',
+                    'BlogPost',
+                    'Comment',
+                    'DesktopMain',
+                    'DesktopLoginForm',
+                    'DesktopRegisterForm',
+                    'DesktopAddPostForm',
+                    'DesktopFormValidationError',
+                    'DesktopCommentForm',
+                    'DesktopBlogPost',
+                    'DesktopError'
+                ]
+            })
+            .registerComponent(bootstrap, {
+                name: 'bootstrap'
+            })
+            .registerComponent(router, {
+                name: 'router'
+            })
+            .registerComponent(errorController, {
+                name: 'errorController'
+            })
+            .registerComponent(userService, {
+                name: 'userService'
+            })
+            .registerComponent(blogPostBackend, {
+                name:'blogPostBackend'
+            })
+            .registerComponent(blogPostFrontend, {
+                name:   'blogPostFrontend',
+                device: 'desktop',
+                selectors: {
+                    contentContainer:  '#content',
+                    blogPostContainer: '#blogPostContainer',
+                    commentsContainer: '#commentList'
+                },
+                templates: {
+                    blogListPost: "#bloglistpost-tmpl",
+                    blogPost:     "#blogpost-tmpl",
+                    comment:      "#comment-tmpl"
                 }
-            });
-        }
-
-        loadTemplate(0);
-    },
-
-    load: function() {
-        var templates = [
-            'BlogListEntry',
-            'BlogEntry',
-            'Comment',
-            'DesktopLoginForm',
-            'DesktopRegisterForm',
-            'DesktopAddPostForm',
-            'DesktopLoginLogoutBtn',
-            'DesktopFormValidationError',
-            'DesktopAddPostBtn',
-            'DesktopCommentForm',
-            'DesktopBlogEntry'
-        ];
-
-        App.fetchTemplates(
-            templates, function() { App.start(); }
-        );
-    },
-
-	start: function() {
-
-	    var searchString = window.location.search.substring(1),
-                    params = searchString.split("&"),
-                    keyValueHash = {};
-
-	    for (var i = 0; i < params.length; i++) {
-	        var val = params[i].split("=");
-	        keyValueHash[unescape(val[0])] = unescape(val[1]);
-	    }
-
-        var postID = keyValueHash['showPost'];
-        var pageID = keyValueHash['page'];
-
-        if (postID != null) {
-            $("#content").append(App.BlogPostNode.get());
-            App.BlogPostNode.refresh(postID);
-	    }
-        else if (pageID != null && pageID == "addPost") {
-            if (App.UserService.isLoggedIn()) {
-                $("#content").html(_.template($("#desktopaddpostform-tmpl").html(), {}));
-                $("#addPostForm").submit(function(e) {
-                    App.BlogAddPost.onSubmitClicked();
-                    return false;
-                });
-            } else {
-                $("#content").html("please login");
-            }
-        }
-        else {
-            for(var i=0; i < $('article').length; i++) {
-                $("#postButton" + i).on('click', function() {
-                    App.openBlogPost(i);
-                    return false;
-                });
-            }
-
-            App.BlogEntryFrontend.updateWithBlogList($('#content'));
-
-
-            // add post button
-            if (App.UserService.isLoggedIn()) {
-                $($("#desktopaddpostbtn-tmpl").html()).insertBefore('#content');
-                $("#addPostBtn").on("click", function(e) {
-                    document.location.href = "?page=addPost";
-                });
-            }
-
-        }
-
-
-        // add login / logout button
-        if (App.UserService.isLoggedIn()) {
-            var data = {
-                id    : 'logoutBtn',
-                title : 'Logout'
-            };
-            $("#user").html(_.template($("#desktoploginlogoutbtn-tmpl").html(), data));
-
-        } else {
-            var data = {
-                id    : 'loginBtn',
-                title : 'Login'
-            };
-            $("#user").html(_.template($("#desktoploginlogoutbtn-tmpl").html(), data));
-        }
-
-        // load login form
-        $("#loginBtn").on("click", function(e) {
-            $("#user").html(_.template(App.Login.loadLoginForm(), {}));
-
-            // login
-            $("#loginSubmit").on("click", function(e) {
-                App.Login.onLoginClicked();
-                return false;
-            });
-
-            // load register form
-            $("#registerBtn").on("click", function(e) {
-                $("#user").html(_.template(App.Register.loadRegisterForm(), {}));
-
-                $("#registerSubmit").on("click", function(e) {
-                    App.Register.onRegisterClicked();
-                    return false;
-                });
-                return false;
-            });
-
-            return false;
-        });
-
-        // logout
-        $("#logoutBtn").on("click", function(e) {
-            App.UserService.logout();
-            location.reload()
-
-            return false;
-        });
-
-	},
-
-	openBlogPost: function(id) {
-        document.location.href = "?showPost=" + id;
+            })
+            .registerComponent(errorView, {
+                name: 'errorView',
+                selectors: {
+                    content: '#content'
+                },
+                templates: {
+                    error: '#desktop-error-tmpl'
+                }
+            })
+            .registerComponent(mainView, {
+                name: 'mainView',
+                selectors: {
+                    body:              "body",
+                    loginLogoutBtn:    "#loginLogoutBtn",
+                    userContainer:     "#user"
+                },
+                templates: {
+                    main: '#desktop-main-tmpl'
+                }
+            })
+            .registerComponent(loginSubView, {
+                name: 'loginSubView',
+                selectors: {
+                    userContainer: '#user',
+                    loginForm:     '#loginForm',
+                    error:         '#errorLogin',
+                    registerBtn:       "#registerBtn"
+                },
+                templates: {
+                    loginForm:           '#desktop-loginform-tmpl',
+                    formValidationError: '#desktop-formvalidationerror-tmpl'
+                }
+            })
+            .registerComponent(registerSubView, {
+                name: 'registerSubView',
+                selectors: {
+                    userContainer:  '#user',
+                    registerForm:   '#registerForm',
+                    inputUsername:  '#inputUser',
+                    inputPassword:  '#inputPass',
+                    inputFirstname: '#inputFirstname',
+                    inputSurname:   '#inputSurname',
+                    inputEmail:     '#inputEmail',
+                    inputPhone:     '#inputPhone',
+                    errorUsername:  '#errorUsername',
+                    errorPassword:  '#errorPassword',
+                    errorFirstname: '#errorFirstname',
+                    errorSurname:   '#errorSurname',
+                    errorEmail:     '#errorEmail',
+                    errorPhone:     '#errorPhone'
+                },
+                templates: {
+                    registerForm:        '#desktop-registerform-tmpl',
+                    formValidationError: '#desktop-formvalidationerror-tmpl'
+                }
+            })
+            .registerComponent(blogListView, {
+                name:      'blogListView',
+                selectors: {
+                    addPostBtn:'#addPostBtn'
+                }
+            })
+            .registerComponent(blogPostView, {
+                name: 'blogPostView',
+                selectors: {
+                    content:           '#content',
+                    blogPostContainer: '#blogPostContainer',
+                    commentList:       '#commentList',
+                    commentForm:       '#addCommentForm',
+                    commentTextarea:   '#commentTextarea',
+                    submitCommentBtn:  '#submitCommentBtn'
+                },
+                templates:    {
+                    blogPost:    "#desktop-blogpost-tmpl",
+                    commentForm: "#desktop-commentform-tmpl"
+                }
+            })
+            .registerComponent(addPostView, {
+                name: 'addPostView',
+                selectors: {
+                    content:      '#content',
+                    addPostForm:  '#addPostForm'
+                },
+                templates: {
+                    addPostForm: "#desktop-addpostform-tmpl"
+                }
+            })
+            .registerComponent(addCommentSubView, {
+                name: 'addCommentSubView',
+                selectors: {
+                    commentList:     '#commentList',
+                    commentForm:     '#addCommentForm',
+                    commentTextarea: '#commentTextarea'
+                },
+                templates: {
+                    commentForm: '#desktop-commentform-tmpl'
+                }
+            })
+            .start();
     }
+
 };

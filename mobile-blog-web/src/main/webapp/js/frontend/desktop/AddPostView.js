@@ -1,25 +1,25 @@
 /**
  * @author Till Hermsen
- * @date 11.10.12
+ * @date 10.10.12
  */
-var addPostScreenContract = {
+var addPostViewContract = {
 
     init: function() {}
 
 }
 
-var addPostScreen = {
+var addPostView = {
 
     hub: null,
 
-    // joApp elements
-    inputTitle: null,
-    inputContent: null,
-
     // Services
     blogPostBackendService: null,
-    mainScreenService: null,
 
+    // HTML Templates
+    templates: null,
+
+    // HTML selectors
+    selectors: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -27,7 +27,7 @@ var addPostScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'addPostScreen';
+        return 'addPostView';
     },
 
     /**
@@ -45,19 +45,16 @@ var addPostScreen = {
             contract: blogPostBackendContract,
             field: "blogPostBackendService"
         });
-        this.hub.requireService({
-            component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
-        });
 
         // Provide service
         this.hub.provideService({
-            component: this,
-            contract: addPostScreenContract
+            component:this,
+            contract: addPostViewContract
         });
 
         // Configuration
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -65,9 +62,7 @@ var addPostScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {
-        this.hub.subscribe(this, "/addPostScreen/init", this.initEvent);
-    },
+    start: function() {},
 
     /**
      * The Stop method is called when the hub stops or
@@ -84,41 +79,23 @@ var addPostScreen = {
     init: function() {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        $(self.selectors.content).html($(self.templates.addPostForm).html());
 
+        $(self.selectors.addPostForm).submit(function(e) {
+            e.preventDefault();
 
-        /**
-         * Interaction listeners
-         */
-        var onSubmitClicked = function() {
+            var postData = $(self.selectors.addPostForm).serializeArray();
             var blogPost = {};
-            blogPost.title   = self.inputTitle.getData();
-            blogPost.content = self.inputContent.getData();
+            blogPost.title   = postData[0].value;
+            blogPost.content = postData[1].value;
 
             self.blogPostBackendService.addBlogPost(blogPost, function() {
-                console.log("success");
-                mainContainer.stack.pop();
+                document.location.href = "/blog";
             });
-        };
-
-
-        // View
-        var view = new joCard([
-            new joGroup([
-                new joLabel("Title"),
-                new joFlexrow(self.inputTitle = new joInput("")),
-                new joLabel("Content"),
-                new joFlexrow(self.inputContent = new joTextarea(""))
-            ]),
-            new joDivider(),
-            new joButton("Submit").selectEvent.subscribe(onSubmitClicked)
-        ]);
-
-        mainContainer.stack.push(view);
-
+        });
 
         // Registering event listener
-        self.hub.subscribe(self, "/addPostScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/addPostView", self.refreshEvent);
 
         self.refresh();
     },
@@ -128,17 +105,10 @@ var addPostScreen = {
      * Private methods.
      */
 
-    initEvent: function(event) {
-        this.init();
-    },
-
     refreshEvent: function(event) {
-        this.event();
+        this.refresh();
     },
 
-    refresh: function() {
-        this.inputTitle.setData("");
-        this.inputContent.setData("");
-    }
+    refresh: function() {}
 
 }

@@ -1,0 +1,12 @@
+<atlassian-ide-plugin>
+  <project-configuration>
+    <servers>
+      <jira>
+        <server-id>a623c905-4999-4e5a-8992-e70db8a8a40f</server-id>
+        <name>akquinet</name>
+        <url>https://jira.spree.de/jira</url>
+        <shared>false</shared>
+      </jira>
+    </servers>
+  </project-configuration>
+</atlassian-ide-plugin>

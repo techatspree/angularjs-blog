@@ -1,12 +1,24 @@
-<script type="text/template" id="desktoploginform-tmpl">
+<script type="text/template" id="desktop-loginform-tmpl">
 
     <div style="padding-bottom: 10px;">
         <form id="loginForm">
             <p><label for="inputUser">User Name</label></p>
-            <p><input type="text" id="inputUser" name="inputUser" class="formInput formSidebar"></p>
+            <p>
+                <input type="text"
+                       id="inputUser"
+                       name="inputUser"
+                       class="formInput formSidebar">
+            </p>
+
             <p><label for="inputPass">Password</label></p>
-            <p><input type="password" id="inputPass" name="inputPass" class="formInput formSidebar"></p>
-            <p><button id="loginSubmit" class="formBtn formSidebar">Login</button></p>
+            <p>
+                <input type="password"
+                       id="inputPass"
+                       name="inputPass"
+                       class="formInput formSidebar">
+            </p>
+
+            <p><button id="loginSubmitBtn" class="formBtn formSidebar">Login</button></p>
             <p><button id="registerBtn" class="formBtn formSidebar">Register</button></p>
         </form>
     </div>

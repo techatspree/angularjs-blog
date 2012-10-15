@@ -47,7 +47,7 @@ a {
     margin: 0 auto;
 }
 
-#main {
+section {
     margin-bottom: 20px;
     float: left;
     width: 450px;
@@ -62,6 +62,23 @@ footer {
     font-size: 0.8em;
     color: #999;
 }
+
+
+/* Page elements */
+#blogPostContainer {
+    margin-bottom: 60px;
+}
+
+#addPostBtn {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
 
 /* Form elements */
 form {
@@ -108,19 +125,4 @@ form p {
     font-size: 12px;
     color: red;
     margin-bottom: 10px;
-}
-
-
-
-#blogEntryContainer {
-    margin-bottom: 60px;
-}
-
-#addPostBtn {
-    width: 100%;
-    font-size: 14px;
-    font-weight: bold;
-}
-#addPostContainer {
-    margin-top: 20px;
 }

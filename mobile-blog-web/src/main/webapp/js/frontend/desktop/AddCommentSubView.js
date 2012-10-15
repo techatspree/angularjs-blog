@@ -1,27 +1,30 @@
 /**
  * @author Till Hermsen
- * @date 12.10.12
+ * @date 11.10.12
  */
-var addCommentScreenContract = {
+var addCommentSubViewContract = {
 
+    /**
+     *
+     * @param postId
+     */
     init: function(postId) {}
 
 }
 
-var addCommentScreen = {
+var addCommentSubView = {
 
     hub: null,
 
-    // joApp elements
-    inputComment: null,
-
     // Services
-    mainScreenService: null,
+    userService: null,
     blogPostBackendService: null,
 
     // HTML Templates
+    templates: null,
 
     // HTML selectors
+    selectors: null,
 
 
     /**
@@ -30,7 +33,7 @@ var addCommentScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'addCommentScreen';
+        return 'addCommentSubView';
     },
 
     /**
@@ -45,8 +48,8 @@ var addCommentScreen = {
         // Required services
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: userServiceContract,
+            field: "userService"
         });
         this.hub.requireService({
             component: this,
@@ -57,10 +60,12 @@ var addCommentScreen = {
         // Provide service
         this.hub.provideService({
             component: this,
-            contract:  addCommentScreenContract
+            contract:  addCommentSubViewContract
         });
 
         // Configuration
+        this.templates = configuration.templates;
+        this.selectors = configuration.selectors;
     },
 
     /**
@@ -68,9 +73,7 @@ var addCommentScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {
-        this.hub.subscribe(this, "/addCommentScreen/init", this.initEvent);
-    },
+    start: function() {},
 
     /**
      * The Stop method is called when the hub stops or
@@ -83,42 +86,33 @@ var addCommentScreen = {
     /**
      * Contract methods.
      */
-    init: function(postId) {
-        if (postId == null) { throw "AddCommentScreen could not be initialized."; }
 
+    init: function(postId) {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        if (self.userService.isLoggedIn()) {
+            $(self.selectors.commentList).after($(self.templates.commentForm).html());
 
-        /**
-         * Interaction listeners
-         */
-        var onSubmitClicked = function() {
-            var comment = {};
-            comment.content = self.inputComment.getData();
+            // bind click event to the submit comment button
+            $(self.selectors.commentForm).submit(function (e) {
+                e.preventDefault();
 
-            self.inputComment.setData("");
+                var commentFormData = $(self.selectors.commentForm).serializeArray();
+                var comment = {};
+                comment.content = commentFormData[0].value;
 
-            self.blogPostBackendService.addComment(postId, comment, function() {
-                mainContainer.stack.pop();
+                self.blogPostBackendService.addComment(postId, comment, function() {
+                    self.hub.publish(self, "/blogPostView/refresh", {
+                        postId: postId
+                    });
+                });
+
+                self.refresh();
             });
         }
 
-
-        // View
-        var view =  new joCard([
-            new joGroup([
-                new joLabel("Content"),
-                new joFlexrow(self.inputComment = new joTextarea(""))
-            ]),
-            new joDivider(),
-            new joButton("Submit").selectEvent.subscribe(onSubmitClicked)
-        ]);
-
-        mainContainer.stack.push(view);
-
         // Registering event listener
-        self.hub.subscribe(self, "/addCommentScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refreshEvent);
 
         self.refresh();
     },
@@ -127,16 +121,17 @@ var addCommentScreen = {
     /**
      * Private methods.
      */
-    initEvent: function(event) {
-        this.init(event.postId);
-    },
 
     refreshEvent: function(event) {
         this.refresh();
     },
 
     refresh: function() {
-        this.inputComment.setData("");
+        this.resetForm();
+    },
+
+    resetForm: function() {
+        $(this.selectors.commentTextarea).val("");
     }
 
 }

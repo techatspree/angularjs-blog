@@ -1,30 +1,27 @@
 /**
+ *
  * @author Till Hermsen
- * @date 11.10.12
+ * @date 09.10.12
  */
-var blogListScreenContract = {
+var blogListViewContract = {
 
     /**
-     * Initializes the blog list screen.
+     *
      */
     init: function() {}
 
 }
 
-
-var blogListScreen = {
+var blogListView = {
 
     hub: null,
 
     // Services
     userService: null,
-    mainScreenService: null,
-    blogPostScreenService: null,
     blogPostFrontendService: null,
 
     // HTML selectors
     selectors: null,
-
 
     /**
      * Method returning the component <b>unique</b>
@@ -32,7 +29,7 @@ var blogListScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'blogListScreen';
+        return 'blogListView';
     },
 
     /**
@@ -52,28 +49,17 @@ var blogListScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
-        });
-        this.hub.requireService({
-            component: this,
-            contract: blogPostScreenContract,
-            field: "blogPostScreenService"
-        });
-        this.hub.requireService({
-            component: this,
             contract: blogPostFrontendContract,
             field: "blogPostFrontendService"
         });
 
-
-        // Provide service
+        // We provide the UserContractService:
         this.hub.provideService({
             component: this,
-            contract:  blogListScreenContract
+            contract: blogListViewContract
         });
 
-        // Configuration
+        // Set HTML selectors
         this.selectors = configuration.selectors;
     },
 
@@ -95,44 +81,21 @@ var blogListScreen = {
     /**
      * Contract methods.
      */
+
     init: function() {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
-
-        // Interactions listener
-        var onAddPostClicked = function() {
-            if (!self.userService.isLoggedIn()) {
-                self.hub.publish(self, "/loginScreen/init", {});
-            }
-            else {
-                self.hub.publish(self, "/addPostScreen/init", {});
-            }
-            return false;
-        };
-
-        mainContainer.stack.popEvent.subscribe(function(){
-            self.refresh();
-        });
-
-
-        // View
-        var view = new joCard([
-            new joTitle("Blog Post Demo"),
-            new joGroup(
-                new joFlexcol([
-                    new joButton('Add Post').selectEvent.subscribe(onAddPostClicked),
-                    new joDivider(),
-                    new joHTML("<div id='blogPostList' />")
-                ])
-            )
-        ]).setTitle("Blog Demo");
-
-        mainContainer.stack.push(view);
-
+        // add post button
+        if (self.userService.isLoggedIn()) {
+            $(self.selectors.addPostBtn).show();
+            $(self.selectors.addPostBtn).on("click", function(e) {
+                document.location.href = "?page=addPost";
+                return false;
+            });
+        }
 
         // Registering event listener
-        self.hub.subscribe(self, "/blogListScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/blogListView/refresh", self.refreshEvent);
 
         self.refresh();
     },
@@ -141,15 +104,12 @@ var blogListScreen = {
     /**
      * Private methods.
      */
+
     refreshEvent: function(event) {
         this.refresh();
     },
 
     refresh: function() {
-        if ($(this.selectors.blogPostList).length == 0) {
-            return;
-        }
-
         this.blogPostFrontendService.updateWithBlogList();
     }
 

@@ -25,31 +25,38 @@
     <script type="text/javascript" src="../js/lib/jo.min.js"></script>
     <script type="text/javascript" src="../js/lib/jo.customnavbar.js"></script>
     <script type="text/javascript" src="../js/lib/jo.html5input.js"></script>
+    <script type="text/javascript" src="../js/lib/hubu.all.min.js"></script>
 
     <!-- This is our main app and entry point -->
     <script src="../js/MobileApp.js"></script>
 
-    <script src="../js/backend/UserService.js"></script>
-    <script src="../js/backend/BlogEntryService.js"></script>
+    <script type="text/javascript" src="../js/backend/mobile/Bootstrap.js"></script>
 
-    <script src="../js/frontend/BlogEntryFrontend.js"></script>
+    <script type="text/javascript" src="../js/backend/BlogPostBackend.js"></script>
+    <script type="text/javascript" src="../js/backend/BlogPostFrontend.js"></script>
 
-    <script src="../js/frontend/mobile/AboutView.js"></script>
-    <script src="../js/frontend/mobile/BlogListScreen.js"></script>
-    <script src="../js/frontend/mobile/BlogPostScreen.js"></script>
-    <script src="../js/frontend/mobile/LoginScreen.js"></script>
-    <script src="../js/frontend/mobile/RegisterScreen.js"></script>
-    <script src="../js/frontend/mobile/AddPostScreen.js"></script>
-    <script src="../js/frontend/mobile/AddCommentScreen.js"></script>
+    <script type="text/javascript" src="../js/backend/UserService.js"></script>
 
+    <script type="text/javascript" src="../js/frontend/TemplateManager.js"></script>
+
+    <script type="text/javascript" src="../js/frontend/mobile/MainScreen.js"></script>
+    <script type="text/javascript" src="../js/frontend/mobile/BlogListScreen.js"></script>
+
+    <script type="text/javascript" src="../js/frontend/mobile/BlogPostScreen.js"></script>
+    <script type="text/javascript" src="../js/frontend/mobile/LoginScreen.js"></script>
+    <script type="text/javascript" src="../js/frontend/mobile/RegisterScreen.js"></script>
+    <script type="text/javascript" src="../js/frontend/mobile/AddPostScreen.js"></script>
+    <script type="text/javascript" src="../js/frontend/mobile/AddCommentScreen.js"></script>
 </head>
 
 <body>
+
 <script type="text/javascript">
     Zepto(function($){
-        App.load();
+        App.init();
     })
 </script>
+
 </body>
 
 </html>

@@ -86,9 +86,10 @@
 				<configuration>
 					<!-- configuration properties will go here -->
 					<preloadSources>
-						<source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.3.1.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.3.1.js</source>
 						<source>${project.basedir}/src/test/webapp/js/lib/mock-ajax.js</source>
-						<source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/hubu.all.min.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>
 						<source>${project.basedir}/src/main/webapp/js/lib/zepto.onpress.js</source>
 						<source>${project.basedir}/src/main/webapp/js/lib/jo.min.js</source>
 						<source>${project.basedir}/src/main/webapp/js/lib/jo.customnavbar.js</source>
