@@ -52,6 +52,7 @@
 	</dependencies>
 
 	<build>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -85,8 +86,15 @@
 				</executions>
 				<configuration>
 					<!-- configuration properties will go here -->
+
+
+
 					<preloadSources>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.3.1.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine.console_reporter.js</source>
+
+                        <include>${jasmine.fixture.setup}</include>
+
 						<source>${project.basedir}/src/test/webapp/js/lib/mock-ajax.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/hubu.all.min.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>
@@ -124,5 +132,14 @@
 		</plugins>
 
 	</build>
+
+    <profiles>
+        <profile>
+            <id>bdd</id>
+            <properties>
+                <jasmine.fixture.setup>${jasmine.setup.folder}/web_resource_fixtures.js</jasmine.fixture.setup>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

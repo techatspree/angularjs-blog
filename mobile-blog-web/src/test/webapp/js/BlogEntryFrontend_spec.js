@@ -1,67 +1,47 @@
-//describe('the BlogEntryFrontend',function(){
-//
-//    beforeEach(function() {
-////        loadFixtures("BlogListEntry.tmpl");
-//
-//        var templates = [
-//            'BlogListEntry',
-//            'BlogEntry',
-//            'Comment',
-//            'DesktopLoginForm',
-//            'DesktopRegisterForm',
-//            'DesktopAddPostForm',
-//            'DesktopLoginLogoutBtn',
-//            'DesktopFormValidationError',
-//            'DesktopAddPostBtn',
-//            'DesktopCommentForm',
-//            'DesktopBlogEntry'
-//        ];
-//
-//
-//        $('#testNode').remove();
-//        $('body').append('<div id="testNode"></div>');
-//
-//        hub
-//            .registerComponent(templateManager, {
-//                name: 'templateManager'
-//            })
-//            .registerComponent(blogPostBackend, {
-//                name: 'blogPostBackend'
-//            })
-//            .registerComponent(blogPostFrontend, {
-//                name: 'blogPostFrontend',
-//                contentContainer: "#testNode",
-//                blogPostContainer: '#testNode',
-//                commentsContainer: '#testNode'
-//            })
-//            .start();
-//
-//
-////
-////        hub.getComponent('templateManager').fetchTemplates(
-////            templates, function() { hub.start(); });
-//
-//
-//
-//        // Mock AJAX template fetching that would have been
-//        // done in production code
-//        spyOn(App, 'fetchTemplates').andReturn(true);
-//    });
-//
-//    afterEach(function() {
-//    });
-//
-//    it("updates a given node with the list of blog entries", function() {
-//        var responseMock = JSON.parse('[ { "id":1, "author":{"firstname":"Elvis", "lastname":"Presley"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" },{ "id":2, "author":{"firstname":"John", "lastname":"Doe"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" } ]');
-//
-//        spyOn($, "ajax").andCallFake(function(params) {
-//            params.success(responseMock);
-//        });
-//
-//        hub.getComponent("blogPostFrontend").updateWithBlogList();
-//
-////        expect($('#testNode').children().size()).toBe(2);
-//        expect(true);
-//    });
-//
-//});
+describe('BlogPostFrontend', function() {
+
+    beforeEach(function() {
+        hub
+            .registerComponent(userService, {
+                name: 'userService'
+            })
+            .registerComponent(blogPostBackend, {
+                name:'blogPostBackend'
+            })
+            .registerComponent(blogPostFrontend, {
+                name:   'blogPostFrontend',
+                selectors: {
+                    contentContainer:  '#testContent',
+                    blogPostContainer: '#blogPostContainer',
+                    commentsContainer: '#commentList'
+                },
+                templates: {
+                    blogListPost: "#bloglistpost-tmpl",
+                    blogPost:     "#blogpost-tmpl",
+                    comment:      "#comment-tmpl"
+                }
+            })
+            .start();
+
+        $('body').append("<div id='testContent' style='display: none;'></div>");
+        loadFixtures("BlogListPost.tmpl");
+    });
+
+    afterEach(function() {
+        jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
+    });
+
+    it("updates a given node with the list of blog entries", function() {
+        var responseMock = JSON.parse('[ { "id":1, "author":{"firstname":"Elvis", "surname":"Presley"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" },{ "id":2, "author":{"firstname":"John", "surname":"Doe"}, "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet", "created":"2012-07-12T00:19:32.146+02:00" } ]');
+
+        spyOn($, "ajax").andCallFake(function(params) {
+            params.success(responseMock);
+        });
+
+        hub.getComponent("blogPostFrontend").updateWithBlogList();
+
+        console.log("number of blog posts: " + $('#testContent').children().size());
+        expect($('#testContent').children().size()).toBe(2);
+    });
+
+});
