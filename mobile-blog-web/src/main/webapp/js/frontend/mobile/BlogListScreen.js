@@ -2,14 +2,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var blogListScreenContract = {
-
-    /**
-     * Initializes the blog list screen.
-     */
-    init: function() {}
-
-}
+var blogListScreenContract = {}
 
 
 var blogListScreen = {
@@ -18,8 +11,7 @@ var blogListScreen = {
 
     // Services
     userService: null,
-    mainScreenService: null,
-    blogPostScreenService: null,
+    mainContainerService: null,
     blogPostFrontendService: null,
 
     // HTML selectors
@@ -52,13 +44,8 @@ var blogListScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
-        });
-        this.hub.requireService({
-            component: this,
-            contract: blogPostScreenContract,
-            field: "blogPostScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
         this.hub.requireService({
             component: this,
@@ -82,7 +69,9 @@ var blogListScreen = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/blogListScreen/init", this.init);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -95,10 +84,16 @@ var blogListScreen = {
     /**
      * Contract methods.
      */
+
+
+    /**
+     * Private methods.
+     */
+
     init: function() {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        var mainContainer = self.mainContainerService.getMainContainer();
 
         // Interactions listener
         var onAddPostClicked = function() {
@@ -132,20 +127,12 @@ var blogListScreen = {
 
 
         // Registering event listener
-        self.hub.subscribe(self, "/blogListScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/blogListScreen/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         if ($(this.selectors.blogPostList).length == 0) {
             return;
         }

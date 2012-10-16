@@ -12,8 +12,7 @@ var bootstrap = {
     hub: null,
 
     // Services
-    mainScreenService: null,
-    blogListScreenService: null,
+    mainContainerService: null,
 
     /**
      * Method returning the component <b>unique</b>
@@ -36,14 +35,10 @@ var bootstrap = {
         // Required service
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
-        this.hub.requireService({
-            component: this,
-            contract: blogListScreenContract,
-            field: "blogListScreenService"
-        });
+
 
         // We provide the UserContractService:
         this.hub.provideService({
@@ -80,8 +75,8 @@ var bootstrap = {
      */
 
     startApp: function(event) {
-        this.mainScreenService.init();
-        this.blogListScreenService.init();
+        this.mainContainerService.init();
+        this.hub.publish(this, "/blogListScreen/init", {});
     }
 
 }

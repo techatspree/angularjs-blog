@@ -4,7 +4,7 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-var mainScreenContract = {
+var mainContainerContract = {
 
     /**
      * Initializes the main screen (lists all blog posts).
@@ -19,7 +19,7 @@ var mainScreenContract = {
 }
 
 
-var mainScreen = {
+var mainContainer = {
 
     hub: null,
     mainContainer: null,
@@ -31,7 +31,7 @@ var mainScreen = {
      * @return the component unique name
      */
     getComponentName: function() {
-        return 'mainScreen';
+        return 'mainContainer';
     },
 
     /**
@@ -46,7 +46,7 @@ var mainScreen = {
         // We provide the UserContractService:
         this.hub.provideService({
             component: this,
-            contract: mainScreenContract
+            contract: mainContainerContract
         });
     },
 
@@ -99,9 +99,6 @@ var mainScreen = {
 
         joGesture.backEvent.subscribe(this.mainContainer.stack.pop, this.mainContainer.stack);
 
-        // Registering event listener
-        this.hub.subscribe(this, "/mainScreen/refresh", this.refreshEvent);
-
         this.refresh();
     },
 
@@ -113,10 +110,6 @@ var mainScreen = {
     /**
      * Private methods.
      */
-
-    refreshEvent: function() {
-        this.refresh();
-    },
 
     refresh: function () {
         this.mainContainer.nav.setTitle(

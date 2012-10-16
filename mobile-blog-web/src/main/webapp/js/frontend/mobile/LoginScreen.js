@@ -2,14 +2,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var loginScreenContract = {
-
-    /**
-     * Initializes the login screen.
-     */
-    init: function() {}
-
-}
+var loginScreenContract = {}
 
 var loginScreen = {
 
@@ -21,7 +14,7 @@ var loginScreen = {
 
     // Services
     userService: null,
-    mainScreenService: null,
+    mainContainerService: null,
 
 
     /**
@@ -50,8 +43,8 @@ var loginScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
 
 
@@ -68,7 +61,7 @@ var loginScreen = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/loginScreen/init", this.initEvent);
+        this.hub.subscribe(this, "/loginScreen/init", this.init);
     },
 
     /**
@@ -83,10 +76,15 @@ var loginScreen = {
      * Contract methods.
      */
 
-    init: function() {
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        var mainContainer = self.mainContainerService.getMainContainer();
 
         /**
          * Interaction listeners
@@ -134,25 +132,12 @@ var loginScreen = {
 
 
         // Registering event listener
-        self.hub.subscribe(this, "/loginScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(this, "/loginScreen/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    initEvent: function(event) {
-        this.init();
-    },
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.inputUser.setData("");
         this.inputPass.setData("");
     }

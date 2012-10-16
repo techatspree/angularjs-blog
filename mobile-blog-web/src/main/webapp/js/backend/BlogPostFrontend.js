@@ -32,8 +32,6 @@ var blogPostFrontend = {
 
     hub: null,
 
-    device: null,
-
     // Services
     blogPostBackendService: null,
 
@@ -77,7 +75,6 @@ var blogPostFrontend = {
         // Configuration
         this.templates = configuration.templates;
         this.selectors = configuration.selectors;
-        this.device    = configuration.device;
     },
 
     /**
@@ -124,9 +121,6 @@ var blogPostFrontend = {
                         readMoreBtn.on("click", function() {
                             self.hub.publish(self, "/blogPost/init", {postId: blogPost.id});
                         });
-//                        readMoreBtn.onpress(function() {
-//                            self.hub.publish(self, "/blogPost/init", {postId: blogPost.id});
-//                        });
                     }
                 });
             },

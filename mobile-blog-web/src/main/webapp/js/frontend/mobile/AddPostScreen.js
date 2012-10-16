@@ -2,11 +2,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var addPostScreenContract = {
-
-    init: function() {}
-
-}
+var addPostScreenContract = {}
 
 var addPostScreen = {
 
@@ -18,7 +14,7 @@ var addPostScreen = {
 
     // Services
     blogPostBackendService: null,
-    mainScreenService: null,
+    mainContainerService: null,
 
 
     /**
@@ -47,8 +43,8 @@ var addPostScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
 
         // Provide service
@@ -66,7 +62,7 @@ var addPostScreen = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/addPostScreen/init", this.initEvent);
+        this.hub.subscribe(this, "/addPostScreen/init", this.init);
     },
 
     /**
@@ -81,10 +77,15 @@ var addPostScreen = {
      * Contract methods.
      */
 
-    init: function() {
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        var mainContainer = self.mainContainerService.getMainContainer();
 
 
         /**
@@ -118,25 +119,12 @@ var addPostScreen = {
 
 
         // Registering event listener
-        self.hub.subscribe(self, "/addPostScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/addPostScreen/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    initEvent: function(event) {
-        this.init();
-    },
-
-    refreshEvent: function(event) {
-        this.event();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.inputTitle.setData("");
         this.inputContent.setData("");
     }

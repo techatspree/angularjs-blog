@@ -2,16 +2,8 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var blogPostScreenContract = {
+var blogPostScreenContract = {}
 
-    /**
-     * Initializes the blog post screen.
-     *
-     * @param postId
-     */
-    init: function(postId) {}
-
-}
 
 var blogPostScreen = {
 
@@ -20,7 +12,7 @@ var blogPostScreen = {
     // Services
     userService: null,
     blogPostFrontendService: null,
-    mainScreenService: null,
+    mainContainerService: null,
 
     // HTML selectors
     selectors: null,
@@ -57,8 +49,8 @@ var blogPostScreen = {
         });
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
 
 
@@ -78,7 +70,7 @@ var blogPostScreen = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/blogPost/init", this.initEvent)
+        this.hub.subscribe(this, "/blogPost/init", this.init)
     },
 
     /**
@@ -93,12 +85,19 @@ var blogPostScreen = {
      * Contract methods.
      */
 
-    init: function(postId) {
-        if (postId == null) { throw "BlogPostScreen could not be initialized."; }
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
+        if (event.postId == null) { throw "BlogPostScreen could not be initialized."; }
+
+        var postId = event.postId;
 
         var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+        var mainContainer = self.mainContainerService.getMainContainer();
 
         /**
          * Interaction listeners
@@ -113,7 +112,7 @@ var blogPostScreen = {
         };
 
         mainContainer.stack.popEvent.subscribe(function(){
-            self.refresh(postId);
+            self.refresh({postId: postId});
         });
 
 
@@ -134,26 +133,15 @@ var blogPostScreen = {
 
 
         // Registering event listener
-        self.hub.publish(self, "/blogPostScreen/refresh", self.refreshEvent);
+        self.hub.publish(self, "/blogPostScreen/refresh", self.refresh);
 
-        self.refresh(postId);
+        self.refresh({postId: postId});
     },
 
+    refresh: function(event) {
+        if (event.postId == null) { throw "BlogPostScreen could not be refreshed."; }
 
-    /**
-     * Private methods.
-     */
-
-    initEvent: function(event) {
-        this.init(event.postId);
-    },
-
-    refreshEvent: function(event) {
-        this.refresh(event.postId);
-    },
-
-    refresh: function(postId) {
-        if (postId == null) { throw "BlogPostScreen could not be refreshed."; }
+        var postId = event.postId;
 
         if ($(this.selectors.blogPostContainer).length > 0) {
             this.blogPostFrontendService.updateWithBlogPost(postId);

@@ -2,11 +2,7 @@
  * @author Till Hermsen
  * @date 12.10.12
  */
-var addCommentScreenContract = {
-
-    init: function(postId) {}
-
-}
+var addCommentScreenContract = {}
 
 var addCommentScreen = {
 
@@ -16,7 +12,7 @@ var addCommentScreen = {
     inputComment: null,
 
     // Services
-    mainScreenService: null,
+    mainContainerService: null,
     blogPostBackendService: null,
 
     // HTML Templates
@@ -45,8 +41,8 @@ var addCommentScreen = {
         // Required services
         this.hub.requireService({
             component: this,
-            contract: mainScreenContract,
-            field: "mainScreenService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
         this.hub.requireService({
             component: this,
@@ -69,7 +65,7 @@ var addCommentScreen = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/addCommentScreen/init", this.initEvent);
+        this.hub.subscribe(this, "/addCommentScreen/init", this.init);
     },
 
     /**
@@ -83,12 +79,18 @@ var addCommentScreen = {
     /**
      * Contract methods.
      */
-    init: function(postId) {
-        if (postId == null) { throw "AddCommentScreen could not be initialized."; }
 
-        var self = this;
 
-        var mainContainer = self.mainScreenService.getMainContainer();
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
+        if (event.postId == null) { throw "AddCommentScreen could not be initialized."; }
+
+        var self = this,
+            postId = event.postId,
+            mainContainer = self.mainContainerService.getMainContainer();
 
         /**
          * Interaction listeners
@@ -118,24 +120,12 @@ var addCommentScreen = {
         mainContainer.stack.push(view);
 
         // Registering event listener
-        self.hub.subscribe(self, "/addCommentScreen/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/addCommentScreen/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-    initEvent: function(event) {
-        this.init(event.postId);
-    },
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.inputComment.setData("");
     }
 

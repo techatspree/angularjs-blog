@@ -41,8 +41,8 @@ var App = {
                     comment:      "#comment-tmpl"
                 }
             })
-            .registerComponent(mainScreen, {
-                name: 'mainScreen'
+            .registerComponent(mainContainer, {
+                name: 'mainContainer'
             })
             .registerComponent(loginScreen, {
                 name: 'loginScreen'
