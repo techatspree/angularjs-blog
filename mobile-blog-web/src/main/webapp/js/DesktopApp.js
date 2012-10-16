@@ -29,9 +29,6 @@ var App = {
             .registerComponent(router, {
                 name: 'router'
             })
-            .registerComponent(errorController, {
-                name: 'errorController'
-            })
             .registerComponent(userService, {
                 name: 'userService'
             })
@@ -61,8 +58,8 @@ var App = {
                     error: '#desktop-error-tmpl'
                 }
             })
-            .registerComponent(mainView, {
-                name: 'mainView',
+            .registerComponent(mainContainer, {
+                name: 'mainContainer',
                 selectors: {
                     body:              "body",
                     loginLogoutBtn:    "#loginLogoutBtn",

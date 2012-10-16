@@ -2,16 +2,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-var blogPostViewContract = {
-
-    /**
-     * Initializes blog post view.
-     *
-     * @param postId
-     */
-    init: function (postId) {}
-
-}
+var blogPostViewContract = {}
 
 
 var blogPostView = {
@@ -76,7 +67,8 @@ var blogPostView = {
      * after configure if the hub is already started.
      */
     start: function () {
-        this.hub.subscribe(this, "/blogPost/init", this.initEvent);
+        this.hub.subscribe(this, "/blogPostView/init", this.init);
+        this.hub.subscribe(this, "/blogPost/show", this.show);
     },
 
     /**
@@ -91,35 +83,31 @@ var blogPostView = {
      * Contract methods.
      */
 
-    init: function (postId) {
-        if (postId == null) { throw "BlogPostView could not be initialized."; }
-
-        // adding blog post template
-        $(this.selectors.content).append($(this.templates.blogPost).html());
-
-        this.addCommentSubViewService.init(postId);
-
-        // Registering event listener
-        this.hub.subscribe(this, "/blogPostView/refresh", this.refreshEvent);
-
-        this.refresh(postId);
-    },
-
 
     /**
      * Private methods.
      */
 
-    initEvent: function(event) {
-        document.location.href= "?showPost=" + event.postId;
+    init: function (event) {
+        if (event.postId == null) { throw "BlogPostView could not be initialized."; }
+
+        var postId = event.postId;
+
+        // adding blog post template
+        $(this.selectors.content).append($(this.templates.blogPost).html());
+
+        this.hub.publish(this, "/addCommentSubView/init", {postId: postId});
+
+        // Registering event listener
+        this.hub.subscribe(this, "/blogPostView/refresh", this.refresh);
+
+        this.refresh({postId: postId});
     },
 
-    refreshEvent: function(event) {
-        this.refresh(event.postId);
-    },
+    refresh: function(event) {
+        if (event.postId == null) { throw "BlogPostView could not be refreshed."; }
 
-    refresh: function(postId) {
-        if (postId == null) { throw "BlogPostView could not be refreshed."; }
+        var postId = event.postId;
 
         if ($(this.selectors.blogPostContainer).length > 0) {
             this.blogPostFrontendService.updateWithBlogPost(postId);
@@ -128,6 +116,11 @@ var blogPostView = {
         if ($(this.selectors.commentList).length > 0) {
             this.blogPostFrontendService.updateWithComments(postId);
         }
+    },
+
+    show: function(event) {
+        document.location.href= "?showPost=" + event.postId;
     }
+
 
 }

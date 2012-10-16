@@ -70,7 +70,8 @@ var blogPostScreen = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/blogPost/init", this.init)
+        this.hub.subscribe(this, "/blogPostScreen/init", this.init);
+        this.hub.subscribe(this, "/blogPost/show", this.show);
     },
 
     /**
@@ -150,6 +151,10 @@ var blogPostScreen = {
         if ($(this.selectors.commentList).length > 0) {
             this.blogPostFrontendService.updateWithComments(postId);
         }
+    },
+
+    show: function(event) {
+        this.init(event);
     }
 
 }

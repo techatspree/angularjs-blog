@@ -19,11 +19,8 @@ var router = {
     hub: null,
 
     // Services
-    userService:         null,
-    mainViewService:     null,
-    blogListViewService: null,
-    blogPostViewService: null,
-    addPostViewService:  null,
+    userService:          null,
+    mainContainerService: null,
 
 
     /**
@@ -54,24 +51,10 @@ var router = {
         });
         self.hub.requireService({
             component: this,
-            contract: mainViewContract,
-            field: "mainViewService"
+            contract: mainContainerContract,
+            field: "mainContainerService"
         });
-        self.hub.requireService({
-            component: this,
-            contract: blogListViewContract,
-            field: "blogListViewService"
-        });
-        self.hub.requireService({
-            component: this,
-            contract: blogPostViewContract,
-            field: "blogPostViewService"
-        });
-        self.hub.requireService({
-            component: this,
-            contract: addPostViewContract,
-            field: "addPostViewService"
-        });
+
 
         // We provide the UserContractService:
         self.hub.provideService({
@@ -100,20 +83,18 @@ var router = {
      */
     // needs refactoring!!
     initRoute: function() {
-        var self = this;
-
-        var keyValueHash = self.getKeyValueHash();
+        var keyValueHash = this.getKeyValueHash();
 
         var postId = keyValueHash['showPost'];
         var pageId = keyValueHash['page'];
 
         // load main view
-        self.mainViewService.init();
+        this.mainContainerService.init();
 
 
         // singe blog post route
         if (postId != null) {
-            self.blogPostViewService.init(postId);
+            this.hub.publish(this, "/blogPostView/init", {postId: postId});
         }
 
         // page routes
@@ -122,10 +103,10 @@ var router = {
             if (self.userService.isLoggedIn()) {
                 // add post route
                 if (pageId == "addPost") {
-                    self.addPostViewService.init();
+                    this.hub.publish(this, "/addPostView/init", {});
                 }
             } else {
-                self.hub.publish(this, "/error", {
+                self.hub.publish(this, "/errorView/init", {
                     data: {
                         errorId: "403",
                         message: "access denied"
@@ -136,7 +117,7 @@ var router = {
 
         // main route, lists all blog posts
         else {
-            self.blogListViewService.init();
+            this.hub.publish(this, "/blogListView/init", {});
         }
     },
 

@@ -119,7 +119,7 @@ var blogPostFrontend = {
                     var readMoreBtn = $("#readMoreBtn" + blogPost.id);
                     if (readMoreBtn.length > 0) {
                         readMoreBtn.on("click", function() {
-                            self.hub.publish(self, "/blogPost/init", {postId: blogPost.id});
+                            self.hub.publish(self, "/blogPost/show", {postId: blogPost.id});
                         });
                     }
                 });

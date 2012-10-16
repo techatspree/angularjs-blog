@@ -2,15 +2,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var addCommentSubViewContract = {
-
-    /**
-     *
-     * @param postId
-     */
-    init: function(postId) {}
-
-}
+var addCommentSubViewContract = {}
 
 var addCommentSubView = {
 
@@ -73,7 +65,9 @@ var addCommentSubView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/addCommentSubView/init", this.init);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -87,8 +81,14 @@ var addCommentSubView = {
      * Contract methods.
      */
 
-    init: function(postId) {
-        var self = this;
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
+        var self = this,
+            postId = event.postId;
 
         if (self.userService.isLoggedIn()) {
             $(self.selectors.commentList).after($(self.templates.commentForm).html());
@@ -112,21 +112,12 @@ var addCommentSubView = {
         }
 
         // Registering event listener
-        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/addCommentSubView/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.resetForm();
     },
 

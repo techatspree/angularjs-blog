@@ -3,14 +3,7 @@
  * @author Till Hermsen
  * @date 09.10.12
  */
-var blogListViewContract = {
-
-    /**
-     *
-     */
-    init: function() {}
-
-}
+var blogListViewContract = {}
 
 var blogListView = {
 
@@ -68,7 +61,9 @@ var blogListView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/blogListView/init", this.init);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -82,7 +77,12 @@ var blogListView = {
      * Contract methods.
      */
 
-    init: function() {
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
         var self = this;
 
         // add post button
@@ -95,21 +95,12 @@ var blogListView = {
         }
 
         // Registering event listener
-        self.hub.subscribe(self, "/blogListView/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/blogListView/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.blogPostFrontendService.updateWithBlogList();
     }
 

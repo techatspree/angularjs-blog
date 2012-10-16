@@ -4,11 +4,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-var errorViewContract = {
-
-    init: function(data) {}
-
-}
+var errorViewContract = {}
 
 var errorView = {
 
@@ -54,7 +50,9 @@ var errorView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/errorView/init", this.init);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -68,24 +66,21 @@ var errorView = {
      * Contract methods.
      */
 
-    init: function(data) {
-        // Registering event listener
-        this.hub.subscribe(this, "/errorView/refresh", this.refreshEvent);
-
-        this.refresh(data);
-    },
 
     /**
      * Private methods.
      */
 
-    refreshEvent: function(event) {
-        this.refresh(event.data);
+    init: function(event) {
+        // Registering event listener
+        this.hub.subscribe(this, "/errorView/refresh", this.refresh);
+
+        this.refresh(event);
     },
 
-    refresh: function(data) {
+    refresh: function(event) {
         $(this.selectors.content).html(
-            _.template($(this.templates.error).html(), {"data":data})
+            _.template($(this.templates.error).html(), {"data": event.data})
         );
     }
 

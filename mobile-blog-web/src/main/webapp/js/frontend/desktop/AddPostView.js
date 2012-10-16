@@ -2,11 +2,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-var addPostViewContract = {
-
-    init: function() {}
-
-}
+var addPostViewContract = {}
 
 var addPostView = {
 
@@ -62,7 +58,9 @@ var addPostView = {
      * This method is called when the hub starts or just
      * after configure if the hub is already started.
      */
-    start: function() {},
+    start: function() {
+        this.hub.subscribe(this, "/addPostView/init", this.init);
+    },
 
     /**
      * The Stop method is called when the hub stops or
@@ -76,7 +74,12 @@ var addPostView = {
      * Contract methods.
      */
 
-    init: function() {
+
+    /**
+     * Private methods.
+     */
+
+    init: function(event) {
         var self = this;
 
         $(self.selectors.content).html($(self.templates.addPostForm).html());
@@ -95,20 +98,11 @@ var addPostView = {
         });
 
         // Registering event listener
-        self.hub.subscribe(self, "/addPostView", self.refreshEvent);
+        self.hub.subscribe(self, "/addPostView", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {}
+    refresh: function(event) {}
 
 }

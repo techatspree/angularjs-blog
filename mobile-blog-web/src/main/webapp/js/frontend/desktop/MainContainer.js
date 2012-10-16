@@ -4,7 +4,7 @@
  * @author Till Hermsen
  * @date 10.10.12
  */
-var mainViewContract = {
+var mainContainerContract = {
 
     /**
      * Initializes the view.
@@ -13,7 +13,7 @@ var mainViewContract = {
 
 }
 
-var mainView = {
+var mainContainer = {
 
     hub:null,
 
@@ -33,7 +33,7 @@ var mainView = {
      * @return the component unique name
      */
     getComponentName:function () {
-        return 'mainView';
+        return 'mainContainer';
     },
 
     /**
@@ -55,7 +55,7 @@ var mainView = {
         // Provide service
         this.hub.provideService({
             component: this,
-            contract: mainViewContract
+            contract: mainContainerContract
         });
 
         // Configuration
@@ -106,9 +106,9 @@ var mainView = {
         }
 
         // Registering event listener
-        self.hub.subscribe(self, "/mainView/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/mainView/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
 
@@ -116,11 +116,7 @@ var mainView = {
      * Private methods.
      */
 
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         if (!this.userService.isLoggedIn()) {
             $(this.selectors.loginLogoutBtn).html("Login");
         }

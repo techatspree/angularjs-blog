@@ -2,11 +2,7 @@
  * @author Till Hermsen
  * @date 11.10.12
  */
-var registerSubViewContract = {
-
-    init: function() {}
-
-}
+var registerSubViewContract = {}
 
 var registerSubView = {
 
@@ -73,7 +69,7 @@ var registerSubView = {
      * after configure if the hub is already started.
      */
     start: function() {
-        this.hub.subscribe(this, "/registerSubView/init", this.initEvent);
+        this.hub.subscribe(this, "/registerSubView/init", this.init);
     },
 
     /**
@@ -88,7 +84,13 @@ var registerSubView = {
      * Contract methods.
      */
 
-    init: function() {
+
+    /**
+     * Private methods.
+     */
+
+
+    init: function(event) {
         var self = this;
 
         $(self.selectors.userContainer).html($(self.templates.registerForm).html());
@@ -119,25 +121,12 @@ var registerSubView = {
         });
 
         // Registering event listener
-        self.hub.subscribe(self, "/registerSubView/refresh", self.refreshEvent);
+        self.hub.subscribe(self, "/registerSubView/refresh", self.refresh);
 
-        self.refresh();
+        self.refresh(null);
     },
 
-
-    /**
-     * Private methods.
-     */
-
-    initEvent: function(event) {
-        this.init();
-    },
-
-    refreshEvent: function(event) {
-        this.refresh();
-    },
-
-    refresh: function() {
+    refresh: function(event) {
         this.clearValidationError();
     },
 
