@@ -5,10 +5,9 @@ Ext.define("Blog.store.BlogPostsStore", {
 
 //        proxy:{
 //            type: 'ajax',
-//            url: '../test/blog',
+//            url: '../rest/blog',
 //            reader: {
 //                type:  'json'
-//
 //            }
 //
 //        },
@@ -42,7 +41,7 @@ Ext.define("Blog.store.BlogPostsStore", {
                     "phone":null
                 },
                 "created":1350546355344
-            },
+            }
         ],
 
         autoLoad: true

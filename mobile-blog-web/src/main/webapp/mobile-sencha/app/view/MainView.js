@@ -18,18 +18,8 @@ Ext.define("Blog.view.MainView", {
                 onItemDisclosure: function (record, btn, index) {
                     console.log("disclosure");
                     this.fireEvent("showBlogPost", this, record);
-
-//                    this.push({
-//                        xtype: 'panel',
-//                        title: 'Activity',
-////                        html: template.apply(record.data),
-//                        styleHtmlContent: true
-//                    });
                 }
             }
-        ],
-        listeners: {
-        }
+        ]
     }
-
 });

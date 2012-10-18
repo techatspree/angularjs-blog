@@ -19,9 +19,6 @@ Ext.define("Blog.controller.MainController", {
                     var template = Ext.XTemplate.from(Ext.get('blogpost'));
 
                     this.getMainView().push({
-
-
-
                         xtype: 'panel',
                         scrollable: true,
                         title: record.data.title,
