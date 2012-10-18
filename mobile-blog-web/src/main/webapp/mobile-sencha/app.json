@@ -2,7 +2,7 @@
     /**
      * The application's namespace, used by Sencha Command to generate classes
      */
-    "name": "GS",
+    "name": "Blog",
 
     /**
      * The file path to this application's front HTML document, relative to this app.json file
@@ -130,5 +130,5 @@
      * Uniquely generated id for this application, used as prefix for localStorage keys.
      * Normally you should never change this value.
      */
-    "id": "30ff21a0-1669-11e2-9136-d1b8fa199f75"
+    "id": "ef02ca70-1903-11e2-9e0a-a345ab995902"
 }

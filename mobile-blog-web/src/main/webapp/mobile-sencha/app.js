@@ -1,14 +1,14 @@
 Ext.application({
-    name: 'GS',
+    name: 'Blog',
 
     requires: [
         'Ext.MessageBox'
     ],
 
-    controllers: [],
-    views: ['Main', 'BlogList'],
-    stores: ['BlogPosts'],
-    models: ['BlogPost'],
+    controllers: ['MainController'],
+    models: ['BlogPostModel'],
+    stores: ['BlogPostsStore'],
+    views: ['Main', 'BlogListView', 'BlogPostView'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -33,7 +33,7 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('GS.view.Main'));
+        Ext.Viewport.add(Ext.create('Blog.view.Main'));
     },
 
     onUpdated: function() {
