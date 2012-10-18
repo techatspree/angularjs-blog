@@ -6,9 +6,9 @@ Ext.application({
     ],
 
     controllers: ['MainController'],
-    models: ['BlogPostModel'],
+    models: ['Post', 'Comment'],
     stores: ['BlogPostsStore'],
-    views: ['Main', 'BlogListView', 'BlogPostView'],
+    views: ['MainView'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -33,7 +33,7 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('Blog.view.Main'));
+        Ext.Viewport.add(Ext.create('Blog.view.MainView'));
     },
 
     onUpdated: function() {

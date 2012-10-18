@@ -2,9 +2,10 @@
  * @author Till Hermsen
  * @date 17.10.12
  */
-Ext.define('Blog.model.BlogPostModel', {
+Ext.define('Blog.model.Comment', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['title', 'content', 'id']
+        fields: ['content'],
+//        belongsTo: 'Post'
     }
 });
