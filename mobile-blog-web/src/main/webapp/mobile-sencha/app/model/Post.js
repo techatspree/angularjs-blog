@@ -6,7 +6,12 @@ Ext.define('Blog.model.Post', {
     extend: 'Ext.data.Model',
     config: {
         fields: ['id', 'title', 'content', "author"],
-//        hasMany: 'Comment'
+
+        proxy: {
+            type: 'rest',
+            url: '../rest/blog'
+        }
+
 
     }
 });

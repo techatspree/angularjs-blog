@@ -1,6 +1,7 @@
-Ext.define("Blog.store.BlogPostsStore", {
+Ext.define("Blog.store.BlogPosts", {
     extend: "Ext.data.Store",
     config: {
+        storeId: 'posts',
         model: 'Blog.model.Post',
 
 //        proxy:{

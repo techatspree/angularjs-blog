@@ -61,11 +61,19 @@
 
     <!-- Templates -->
     <tpl id="blogpost" style="display:none">
-        <h1>{title}</h1>
-        <h4>{author.firstname} {author.surname} - </h4>
+        <div class="post">
+            <h1>{title} - {id}</h1>
+            <h4>{author.firstname} {author.surname} - </h4>
 
-        <div>{content}</div>
-        <h3>Comments</h3>
+            <div>{content}</div>
+        </div>
+    </tpl>
+
+    <tpl id="comment" style="display:none">
+        <div class="comment">
+            <h4>{author.firstname} {author.surname} - </h4>
+            <div>{content}</div>
+        </div>
     </tpl>
 </body>
 </html>

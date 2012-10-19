@@ -7,7 +7,7 @@ Ext.application({
 
     controllers: ['MainController'],
     models: ['Post', 'Comment'],
-    stores: ['BlogPostsStore'],
+    stores: ['BlogPosts', 'Comments'],
     views: ['MainView'],
 
     icon: {
