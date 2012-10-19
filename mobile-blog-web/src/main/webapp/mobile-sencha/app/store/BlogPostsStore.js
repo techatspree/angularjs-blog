@@ -1,9 +1,12 @@
-Ext.define("Blog.store.BlogPosts", {
+/**
+ * @author Till Hermsen
+ * @date 19.10.12
+ */
+Ext.define("Blog.store.BlogPostsStore", {
     extend: "Ext.data.Store",
     config: {
-        storeId: 'posts',
+        storeId: 'blogPostsStore',
         model: 'Blog.model.BlogPostModel',
-
 //        proxy:{
 //            type: 'ajax',
 //            url: '../rest/blog',
@@ -44,7 +47,6 @@ Ext.define("Blog.store.BlogPosts", {
                 "created":1350546355344
             }
         ],
-
         autoLoad: true
     }
 });

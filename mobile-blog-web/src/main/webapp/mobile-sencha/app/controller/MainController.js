@@ -5,6 +5,10 @@
 Ext.define("Blog.controller.MainController", {
 
     extend: "Ext.app.Controller",
+
+
+
+
     config: {
         refs: {
             mainView: 'mainview',
@@ -13,6 +17,13 @@ Ext.define("Blog.controller.MainController", {
         },
         control: {
             addPostBtn: {
+                initialize: function(btn, eOpts) {
+                    console.log("controller: addbtn init");
+                    if (true) {
+                        btn.hide();
+                    }
+                },
+
                 addPost: function(btn) {
                     console.log("main controller: add post btn");
 
@@ -32,7 +43,7 @@ Ext.define("Blog.controller.MainController", {
                                         label: 'Title'
                                     },
                                     {
-                                        xtype: 'textarea',
+                                        xtype: 'textfield',
                                         name : 'content',
                                         label: 'Content'
                                     }
@@ -46,6 +57,10 @@ Ext.define("Blog.controller.MainController", {
 
             blogList: {
                 showBlogPost: function(list, record) {
+
+                    this.getAddPostBtn().show();
+
+
                     console.log("record:");
                     console.log(record);
 

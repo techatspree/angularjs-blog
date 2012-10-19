@@ -9725,7 +9725,7 @@ input[type="search"]::-webkit-search-cancel-button {
     padding-right:25px;
     line-height:150%;
 }
-.list-item-narrative
+.list-item-content
 {
     float:left;
     width:95%;
@@ -9740,7 +9740,7 @@ input[type="search"]::-webkit-search-cancel-button {
 {
     color:#ffffff;
 }
-.x-item-selected .list-item-narrative
+.x-item-selected .list-item-content
 {
     color:#ffffff;
 }

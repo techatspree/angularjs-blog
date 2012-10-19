@@ -8,6 +8,11 @@ Ext.define("Blog.view.MainView", {
     xtype: 'mainview',
     fullscreen: true,
 
+    initialize: function() {
+        console.log("main view");
+        console.log(this);
+    },
+
     config: {
 
         navigationBar: {
@@ -22,7 +27,10 @@ Ext.define("Blog.view.MainView", {
                         tap: function(btn, e, eOpts) {
                             console.log("add post btn");
                             this.fireEvent("addPost", this);
-                        }
+                        },
+//                        initialize: function(btn, eOpts) {
+//                            console.log("add post btn init");
+//                        }
                     }
 
                 }
