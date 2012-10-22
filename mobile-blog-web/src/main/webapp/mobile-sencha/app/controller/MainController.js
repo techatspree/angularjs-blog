@@ -5,148 +5,75 @@
 Ext.define("Blog.controller.MainController", {
 
     extend: "Ext.app.Controller",
-
-
-
+    requires: [
+        'Blog.view.MainView'
+    ],
 
     config: {
         refs: {
-            mainView: 'mainview',
-            blogList: 'list',
-            addPostBtn: '#addPostBtn'
+            mainContainer: '#mainContainer',
+            mainView: '#mainView',
+            loginBtn: '#loginBtn',
+            addPostBtn: '#addPostBtn',
+            addCommentBtn: '#addCommentBtn'
         },
         control: {
-            addPostBtn: {
-                initialize: function(btn, eOpts) {
-                    console.log("controller: addbtn init");
-                    if (true) {
-                        btn.hide();
-                    }
-                },
-
-                addPost: function(btn) {
-                    console.log("main controller: add post btn");
-
-
-                    this.getMainView().push({
-
-
-                        xtype: 'formpanel',
-                        title: 'Add post',
-                        items: [
-                            {
-                                xtype: 'fieldset',
-                                items: [
-                                    {
-                                        xtype: 'textfield',
-                                        name : 'title',
-                                        label: 'Title'
-                                    },
-                                    {
-                                        xtype: 'textfield',
-                                        name : 'content',
-                                        label: 'Content'
-                                    }
-                                ]
-                            }
-                        ]
-
-                    });
-                }
+            mainContainer: {
+                initialize: 'initMainContainer'
             },
-
-            blogList: {
-                showBlogPost: function(list, record) {
-
-                    this.getAddPostBtn().show();
-
-
-                    console.log("record:");
-                    console.log(record);
-
-                    var postsStore = Ext.StoreManager.get('posts');
-//                    console.log("Posts: ");
-//                    console.log(postsStore);
-
-                    var store = Ext.StoreManager.get('comments');
-//                    store.setProxy({
-//                        type: 'rest',
-//                        url: '../rest/blog/17/comment'
-//                    });
-                    store._proxy._url = store._proxy._url.replace('{id}', record.internalId);
-
-                    store.load();
-//                    console.log("Comments: ");
-//                    console.log(store);
-
-                    var data = record.data;
-
-                    data['comments'] = store.getData();
-
-
-                    console.log("Data:");
-                    console.log(data);
-
-
-                    var template = Ext.XTemplate.from(Ext.get('blogpost'));
-
-                    var commentsTpl = Ext.XTemplate.from(Ext.get('comment'));
-
-
-                    this.getMainView().push({
-                        xtype: 'container',
-                        title: record.data.title,
-                        scrollable: true,
-                        layout: 'vbox',
-                        items: [
-                            {
-                                xtype: 'panel',
-                                width: '100%',
-                                height: 'auto',
-                                html: template.apply(record.data),
-                                styleHtmlContent: true
-                            },
-                            {
-                                xtype: 'dataview',
-                                scrollable: false,
-                                width: '100%',
-                                height: 'auto',
-                                store: 'comments',
-//                                store: {
-//                                    fields: ['name', 'age'],
-//                                    data: [
-//                                        {name: 'Jamie',  age: 100},
-//                                        {name: 'Rob',   age: 21},
-//                                        {name: 'Tommy', age: 24},
-//                                        {name: 'Jacky', age: 24},
-//                                        {name: 'Ed',   age: 26}
-//                                    ]
-//                                },
-
-
-
-//                                html: commentsTpl.apply(data),
-                                itemTpl: commentsTpl,
-                                styleHtmlContent: true
-                            }
-                        ]
-
-//                        xtype: 'panel',
-//                        scrollable: true,
-//                        title: record.data.title,
-//                        html: template.apply(record.data),
-//                        styleHtmlContent: true,
-//                        items: [
-//                            {
-//                                xtype: 'panel',
-//                                html: "<div>test</div>"
-//                            }
-//                        ]
-                    });
-                }
+            loginBtn: {
+                initialize: 'initLoginBtn',
+                tap: 'onLoginBtnTap'
+            },
+            addPostBtn: {
+                initialize: 'initAddPostBtn',
+                tap: 'onAddPostTap'
+            },
+            addCommentBtn: {
+                initialize: 'initAddCommentBtn',
+                tap: 'onAddCommentTap'
             }
-
         }
     },
+
+    initMainContainer: function(container, eOpts) {
+        // main view and blog list view
+        var mainView = Ext.create('Blog.view.MainView'),
+            blogListView = Ext.create('Blog.view.BlogListView');
+
+        mainView.add(blogListView);
+        this.getMainContainer().add([mainView]);
+    },
+
+    initLoginBtn: function(btn, eOpts) {
+        var userService = this.getApplication().getController('UserServiceController');
+        if (userService.isLoggedIn()) {
+            btn.hide();
+        }
+    },
+    onLoginBtnTap: function(btn, e, eOpts) {
+        console.log("login button tapped");
+        btn.fireEvent("showLoginView");
+    },
+
+    initAddPostBtn: function(btn, eOpts) {
+        var userService = this.getApplication().getController('UserServiceController');
+        if (!userService.isLoggedIn()) {
+            btn.hide();
+        }
+    },
+    onAddPostBtnTap: function(btn, e, eOpts) {
+        btn.fireEvent("showAddPostView");
+    },
+
+    initAddCommentBtn: function(btn, eOpts) {
+        var userService = this.getApplication().getController('UserServiceController');
+        if (!userService.isLoggedIn()) {
+            btn.hide();
+        }
+    },
+    onAddCommentBtnTap: function(btn, e, eOpts) {
+        btn.fireEvent("showAddCommentView");
+    }
 
 });

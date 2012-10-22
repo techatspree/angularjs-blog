@@ -4,47 +4,30 @@
  */
 Ext.define("Blog.view.BlogListView", {
     extend: "Ext.Panel",
-    xtype: 'bloglistview',
+    id: 'blogListView',
 
     requires: [
         'Ext.dataview.List'
     ],
 
     config: {
+        title: "Mobile-Blog",
         fullscreen: true,
-        layout: 'vbox',
-        items: [
-            {
-                xtype: 'toolbar',
-                docked: 'top',
-                title: 'Mobile-Blog',
-                items: [
-                    {xtype: 'spacer'},
-                    {
-                        xtype: 'button',
-                        id: 'loginBtn',
-                        align: 'right',
-                        text: 'Login',
-                        hidden: false
-                    },
-                    {
-                        xtype: 'button',
-                        id: 'addPostBtn',
-                        align: 'right',
-                        text: 'Add post',
-                        hidden: false
-                    }
-                ]
-            },
-            {
-                xtype: 'list',
+        layout: 'vbox'
+    },
+
+    initialize: function() {
+        this.callParent(arguments);
+        var blogList = Ext.create('Ext.List', {
                 id: 'blogList',
                 itemTpl: Ext.XTemplate.from(Ext.get('blogpostlist')),
-                store: 'blogPostsStore',
+                disableSelection: true,
+//                store: 'blogPostsStore',
                 onItemDisclosure: true,
                 flex: 1
-            }
-        ]
+        });
+
+        this.add(blogList);
     }
 
 });

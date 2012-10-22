@@ -4,18 +4,10 @@
  */
 Ext.define("Blog.view.MainContainer", {
     extend: "Ext.Container",
-    xtype: 'maincontainer',
+    id: 'mainContainer',
 
     config: {
         fullscreen: true,
-        layout: 'card',
-        items: [
-            {
-                xtype: 'bloglistview'
-            },
-            {
-                xtype: 'blogpostview'
-            }
-        ]
+        layout: 'card'
     }
 });

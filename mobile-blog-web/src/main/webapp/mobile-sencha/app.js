@@ -5,10 +5,25 @@ Ext.application({
         'Ext.MessageBox'
     ],
 
-    controllers: ['BlogListController', 'UserServiceController'],
-    models: ['BlogPostModel',],
-    stores: ['BlogPostsStore',],
-    views: ['MainContainer', 'BlogListView', 'BlogPostView'],
+    controllers: [
+        'BlogListController',
+        'BlogPostController',
+        'UserServiceController',
+        'MainController',
+        'AuthController'
+    ],
+    models: ['BlogPostModel', 'CommentModel'],
+    stores: ['BlogPostsStore', 'CommentsStore'],
+    views: [
+        'MainContainer',
+        'MainView',
+        'BlogListView',
+        'BlogPostView',
+        'LoginView',
+        'RegisterView',
+        'AddPostView',
+        'AddCommentView'
+    ],
 
     icon: {
         '57': 'resources/icons/Icon.png',

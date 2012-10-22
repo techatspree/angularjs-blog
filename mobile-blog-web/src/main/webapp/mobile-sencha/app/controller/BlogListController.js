@@ -7,61 +7,49 @@ Ext.define("Blog.controller.BlogListController", {
 
     config: {
         refs: {
-            blogList: "#blogList",
-            addPostBtn: "#addPostBtn",
-            loginBtn: "#loginBtn",
-            mainContainer: 'maincontainer',
-            blogPostView: 'blogpostview'
+            mainContainer: '#mainContainer',
+            mainView: '#mainView',
+            navBar: '#navBar',
+            blogListView: '#blogListView',
+            blogPostView: '#blogPostView',
+            blogList: '#blogList',
         },
         control: {
+            blogListView: {
+                initialize: 'initBlogListView'
+            },
             blogList: {
-                itemtap: "onItemTap"
+                itemtap: 'onItemTap'
             },
             addPostBtn: {
-                initialize: function(btn, e, eOpts) {
-                    var userService = this.getApplication().getController('UserServiceController');
-
-                    if (!userService.isLoggedIn()) {
-                        btn.hide();
-                    }
-                }
+                initialize: 'initAddPostBtn',
+                tap: 'onAddPostBtnTap'
             },
             loginBtn: {
-                initialize: function(btn, e, eOpts) {
-                    var userService = this.getApplication().getController('UserServiceController');
-                    if (userService.isLoggedIn()) {
-                        btn.hide();
-                    }
-                },
-                tap: function(btn, e, eOpts) {
-                    console.log("login btn tapped");
-                }
+                initialize: 'initLoginBtn',
+                tap: 'onLoginBtnTap'
             }
         }
     },
 
+    initBlogListView: function(panel, eOpts) {
+        var blogList = Ext.ComponentQuery.query('#blogListView list'),
+            navBar = this.getNavBar();
+
+        var bar = this.getMainView().getNavigationBar();
+        bar.titleComponent.setTitle("test");
+
+        if (blogList[0]) {
+            blogList[0].setStore('blogPostsStore');
+        }
+
+
+    },
+
+
 
     onItemTap: function(list, index, target, record, e, eOpts) {
-
-
-
-        console.log("item tapped");
-
-        var view = this.getBlogPostView();
-
-        view.setRecord(record);
-        var subItems = view.getItems();
-
-//        console.log(subItems);
-//        subItems[0].setTitle("YEAH");
-
-
-
-
-        this.getMainContainer().animateActiveItem(view, {
-            type: "slide",
-            direction: "left"
-        });
-    },
+        list.fireEvent("showBlogPost", list, index, target, record, e, eOpts);
+    }
 
 });

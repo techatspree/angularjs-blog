@@ -3,57 +3,45 @@
  * @date 18.10.12
  */
 Ext.define("Blog.view.MainView", {
-
     extend: "Ext.navigation.View",
-    xtype: 'mainview',
-    fullscreen: true,
+    id: 'mainView',
 
-    initialize: function() {
-        console.log("main view");
-        console.log(this);
-    },
+    requires: [
+        'Ext.Button'
+    ],
 
     config: {
+        fullscreen: true,
 
         navigationBar: {
+            id: 'navBar',
             items: [
                 {
                     xtype: 'button',
                     id: 'addPostBtn',
                     text: 'Add post',
                     align: 'right',
-                    hidden: false,
-                    listeners: {
-                        tap: function(btn, e, eOpts) {
-                            console.log("add post btn");
-                            this.fireEvent("addPost", this);
-                        },
-//                        initialize: function(btn, eOpts) {
-//                            console.log("add post btn init");
-//                        }
-                    }
-
+                    hidden: false
+                },
+                {
+                    xtype: 'button',
+                    id: 'addCommentBtn',
+                    text: 'Add comment',
+                    align: 'right',
+                    hidden: false
+                },
+                {
+                    xtype: 'button',
+                    id: 'loginBtn',
+                    text: 'Login',
+                    align: 'right',
+                    hidden: false
                 }
-
             ]
-        },
-        items: [
-            {
-                xtype: 'list',
-                title: 'Mobile Blog',
-                itemTpl: '<div class="list-item-title">{title} - {id}</div><div class="list-item-narrative">{content}</div>',
-                store: 'posts',
-                listeners: {
-                    itemtap: function(list, index, target, record, e, eOpts ) {
-                        this.fireEvent("showBlogPost", this, record);
-                    }
-                },
-                onItemDisclosure: function (record, btn, index) {
-                    console.log("disclosure");
-                    this.fireEvent("showBlogPost", this, record);
-                },
+        }
+    },
 
-            }
-        ]
+    initialize: function() {
+        this.callParent(arguments);
     }
 });
