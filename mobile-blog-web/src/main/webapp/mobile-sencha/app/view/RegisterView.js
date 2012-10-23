@@ -42,7 +42,7 @@ Ext.define("Blog.view.RegisterView", {
         });
 
         var lastname = Ext.create("Ext.field.Text", {
-            name: 'lastname',
+            name: 'surname',
             label: 'Last Name'
         });
 
@@ -58,7 +58,8 @@ Ext.define("Blog.view.RegisterView", {
 
         var submitBtn = Ext.create("Ext.Button", {
             text: "Register",
-            ui: 'normal'
+            ui: 'normal',
+            id: 'registerSubmitBtn'
         });
 
         fieldset.add(username);

@@ -34,5 +34,19 @@ Ext.define("Blog.controller.UserServiceController", {
             : false;
 
         return status;
+    },
+
+    register: function(data, callback, errorCallback) {
+        Ext.Ajax.request({
+            url: "../rest/user",
+            method: 'POST',
+            params: data,
+            success: function(response) {
+                callback();
+            },
+            failure: function(response) {
+                errorCallback();
+            }
+        });
     }
 });

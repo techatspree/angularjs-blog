@@ -11,6 +11,7 @@ Ext.define("Blog.controller.AuthController", {
             loginBtn: { selector: "button[id='loginBtn']" },
             loginSubmit: { selector: 'button[id="loginSubmitBtn"]' },
             registerBtn: { selector: "button[id='registerBtn']" },
+            registerSubmit: { selector: "button[id='registerSubmitBtn']" },
             loginView: { selector: "formpanel[id='loginView']" },
             registerView: { selector: "formpanel[id='registerView']" }
         },
@@ -26,6 +27,9 @@ Ext.define("Blog.controller.AuthController", {
             },
             registerBtn: {
                 tap: 'showRegisterView'
+            },
+            registerSubmit: {
+                tap: 'registerSubmit'
             },
             registerView: {
                 activate: 'onActivateRegisterView'
@@ -68,11 +72,6 @@ Ext.define("Blog.controller.AuthController", {
 
         var credentials = this.getLoginView().getValues();
 
-        var user = {};
-
-        user.username = credentials.username;
-        user.password = credentials.password;
-
         var mainView = this.getMainView();
 
         var callback = function() {
@@ -85,6 +84,24 @@ Ext.define("Blog.controller.AuthController", {
 
 
         userService.login(credentials, callback, errorCallback);
+    },
+
+    registerSubmit: function() {
+        var userService = this.getApplication().getController('UserServiceController');
+
+        var formData = this.getRegisterView().getValues();
+
+        var mainView = this.getMainView();
+
+        var callback = function() {
+            mainView.pop();
+        };
+
+        var errorCallback = function() {
+            Ext.Msg.alert('Register', 'error', Ext.emptyFn);
+        }
+
+        userService.register(formData, callback, errorCallback);
     }
 
 });
