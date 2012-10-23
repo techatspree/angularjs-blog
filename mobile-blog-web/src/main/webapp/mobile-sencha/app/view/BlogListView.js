@@ -3,6 +3,7 @@
  * @date 19.10.12
  */
 Ext.define("Blog.view.BlogListView", {
+
     extend: "Ext.Panel",
     id: 'blogListView',
 
@@ -11,7 +12,7 @@ Ext.define("Blog.view.BlogListView", {
     ],
 
     config: {
-        title: "Mobile-Blog",
+        title: "",
         fullscreen: true,
         layout: 'vbox'
     },
@@ -22,7 +23,6 @@ Ext.define("Blog.view.BlogListView", {
                 id: 'blogList',
                 itemTpl: Ext.XTemplate.from(Ext.get('blogpostlist')),
                 disableSelection: true,
-//                store: 'blogPostsStore',
                 onItemDisclosure: true,
                 flex: 1
         });

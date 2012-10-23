@@ -8,36 +8,47 @@ Ext.define("Blog.controller.BlogPostController", {
 
     config: {
         refs: {
-            mainView: '#mainView',
-            blogList: '#blogList',
-            blogListView: '#blogListView',
-            blogPostView: '#blogPostView',
-            postPanel: '#postPanel',
-            backBtn: '#blogPostBackBtn',
+              mainView: '#mainView',
+              blogPostView: { selector: "panel[id='blogPostView']" }
+
         },
         control: {
-            blogList: {
+            blogPostView: {
+                activate: 'activateBlogPostView'
+            },
+            "list": {
                 showBlogPost: 'showBlogPost'
             }
 
         }
     },
 
-    showBlogPost: function(list, index, target, record, e, eOpts) {
+    showBlogPost: function(record) {
         // blog post view
-        var view = (this.getBlogPostView()) ? this.getBlogPostView(): Ext.create("Blog.view.BlogPostView");
+        var view     = Ext.create("Blog.view.BlogPostView"),
+            store    = Ext.data.StoreManager.lookup('blogPostStore'),
+            mainView = this.getMainView();
 
-        view.setRecord(record);
+        store.applyData(record.data);
+        this.getBlogPostView().setTitle(record.data.title);
 
-        // set post data
-        var postTpl = Ext.XTemplate.from(Ext.get('blogpost'));
-        this.getPostPanel().setHtml(postTpl.apply(record.data));
 
-        var mainView = this.getMainView();
-        mainView.push(view);
         // load comments
         // set store url
         // load store
+
+
+        mainView.push(view);
+    },
+
+    activateBlogPostView: function(panel, newActiveItem, oldActiveItem, eOpts) {
+        var buttons = [
+            { "id": 'loginBtn', "requireUser": false},
+            { "id": 'addCommentBtn', "requireUser": true}
+        ];
+
+        panel.fireEvent("showButtons", buttons, panel);
+//        panel.setTitle()
     }
 
 });

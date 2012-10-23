@@ -5,10 +5,6 @@
 Ext.define('Blog.model.BlogPostModel', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['id', 'title', 'content', "author"],
-//        proxy: {
-//            type: 'rest',
-//            url: '../rest/blog'
-//        }
+        fields: ['id', 'title', 'content', "author"]
     }
 });

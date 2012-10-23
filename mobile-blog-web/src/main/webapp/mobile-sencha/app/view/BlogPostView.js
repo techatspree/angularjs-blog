@@ -20,11 +20,13 @@ Ext.define("Blog.view.BlogPostView", {
             scrollable: true
         });
 
-        var postPanel = Ext.create("Ext.Panel", {
+        var post = Ext.create("Ext.dataview.DataView", {
             width: '100%',
             height: 'auto',
-            id: 'postPanel',
             scrollable: false,
+            id: 'post',
+            store: 'blogPostStore',
+            itemTpl: Ext.XTemplate.from(Ext.get('blogpost')),
             styleHtmlContent: true
         });
 
@@ -32,34 +34,15 @@ Ext.define("Blog.view.BlogPostView", {
             width: '100%',
             height: 'auto',
             scrollable: false,
-//            store: 'comments',
-            store: {
-                fields: ['content'],
-                    data: [
-                        {content: 'Jamie',  age: 100},
-                        {content: 'Rob',   age: 21},
-                        {content: 'Tommy', age: 24},
-                        {content: 'Jacky', age: 24},
-                        {content: 'Ed',   age: 26}
-                    ]
-                },
-                itemTpl: Ext.XTemplate.from(Ext.get('comment')),
-                styleHtmlContent: true
+            store: 'commentsStore',
+            itemTpl: Ext.XTemplate.from(Ext.get('comment')),
+            styleHtmlContent: true
         });
 
-        blogPostPanel.add(postPanel);
+        blogPostPanel.add(post);
         blogPostPanel.add(commentsList);
 
         this.add(blogPostPanel);
-
-    },
-
-    show: function() {
-        this.callParent(arguments);
-
-        var title = this.getRecord().data.title;
-
-        this.setTitle(title);
     }
 
 });

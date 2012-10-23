@@ -7,11 +7,6 @@ Ext.define('Blog.model.CommentModel', {
     config: {
         fields: [
             'id', 'author', 'content', 'created'
-        ],
-//        proxy: {
-//            type: 'rest',
-//            url: '../rest/blog/{id}/comments'
-//        }
-    },
-
+        ]
+    }
 });

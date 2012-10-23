@@ -3,6 +3,7 @@
  * @date 18.10.12
  */
 Ext.define("Blog.view.MainView", {
+
     extend: "Ext.navigation.View",
     id: 'mainView',
 
@@ -19,29 +20,33 @@ Ext.define("Blog.view.MainView", {
                 {
                     xtype: 'button',
                     id: 'addPostBtn',
-                    text: 'Add post',
+                    text: 'Add Post',
                     align: 'right',
-                    hidden: false
+                    hidden: true
                 },
                 {
                     xtype: 'button',
                     id: 'addCommentBtn',
-                    text: 'Add comment',
+                    text: 'Add Comment',
                     align: 'right',
-                    hidden: false
+                    hidden: true
                 },
                 {
                     xtype: 'button',
                     id: 'loginBtn',
                     text: 'Login',
                     align: 'right',
-                    hidden: false
+                    hidden: true
+                },
+                {
+                    xtype: 'button',
+                    id: 'registerBtn',
+                    text: 'Register',
+                    align: 'right',
+                    hidden: true
                 }
             ]
         }
-    },
-
-    initialize: function() {
-        this.callParent(arguments);
     }
+
 });
