@@ -24,12 +24,6 @@ Ext.define("Blog.view.AddCommentView", {
             label: "Content"
         });
 
-        var blogPostId = Ext.create("Ext.field.Hidden", {
-            name: 'blogPostId',
-            id: 'blogPostIdHiddenField',
-            value: ''
-        });
-
         var submitBtn = Ext.create("Ext.Button", {
             text: "Submit",
             ui: 'normal',

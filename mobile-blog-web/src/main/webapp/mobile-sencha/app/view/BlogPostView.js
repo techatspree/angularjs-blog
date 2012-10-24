@@ -33,7 +33,7 @@ Ext.define("Blog.view.BlogPostView", {
         var commentsHeader = Ext.create("Ext.Panel", {
             width: '100%',
             height: 'auto',
-            html: '<h3>Comments</h3>',
+            html: '<h5>Comments</h5>',
             styleHtmlContent: true
         });
 

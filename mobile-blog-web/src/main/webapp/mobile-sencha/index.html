@@ -61,13 +61,13 @@
 
     <!-- Templates -->
     <tpl id="blogpostlist" style="display:none">
-        <div class="list-item-title">{title} - {id}</div>
+        <div class="list-item-title">{title} (ID: {id})</div>
         <div class="list-item-content">{content}</div>
     </tpl>
 
     <tpl id="blogpost" style="display:none">
         <div class="post">
-            <h1>{title} - {id}</h1>
+            <h1>{title} (ID: {id})</h1>
             <h4>{author.firstname} {author.surname} - {created}</h4>
 
             <p>{content}</p>
