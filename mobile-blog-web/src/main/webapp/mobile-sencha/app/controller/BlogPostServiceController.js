@@ -27,7 +27,7 @@ Ext.define("Blog.controller.BlogPostServiceController", {
         });
     },
 
-    addComment: function(blodPostId, comment, callback, errorCallback) {
+    addComment: function(blogPostId, comment, callback, errorCallback) {
         Ext.Ajax.useDefaultXhrHeader = false;
         Ext.Ajax.request({
             url: "../rest/blog/" + blogPostId + "/comment",

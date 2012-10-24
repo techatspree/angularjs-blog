@@ -38,6 +38,8 @@ Ext.define("Blog.controller.BlogListController", {
         panel.fireEvent("showButtons", buttons, panel);
 
         panel.setTitle("Mobile-Blog");
+
+        this.getBlogList().getStore().load();
     },
 
     onItemTap: function(list, index, target, record, e, eOpts) {

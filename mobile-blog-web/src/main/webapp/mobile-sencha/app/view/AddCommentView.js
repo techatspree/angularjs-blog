@@ -9,6 +9,37 @@ Ext.define("Blog.view.AddCommentView", {
 
     config: {
         title: ""
+    },
+
+    initialize: function() {
+        this.callParent(arguments);
+
+        var fieldset = Ext.create("Ext.form.FieldSet", {
+            title: "",
+            description: ""
+        });
+
+        var content = Ext.create("Ext.field.TextArea", {
+            name: "content",
+            label: "Content"
+        });
+
+        var blogPostId = Ext.create("Ext.field.Hidden", {
+            name: 'blogPostId',
+            id: 'blogPostIdHiddenField',
+            value: ''
+        });
+
+        var submitBtn = Ext.create("Ext.Button", {
+            text: "Submit",
+            ui: 'normal',
+            id: 'addCommentSubmitBtn'
+        });
+
+
+        fieldset.add(content);
+        this.add(fieldset);
+        this.add(submitBtn);
     }
 
 });
