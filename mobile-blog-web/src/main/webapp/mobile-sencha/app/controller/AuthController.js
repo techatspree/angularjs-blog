@@ -10,9 +10,9 @@ Ext.define("Blog.controller.AuthController", {
             mainView: '#mainView',
             loginBtn: { selector: "button[id='loginBtn']" },
             loginSubmit: { selector: 'button[id="loginSubmitBtn"]' },
+            loginView: { selector: "formpanel[id='loginView']" },
             registerBtn: { selector: "button[id='registerBtn']" },
             registerSubmit: { selector: "button[id='registerSubmitBtn']" },
-            loginView: { selector: "formpanel[id='loginView']" },
             registerView: { selector: "formpanel[id='registerView']" }
         },
         control: {
@@ -38,7 +38,7 @@ Ext.define("Blog.controller.AuthController", {
         }
     },
 
-    showLoginView: function(btn, e, eOpts) {
+    showLoginView: function() {
         var mainView = this.getMainView(),
             view     = Ext.create("Blog.view.LoginView");
 
@@ -54,18 +54,21 @@ Ext.define("Blog.controller.AuthController", {
         self.setTitle("Login")
     },
 
+
     showRegisterView: function() {
         var mainView = this.getMainView(),
             view     = Ext.create("Blog.view.RegisterView");
 
         mainView.push(view);
     },
+
     onActivateRegisterView: function(self) {
         var buttons = [];
         self.fireEvent("showButtons", buttons);
 
         self.setTitle("Register");
     },
+
 
     loginSubmit: function() {
         var userService = this.getApplication().getController('UserServiceController');
@@ -82,9 +85,9 @@ Ext.define("Blog.controller.AuthController", {
             Ext.Msg.alert('Login', 'Login failed!', Ext.emptyFn);
         }
 
-
         userService.login(credentials, callback, errorCallback);
     },
+
 
     registerSubmit: function() {
         var userService = this.getApplication().getController('UserServiceController');

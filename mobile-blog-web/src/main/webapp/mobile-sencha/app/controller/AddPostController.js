@@ -62,5 +62,4 @@ Ext.define("Blog.controller.AddPostController", {
         blogPostService.addBlogPost(formData, callback, errorCallback);
     }
 
-
 });
