@@ -13,7 +13,8 @@ Ext.application({
         'AuthController',
         'NavigationBarController',
         'AddPostController',
-        'AddCommentController'
+        'AddCommentController',
+        'BlogPostServiceController'
     ],
     models: ['BlogPostModel', 'CommentModel'],
     stores: ['BlogPostStore', 'BlogPostsStore', 'CommentsStore'],

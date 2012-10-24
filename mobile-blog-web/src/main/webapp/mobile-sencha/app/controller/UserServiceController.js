@@ -5,8 +5,6 @@
 Ext.define("Blog.controller.UserServiceController", {
     extend: "Ext.app.Controller",
 
-    loggedIn: false,
-
     config: {
         refs: {},
         control: {}
@@ -19,7 +17,7 @@ Ext.define("Blog.controller.UserServiceController", {
             method: "POST",
             params: credentials,
             success: function(response) {
-                sessionStorage.setItem('isLoggedIn', true);
+                sessionStorage.setItem('user', response.responseText);
                 callback();
             },
             failure: function(response) {
@@ -29,11 +27,7 @@ Ext.define("Blog.controller.UserServiceController", {
     },
 
     isLoggedIn: function() {
-        var status = (sessionStorage.getItem('isLoggedIn'))
-            ? (sessionStorage.getItem('isLoggedIn'))
-            : false;
-
-        return status;
+        return (sessionStorage.getItem('user')) ? true : false;
     },
 
     register: function(data, callback, errorCallback) {
@@ -48,5 +42,11 @@ Ext.define("Blog.controller.UserServiceController", {
                 errorCallback();
             }
         });
+    },
+
+    getUser: function() {
+        var user = Ext.JSON.decode(sessionStorage.getItem('user'));
+        if (user) { return user; }
+        return false;
     }
 });

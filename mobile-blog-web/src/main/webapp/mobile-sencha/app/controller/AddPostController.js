@@ -10,7 +10,8 @@ Ext.define("Blog.controller.AddPostController", {
         refs: {
             mainView: { selector: '#mainView' },
             addPostBtn: { selector: 'button[id="addPostBtn"]' },
-            addPostView: { selector: 'formpanel[id="addPostView"]'}
+            addPostView: { selector: 'formpanel[id="addPostView"]'},
+            addPostSubmit: { selector: 'button[id="addPostSubmitBtn"]' }
         },
         control: {
             addPostBtn: {
@@ -18,6 +19,9 @@ Ext.define("Blog.controller.AddPostController", {
             },
             addPostView: {
                 activate: 'onActivateAddPostView'
+            },
+            addPostSubmit: {
+                tap: "onSubmit"
             }
         }
     },
@@ -28,11 +32,34 @@ Ext.define("Blog.controller.AddPostController", {
 
         mainView.push(view);
     },
+
     onActivateAddPostView: function(self) {
         var buttons = [];
         self.fireEvent("showButtons", buttons);
 
         self.setTitle("Add Post");
+    },
+
+    onSubmit: function() {
+        var userService = this.getApplication().getController('UserServiceController');
+        var blogPostService = this.getApplication().getController('BlogPostServiceController');
+
+        var formData = this.getAddPostView().getValues();
+
+        formData.author = {};
+        formData.author.id = userService.getUser().id;
+
+        var mainView = this.getMainView();
+
+        var callback = function() {
+            mainView.pop();
+        };
+
+        var errorCallback = function() {
+            Ext.Msg.alert('Add Post', 'error', Ext.emptyFn);
+        }
+
+        blogPostService.addBlogPost(formData, callback, errorCallback);
     }
 
 
