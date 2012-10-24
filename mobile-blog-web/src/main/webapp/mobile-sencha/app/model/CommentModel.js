@@ -6,7 +6,10 @@ Ext.define('Blog.model.CommentModel', {
     extend: 'Ext.data.Model',
     config: {
         fields: [
-            'id', 'author', 'content', 'created'
+            { name: 'id', type: 'int' },
+            { name: 'author' },
+            { name: 'content', type: 'string' },
+            { name: 'created', type: 'date', dateFormat: 'time'}
         ]
     }
 });

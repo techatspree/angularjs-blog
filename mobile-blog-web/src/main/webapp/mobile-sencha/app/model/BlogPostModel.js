@@ -5,6 +5,12 @@
 Ext.define('Blog.model.BlogPostModel', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['id', 'title', 'content', "author"]
+        fields: [
+            { name: 'id', type: 'int' },
+            { name: 'title', type: 'string' },
+            { name: 'content', type: 'string' },
+            { name: 'author' },
+            { name: 'created', type: 'date', dateFormat: 'time'}
+        ]
     }
 });

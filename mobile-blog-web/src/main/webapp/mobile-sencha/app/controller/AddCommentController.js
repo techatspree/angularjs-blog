@@ -11,8 +11,7 @@ Ext.define("Blog.controller.AddCommentController", {
             mainView: { selector: '#mainView' },
             addCommentBtn: { selector: 'button[id="addCommentBtn"]' },
             addCommentView: { selector: 'formpanel[id="addCommentView"]' },
-            addCommentSubmit: { selector: 'button[id="addCommentSubmitBtn"]' },
-            blogPostIdField: { selector: 'hiddenfield[id="blogPostIdHiddenField"]' }
+            addCommentSubmit: { selector: 'button[id="addCommentSubmitBtn"]' }
         },
         control: {
             addCommentBtn: {
@@ -28,55 +27,39 @@ Ext.define("Blog.controller.AddCommentController", {
     },
 
     showAddCommentView: function() {
-        var view     = Ext.create("Blog.view.AddCommentView"),
-            mainView = this.getMainView();
+        var mainView, view;
+
+        mainView = this.getMainView();
+        view     = Ext.create("Blog.view.AddCommentView");
 
         mainView.push(view);
     },
 
     onActivateAddCommentView: function(self) {
         var buttons = [];
-
         self.fireEvent("showButtons", buttons);
 
         self.setTitle("Add Comment");
-
-        var blogPostIdField = this.getBlogPostIdField();
-
-        var store = Ext.data.StoreManager.lookup('blogPostStore');
-
-        console.log(store);
-
-        var blogPost = store.getAt(0);
-
-        console.log(blogPost);
-
-        blogPostIdField.setValue(blogPost.data.id);
     },
 
     onSubmit: function() {
-        var userService = this.getApplication().getController('UserServiceController');
-        var blogPostService = this.getApplication().getController('BlogPostServiceController');
+        var userService, blogPostService,
+            mainView,
+            formData,
+            store, blogPostId;
 
-        var formData = this.getAddCommentView().getValues();
+        userService     = this.getApplication().getController('UserServiceController');
+        blogPostService = this.getApplication().getController('BlogPostServiceController');
+
+        mainView = this.getMainView();
+
+        formData = this.getAddCommentView().getValues();
+
+        store  = Ext.data.StoreManager.lookup('blogPostStore');
+        blogPostId = store.getAt(0).data.id;
 
         formData.author = {};
         formData.author.id = userService.getUser().id;
-
-        console.log(formData);
-
-        var store = Ext.data.StoreManager.lookup('blogPostStore');
-
-        console.log(store);
-
-        var blogPost = store.getAt(0);
-
-        console.log(blogPost);
-
-
-        var blogPostId = blogPost.data.id;
-
-        var mainView = this.getMainView();
 
         var callback = function() {
             mainView.pop();

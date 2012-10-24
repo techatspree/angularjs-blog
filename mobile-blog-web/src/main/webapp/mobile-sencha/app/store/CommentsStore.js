@@ -8,26 +8,21 @@ Ext.define("Blog.store.CommentsStore", {
     config: {
         storeId: 'commentsStore',
         model: 'Blog.model.CommentModel',
-//        proxy: {
-//            type: 'rest',
-//            url: '../rest/blog/{id}/comment'
-//        },
-//        listeners: {
-//            refresh: function() {
-//                console.log("comments store refresh");
-//                console.log(this.getData());
+        proxy: {
+            type: 'ajax',
+            url: '../rest/blog/{id}/comment'
+        },
+
+//        data: [
+//            {
+//                "content":"Lorem ipsum dolor sit tempor invi"
+//            },
+//
+//            {
+//                "content":"Loeirmod temp eota kactus est Lorem ipsum dolor sit amet",
 //            }
-//        }
+//        ]
 
-        data: [
-            {
-                "content":"Lorem ipsum dolor sit tempor invi"
-            },
-
-            {
-                "content":"Loeirmod temp eota kactus est Lorem ipsum dolor sit amet",
-            }
-        ],
     }
 
 });

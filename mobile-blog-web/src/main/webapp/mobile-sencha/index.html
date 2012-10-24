@@ -68,15 +68,16 @@
     <tpl id="blogpost" style="display:none">
         <div class="post">
             <h1>{title} - {id}</h1>
-            <h4>{author.firstname} {author.surname} - </h4>
+            <h4>{author.firstname} {author.surname} - {created}</h4>
 
-            <div>{content}</div>
+            <p>{content}</p>
         </div>
     </tpl>
 
     <tpl id="comment" style="display:none">
         <div class="comment">
-            <div>{content}</div>
+            <p>-- {author.firstname} {author.surname} - {created}</p>
+            <p>{content}</p>
         </div>
     </tpl>
 </body>

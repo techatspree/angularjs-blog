@@ -47,6 +47,7 @@ Ext.define("Blog.store.BlogPostsStore", {
 //                "created":1350546355344
 //            }
 //        ],
+
         autoLoad: true
     }
 });
