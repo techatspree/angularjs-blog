@@ -10,7 +10,13 @@ Ext.define("Blog.store.CommentsStore", {
         model: 'Blog.model.CommentModel',
         proxy: {
             type: 'ajax',
-            url: '../rest/blog/{id}/comment'
+            url: '../rest/blog/{id}/comment',
+            headers: {
+                'Accept': 'application/json'
+            },
+            reader: {
+                type: 'json'
+            }
         },
 
 //        data: [

@@ -14,7 +14,7 @@ Ext.define("Blog.view.BlogListView", {
     config: {
         title: "",
         fullscreen: true,
-        layout: 'vbox'
+        layout: 'fit'
     },
 
     initialize: function() {
@@ -23,8 +23,7 @@ Ext.define("Blog.view.BlogListView", {
                 id: 'blogList',
                 itemTpl: Ext.XTemplate.from(Ext.get('blogpostlist')),
                 disableSelection: true,
-                onItemDisclosure: true,
-                flex: 1
+                onItemDisclosure: true
         });
 
         this.add(blogList);

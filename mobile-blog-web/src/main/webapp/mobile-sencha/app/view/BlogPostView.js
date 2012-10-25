@@ -8,7 +8,7 @@ Ext.define("Blog.view.BlogPostView", {
 
     config: {
         title: "",
-        layout: 'vbox'
+        layout: 'fit'
     },
 
     initialize: function() {
@@ -16,7 +16,6 @@ Ext.define("Blog.view.BlogPostView", {
 
         var blogPostPanel = Ext.create("Ext.Panel", {
             layout: 'vbox',
-            flex: 1,
             scrollable: true
         });
 

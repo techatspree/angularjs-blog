@@ -10,6 +10,9 @@ Ext.define("Blog.store.BlogPostsStore", {
         proxy:{
             type: 'ajax',
             url: '../rest/blog',
+            headers: {
+                'Accept': 'application/json'
+            },
             reader: {
                 type:  'json'
             }
