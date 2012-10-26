@@ -8,22 +8,19 @@
     <link rel="stylesheet" type="text/css" href="app/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="app/css/custom.css"/>
 
-
-
     <link rel="shortcut icon" href="app/img/favicon.ico" type="image/x-icon" />
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <div id="menu" class="row">
+    <div id="menu" class="row" ng-controller="MainCtrl">
         <div class="span1"></div>
         <div class="span10">
             <ul class="nav nav-pills floatRight">
                 <li>
-                    <a href="#/login">Login</a>
+                    <a href="{{link}}" ng-bind-template="{{title}}"></a>
                 </li>
             </ul>
         </div>
@@ -47,11 +44,9 @@
         <div class="span1"></div>
         <section ng-view class="span6"></section>
         <aside class="span3 offset1">
-            <!-- Header -->
             <div>
                 <h3>Find out more</h3>
             </div>
-            <!-- /Header -->
 
             <div>
                 <p>More about the author of this demo.</p>

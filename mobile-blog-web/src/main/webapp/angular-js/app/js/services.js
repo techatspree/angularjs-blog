@@ -16,5 +16,12 @@ angular.module('BlogPostServices', ['ngResource']).
 angular.module('UserServices', ['ngResource']).
     factory('Login', function($resource) {
         return $resource('../rest/authentication/:', {}, {});
+    }).
+    factory('IsLoggedIn', function() {
+        if (sessionStorage.getItem('user')) {
+            return true;
+        } else {
+            return false;
+        }
     });
 

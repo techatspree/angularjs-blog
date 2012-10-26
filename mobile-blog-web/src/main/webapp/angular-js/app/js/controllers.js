@@ -5,6 +5,16 @@
 
 'use strict';
 
+function MainCtrl($scope, IsLoggedIn) {
+    if (IsLoggedIn) {
+        $scope.link = "#/logout";
+        $scope.title = "Logout";
+    } else {
+        $scope.link = "#/login";
+        $scope.title = "Login";
+    }
+}
+
 function BlogPostListCtrl($scope, BlogPosts) {
     $scope.blogPosts = BlogPosts.query();
 }
