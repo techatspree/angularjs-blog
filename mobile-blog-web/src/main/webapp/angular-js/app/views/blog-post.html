@@ -1,0 +1,19 @@
+
+<div id="blogPostContainer">
+    <h2>{{ blogPost.title }} (ID: {{ blogPost.id }})</h2>
+    <h5>
+        {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy h:mm' }}
+    </h5>
+    <p>{{ blogPost.content | addLineBreaks }}</p>
+</div>
+
+<div id="commentsList">
+    <h3>Comments</h3>
+
+    <div class="comment" ng-repeat="comment in comments">
+        <p>{{ comment.content }}</p>
+        <p>
+            -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy h:mm' }}
+        </p>
+    </div>
+</div>

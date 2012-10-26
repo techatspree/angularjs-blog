@@ -1,0 +1,33 @@
+html {
+    overflow-y: scroll;
+}
+
+body {
+    background: #f2f2f2;
+}
+
+header {
+    margin: 35px 0;
+}
+
+.container {
+    background: white;
+    padding-bottom: 35px;
+}
+
+article {
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+#commentsList {
+    margin-top: 40px;
+}
+
+.floatLeft {
+    float:left;
+}
+.floatRight {
+    float: right;
+}
