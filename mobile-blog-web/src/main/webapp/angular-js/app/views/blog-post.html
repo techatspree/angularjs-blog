@@ -4,7 +4,7 @@
     <h5>
         {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy h:mm' }}
     </h5>
-    <p>{{ blogPost.content | addLineBreaks }}</p>
+    <p>{{ blogPost.content }}</p>
 </div>
 
 <div id="commentsList">

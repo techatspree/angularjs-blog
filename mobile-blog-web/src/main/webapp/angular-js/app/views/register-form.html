@@ -1,0 +1,48 @@
+
+<div>
+    <form novalidate class="simple-form">
+        <legend>Register</legend>
+
+        <div class="clearfix">
+            <p class="floatLeft">
+                <label class="control-label" for="inputUsername">Username</label>
+                <input type="text" id="inputUsername" placeholder="Username" ng-model="user.username">
+            </p>
+
+            <p class="floatRight">
+                <label class="control-label" for="inputPassword">Password</label>
+                <input type="password" id="inputPassword" placeholder="Password" ng-model="user.password">
+            </p>
+        </div>
+
+
+        <div class="clearfix">
+            <p class="floatLeft">
+                <label class="control-label" for="inputFirstname">First Name</label>
+                <input type="text" id="inputFirstname" placeholder="First Name" ng-model="user.firstname">
+            </p>
+
+            <p class="floatRight">
+                <label class="control-label" for="inputSurname">Surname</label>
+                <input type="text" id="inputSurname" placeholder="Surname" ng-model="user.surname">
+            </p>
+
+        </div>
+
+        <div class="clearfix">
+            <p class="floatLeft">
+                <label class="control-label" for="inputEmail">Email</label>
+                <input type="email" id="inputEmail" placeholder="Email" ng-model="user.email">
+            </p>
+
+            <p class="floatRight">
+                <label class="control-label" for="inputPhone">Phone</label>
+                <input type="text" id="inputPhone" placeholder="Phone" ng-model="user.phone">
+            </p>
+        </div>
+
+        <p>
+            <button type="submit" class="btn" ng-click="register(user)">Register</button>
+        </p>
+    </form>
+</div>

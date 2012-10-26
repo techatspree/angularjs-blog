@@ -18,8 +18,6 @@ angular.module('BlogPostFilters', []).
     }).
     filter('addLineBreaks', function() {
         return function(input) {
-            console.log(input);
-
             return input.replace(/\n/g, '<br />');
         }
     });

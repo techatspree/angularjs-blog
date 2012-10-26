@@ -5,7 +5,7 @@
 
 'use strict';
 
-angular.module('router', ['BlogPostServices', 'BlogPostFilters']).
+angular.module('router', ['BlogPostServices', 'UserServices', 'BlogPostFilters']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/blog',
@@ -13,6 +13,12 @@ angular.module('router', ['BlogPostServices', 'BlogPostFilters']).
             ).
             when('/blog/:blogPostId',
                 {templateUrl: 'app/views/blog-post.html', controller: BlogPostCtrl}
+            ).
+            when('/login',
+                {templateUrl: 'app/views/login-form.html', controller: LoginCtrl}
+            ).
+            when('/register',
+                {templateUrl: 'app/views/register-form.html', controller: RegisterCtrl}
             ).
             otherwise({redirectTo: '/blog'});
     }]);

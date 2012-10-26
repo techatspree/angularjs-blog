@@ -1,0 +1,21 @@
+
+<div>
+    <form novalidate class="simple-form">
+        <legend>Login</legend>
+
+        <p>
+            <label class="control-label" for="inputUsername">Username</label>
+            <input type="text" id="inputUsername" placeholder="Username" ng-model="user.username">
+        </p>
+
+        <p>
+            <label class="control-label" for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" placeholder="Password" ng-model="user.password">
+        </p>
+
+        <p>
+            <button type="submit" class="btn" ng-click="login(user)">Login</button>
+            <a href="#/register" class="btn">Register</a>
+        </p>
+    </form>
+</div>

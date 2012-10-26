@@ -12,3 +12,9 @@ angular.module('BlogPostServices', ['ngResource']).
     factory('Comments', function($resource) {
         return $resource('../rest/blog/:blogPostId/comment', {}, {});
     });
+
+angular.module('UserServices', ['ngResource']).
+    factory('Login', function($resource) {
+        return $resource('../rest/authentication/:', {}, {});
+    });
+
