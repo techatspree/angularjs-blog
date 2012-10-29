@@ -1,0 +1,21 @@
+
+<div class="span1"></div>
+<div class="span10">
+    <ul class="nav nav-pills">
+        <li ng-repeat="button in buttons">
+            <a ng-href="{{ button.href }}"
+               ng-show="showButton(button.loggedIn)"
+               ng-bind-template="{{ button.title }}"></a>
+        </li>
+        <li>
+            <a href="#/login"
+               ng-show="loginLogoutToggle('login')">Login</a>
+        </li>
+        <li>
+            <a href="#/logout"
+               ng-click="logout()"
+               ng-show="loginLogoutToggle('logout')">Logout</a>
+        </li>
+    </ul>
+</div>
+<div class="span1"></div>

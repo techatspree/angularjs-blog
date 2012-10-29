@@ -6,22 +6,21 @@
 'use strict';
 
 angular.module('BlogPostServices', ['ngResource']).
-    factory('BlogPosts', function($resource){
+    factory('BlogPost', function($resource){
         return $resource('../rest/blog/:blogPostId', {}, {});
     }).
-    factory('Comments', function($resource) {
+    factory('Comment', function($resource) {
         return $resource('../rest/blog/:blogPostId/comment', {}, {});
     });
 
 angular.module('UserServices', ['ngResource']).
-    factory('Login', function($resource) {
-        return $resource('../rest/authentication/:', {}, {});
-    }).
-    factory('IsLoggedIn', function() {
-        if (sessionStorage.getItem('user')) {
-            return true;
-        } else {
-            return false;
+    value('User', {
+        isLoggedIn: function() {
+            if (sessionStorage.getItem('user')) {
+                return true;
+            } else {
+                return false;
+            }
         }
     });
 

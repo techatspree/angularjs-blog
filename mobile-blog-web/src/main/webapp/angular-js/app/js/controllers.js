@@ -5,26 +5,111 @@
 
 'use strict';
 
-function MainCtrl($scope, IsLoggedIn) {
-    if (IsLoggedIn) {
-        $scope.link = "#/logout";
-        $scope.title = "Logout";
-    } else {
-        $scope.link = "#/login";
-        $scope.title = "Login";
+/**
+ * Site Controller
+ *
+ * @param $scope
+ * @param $location
+ * @param User
+ * @constructor
+ */
+SiteCtrl.$inject = ['$rootScope', '$scope', '$location', 'User'];
+
+function SiteCtrl($rootScope, $scope, $location, User) {
+    $scope.header         = 'app/views/header.html';
+    $scope.sidebar        = 'app/views/sidebar.html';
+    $scope.mainNavigation = 'app/views/main-navigation.html';
+
+    // Navigation buttons
+    $scope.buttons = {};
+    $rootScope.$on("initMainNavigation", function(event, data) {
+        if (data) {
+            $scope.buttons = data;
+        }
+    });
+    $scope.showButton = function(loggedIn) {
+        switch (loggedIn) {
+            case true:
+                return User.isLoggedIn();
+                break;
+            case false:
+                return !User.isLoggedIn();
+                break;
+        }
+    };
+
+    // login / logout button
+    $scope.loginLogoutToggle = function(button) {
+        switch (button) {
+            case 'login':
+                return !User.isLoggedIn();
+                break;
+            case 'logout':
+                return User.isLoggedIn();
+                break;
+        }
+    }
+
+    $scope.logout = function() {
+        sessionStorage.removeItem('user');
+        $location.path('#/blog');
     }
 }
 
-function BlogPostListCtrl($scope, BlogPosts) {
-    $scope.blogPosts = BlogPosts.query();
+
+/**
+ * Blog List View Controller
+ *
+ * @param $scope
+ * @param BlogPost
+ * @constructor
+ */
+BlogPostListCtrl.$inject = ['$rootScope', '$scope', 'BlogPost'];
+
+function BlogPostListCtrl($rootScope, $scope, BlogPost) {
+    var buttons = [
+        {
+            title: 'Add Post',
+            href: '#/addPost',
+            loggedIn: true
+        }
+    ];
+    $rootScope.$broadcast("initMainNavigation", buttons);
+    $scope.blogPosts = BlogPost.query();
+
 }
 
-function BlogPostCtrl($scope, $routeParams, BlogPosts, Comments) {
-    $scope.blogPost = BlogPosts.get({blogPostId: $routeParams.blogPostId});
-    $scope.comments = Comments.query({blogPostId: $routeParams.blogPostId});
+
+
+/**
+ * Blog Post View Controller
+ *
+ * @param $scope
+ * @param $routeParams
+ * @param BlogPost
+ * @param Comment
+ * @constructor
+ */
+BlogPostCtrl.$inject = ['$scope', '$routeParams', 'BlogPost', 'Comment'];
+
+function BlogPostCtrl($scope, $routeParams, BlogPost, Comment) {
+    $scope.blogPost = BlogPost.get({blogPostId: $routeParams.blogPostId});
+    $scope.comments = Comment.query({blogPostId: $routeParams.blogPostId});
 }
 
-function LoginCtrl($scope, Login, $http) {
+
+
+/**
+ * Login View Controller
+ *
+ * @param $scope
+ * @param $location
+ * @param $http
+ * @constructor
+ */
+LoginCtrl.$inject = ['$scope', '$location', '$http'];
+
+function LoginCtrl($scope, $location, $http) {
     $scope.login = function(user) {
 
         var transform = function(data){
@@ -41,6 +126,7 @@ function LoginCtrl($scope, Login, $http) {
         }).
         success(function(data, status, headers, config) {
             sessionStorage.setItem('user', angular.toJson(data));
+            $location.path('#/blog');
         }).
         error(function(data, status, headers, config) {
             console.log(status)
@@ -48,9 +134,19 @@ function LoginCtrl($scope, Login, $http) {
     }
 }
 
-function RegisterCtrl($scope, $http) {
-    $scope.register = function(userData) {
 
+/**
+ * Register View Controller
+ *
+ * @param $scope
+ * @param $location
+ * @param $http
+ * @constructor
+ */
+RegisterCtrl.$inject = ['$scope', '$location', '$http'];
+
+function RegisterCtrl($scope, $location, $http) {
+    $scope.register = function(userData) {
         // fix
         if (!userData.email) {
             console.log("no email")
@@ -70,10 +166,17 @@ function RegisterCtrl($scope, $http) {
             transformRequest: transform
         }).
         success(function(data, status, headers, config) {
-            console.log(data);
+            $location.path('#/login');
         }).
         error(function(data, status, headers, config) {
             console.log(status);
         });
     }
+}
+
+
+
+AddBlogPostCtrl.$inject = ['$scope'];
+function AddBlogPostCtrl($scope) {
+
 }

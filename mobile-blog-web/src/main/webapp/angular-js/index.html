@@ -2,7 +2,7 @@
 <html lang="en" ng-app="router">
 <head>
     <meta charset="utf-8">
-    <title>AeroGear - Mobile-Blog</title>
+    <title>AeroGear - Blog Demo</title>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="app/css/bootstrap.css"/>
@@ -13,107 +13,22 @@
 
 <body>
 
-<div class="container">
+<div class="container" ng-controller="SiteCtrl">
+    <header class="row" ng-include="header"></header>
 
-    <div id="menu" class="row" ng-controller="MainCtrl">
-        <div class="span1"></div>
-        <div class="span10">
-            <ul class="nav nav-pills floatRight">
-                <li>
-                    <a href="{{link}}" ng-bind-template="{{title}}"></a>
-                </li>
-            </ul>
-        </div>
-        <div class="span1"></div>
-    </div>
-    
-    <header>
-        <div class="row">
-            <div class="span1"></div>
-            <div class="span5">
-                <a href="#/blog">
-                    <img src="app/img/aerogear_logo_150px.png">
-                </a>
-            </div>
-            <div class="span5 clearfix"><img src="app/img/akquinet-logo.jpg" class="floatRight"></div>
-            <div class="span1"></div>
-        </div>
-    </header>
+    <nav class="row" ng-include="mainNavigation"></nav>
 
-    <div class="row">
-        <div class="span1"></div>
-        <section ng-view class="span6"></section>
-        <aside class="span3 offset1">
-            <div>
-                <h3>Find out more</h3>
-            </div>
-
-            <div>
-                <p>More about the author of this demo.</p>
-                <ul>
-                    <li>
-                        <a href="http://blog.akquinet.de"
-                           target="_blank">akquinet blog</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/akquinet/mobile-blog"
-                           target="_blank">The source of this demo on Github</a>
-                    </li>
-                </ul>
-
-                <p>Learn more about JBoss Enterprise Application Platform 6.</p>
-
-                <ul>
-                    <li>
-                        <a href="http://red.ht/jbeap-6-docs"
-                           target="_blank">Documentation</a>
-                    </li>
-                    <li>
-                        <a href="http://red.ht/jbeap-6"
-                           target="_blank">Product Information</a>
-                    </li>
-                </ul>
-
-                <p>Learn more about JBoss AS 7.</p>
-                <ul>
-                    <li>
-                        <a href="https://docs.jboss.org/author/display/AS7/Getting+Started+Developing+Applications+Guide"
-                           target="_blank">Getting Started Developing Applications Guide</a>
-                    </li>
-                    <li>
-                        <a href="http://jboss.org/jbossas"
-                           target="_blank">Community Project Information</a>
-                    </li>
-                </ul>
-
-                <p>Learn about <strong>AeroGear</strong> and HTML5/Mobile development on JBoss.</p>
-                <ul>
-                    <li>
-                        <a href="http://jboss.org/aerogear"
-                           target="_blank">AeroGear Project site</a>
-                    </li>
-                    <li>
-                        <a href="https://community.jboss.org/wiki/WhatArePlainOldHTML5POH5Applications"
-                           target="_blank">More on <strong>POH5</strong></a>
-                    </li>
-                    <li>
-                        <a href="https://community.jboss.org/community/aerogear"
-                           target="_blank">AeroGear user forums</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/organizations/aerogear"
-                           target="_blank">Github</a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <div class="span1"></div>
-    </div>
+    <section id="content" class="row">
+        <section class="span1"></section>
+        <section id="mainContent" ng-view class="span6"></section>
+        <aside class="span3 offset1" ng-include="sidebar"></aside>
+        <section class="span1"></section>
+    </section>
 </div>
 
 
 <!-- JavaScript -->
-<!-- Libraries -->
+<!-- libraries -->
 <script type="text/javascript" src="app/lib/zepto.min.js"></script>
 
 <!-- angular.js -->
