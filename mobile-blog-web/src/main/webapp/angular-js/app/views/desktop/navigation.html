@@ -1,0 +1,13 @@
+
+<div class="span1"></div>
+<div class="span10">
+    <ul class="nav nav-pills" ng-controller="NavigationCtrl">
+        <li ng-repeat="button in buttons">
+            <a id="blablub"
+               ng-href="{{ button.href }}"
+               ng-bind-template="{{ button.title }}"
+               ng-click="broadcastBtnEvent(button.event)"></a>
+        </li>
+    </ul>
+</div>
+<div class="span1"></div>

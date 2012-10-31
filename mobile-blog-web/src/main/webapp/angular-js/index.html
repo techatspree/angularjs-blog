@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="router">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="utf-8">
     <title>AeroGear - Blog Demo</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="app/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="app/css/custom.css"/>
+    <link rel="stylesheet" type="text/css" href="app/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="app/css/app.css"/>
 
     <link rel="shortcut icon" href="app/img/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
 
-<div class="container" ng-controller="SiteCtrl">
+
+<section class="container" ng-controller="AppCtrl">
     <header class="row" ng-include="header"></header>
 
-    <nav class="row" ng-include="mainNavigation"></nav>
+    <nav class="row" ng-include="navigation"></nav>
 
     <section id="content" class="row">
         <section class="span1"></section>
+
         <section id="mainContent" ng-view class="span6"></section>
+
         <aside class="span3 offset1" ng-include="sidebar"></aside>
+
         <section class="span1"></section>
     </section>
-</div>
+</section>
 
 
 <!-- JavaScript -->
-<!-- libraries -->
 <script type="text/javascript" src="app/lib/zepto.min.js"></script>
 
 <!-- angular.js -->
@@ -38,9 +41,22 @@
 <!-- app -->
 <script type="text/javascript" src="app/js/app.js"></script>
 
-<script type="text/javascript" src="app/js/controllers.js"></script>
-<script type="text/javascript" src="app/js/filters.js"></script>
-<script type="text/javascript" src="app/js/services.js"></script>
+<!-- app controller -->
+<script type="text/javascript" src="app/js/controllers/app-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/navigation-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/blog-post-list-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/blog-post-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/add-blog-post-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/login-ctrl.js"></script>
+<script type="text/javascript" src="app/js/controllers/register-ctrl.js"></script>
+
+<!-- app services -->
+<script type="text/javascript" src="app/js/services/blog-post-services.js"></script>
+<script type="text/javascript" src="app/js/services/user-services.js"></script>
+
+<!-- app filters -->
+<script type="text/javascript" src="app/js/filters/app-filters.js"></script>
+
 
 </body>
 

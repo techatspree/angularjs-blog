@@ -1,21 +1,22 @@
 /**
  * @author Till Hermsen
- * @date 25.10.12
+ * @date 31.10.12
  */
 
 'use strict';
 
-angular.module('BlogPostFilters', []).
+angular.module('app.filters', []).
 
-    filter('previewText', function() {
+    filter('blogPostPreview', function() {
         return function(input) {
             if (input.length > 300) {
-                input = $.trim(input).substring(0, 300)
+                input = input.substring(0, 300)
                     .split(" ").slice(0, -1).join(" ") + "...";
             }
             return input;
         };
     }).
+
     filter('addLineBreaks', function() {
         return function(input) {
             return input.replace(/\n/g, '<br />');
