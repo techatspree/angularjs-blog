@@ -5,20 +5,22 @@
 
 'use strict';
 
-RegisterCtrl.$inject = ['$rootScope', '$scope', '$location', 'user'];
+RegisterCtrl.$inject = ['$scope', 'user'];
 
-function RegisterCtrl($rootScope, $scope, $location, user) {
-    if (user.isLoggedIn()) {
-        $location.url("/");
-    }
-
-    $rootScope.$broadcast('navigation:init', []);
+function RegisterCtrl($scope, userService) {
+    $scope.error;
 
     $scope.register = function(userData) {
-        console.log(user.register(userData));
-//        if(user.register(userData)) {
-//            console.log("registered");
-//            history.back();
-//        }
+        userData = (userData) ? $.param(userData) : null;
+
+        var register = userService.register(userData);
+
+        register.success(function() {
+            history.back();
+        });
+
+        register.error(function(data) {
+            $scope.error = data;
+        });
     }
 }

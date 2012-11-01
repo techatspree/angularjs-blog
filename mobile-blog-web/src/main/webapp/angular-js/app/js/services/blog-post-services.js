@@ -5,9 +5,7 @@
 
 'use strict';
 
-angular.module('blogPost.services', [
-    'ngResource'
-]).
+angular.module('blogPost.services', ['ngResource']).
 
     factory('post', function($resource){
         return $resource('../rest/blog/:blogPostId', {}, {});

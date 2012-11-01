@@ -5,23 +5,18 @@
 
 'use strict';
 
-NavigationCtrl.$inject = ['$rootScope', '$scope'];
+NavigationCtrl.$inject = ['$rootScope', '$scope', 'user'];
 
-function NavigationCtrl($rootScope, $scope) {
-    $scope.buttons = {};
+function NavigationCtrl($rootScope, $scope, userService) {
 
-    $rootScope.$on("navigation:init", function(event, data) {
-        if (data) {
-//            angular.forEach(data, )
-
-            $scope.buttons = data;
-        }
-    });
+    $scope.isLoggedIn = function() {
+        return userService.isLoggedIn();
+    };
+    $scope.isNotLoggedIn = function() {
+        return !userService.isLoggedIn();
+    };
 
     $rootScope.broadcastBtnEvent = function(event) {
-        if (event) {
-            console.log("broadcast: " + event)
-            $rootScope.$broadcast(event);
-        }
+        if (event) { $rootScope.$broadcast(event); }
     };
 }

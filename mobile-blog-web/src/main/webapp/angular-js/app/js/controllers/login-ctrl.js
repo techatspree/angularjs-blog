@@ -5,19 +5,21 @@
 
 'use strict';
 
-LoginCtrl.$inject = ['$rootScope', '$scope', '$location', 'user'];
+LoginCtrl.$inject = ['$scope', 'user'];
 
-function LoginCtrl($rootScope, $scope, $location, user) {
-    if (user.isLoggedIn()) {
-        $location.url("/");
-    }
-
-    $rootScope.$broadcast('navigation:init', []);
+function LoginCtrl($scope, userService) {
+    $scope.error;
 
     $scope.login = function(credentials) {
-        if (user.login(credentials)) {
-            console.log("logged-in");
+        credentials = (credentials) ? $.param(credentials) : null;
+
+        var login = userService.login(credentials);
+        login.success(function(data) {
+            sessionStorage.setItem('user', angular.toJson(data));
             history.back();
-        }
+        });
+        login.error(function() {
+            $scope.error = 'Login failed!';
+        });
     }
 }

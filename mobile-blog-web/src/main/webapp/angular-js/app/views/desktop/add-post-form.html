@@ -1,1 +1,32 @@
-add post form
+
+<div>
+    <form novalidate class="simple-form">
+        <legend>Add Post</legend>
+
+        <p>
+            <label class="control-label" for="inputTitle">Title</label>
+            <input type="text"
+                   id="inputTitle"
+                   class="input-block-level"
+                   placeholder="Title"
+                   ng-model="post.title">
+        </p>
+
+        <p>
+            <label class="control-label"
+                   for="inputContent">Content</label>
+            <textarea id="inputContent"
+                      class="input-block-level"
+                      placeholder="Content"
+                      cols="30"
+                      rows="10"
+                      ng-model="post.content"></textarea>
+        </p>
+
+        <p>
+            <button type="submit"
+                    class="btn btn-large btn-block"
+                    ng-click="submit(post)">Submit</button>
+        </p>
+    </form>
+</div>

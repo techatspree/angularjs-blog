@@ -1,1 +1,20 @@
-add comment form
+
+<div>
+    <form novalidate class="simple-form" ng-controller="AddCommentCtrl">
+        <legend>Add Comment</legend>
+        <p>
+            <label class="control-label" for="inputContent">Content</label>
+            <textarea id="inputContent"
+                      class="input-block-level"
+                      cols="30"
+                      rows="10"
+                      ng-model="comment.content"></textarea>
+        </p>
+
+        <p>
+            <button type="submit"
+                    class="btn btn-large btn-block"
+                    ng-click="addCommentSubmit(comment)">Submit</button>
+        </p>
+    </form>
+</div>

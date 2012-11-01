@@ -10,10 +10,12 @@
 <div id="commentsList">
     <h3>Comments</h3>
 
-    <div class="comment" ng-repeat="comment in comments">
+    <div class="comment" ng-repeat="comment in data.comments">
         <p>{{ comment.content }}</p>
         <p>
             -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy h:mm' }}
         </p>
     </div>
 </div>
+
+<div id="addCommentContainer" ng-include="addCommentForm" ng-show="showAddCommentForm()"></div>

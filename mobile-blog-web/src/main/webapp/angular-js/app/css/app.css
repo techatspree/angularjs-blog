@@ -35,3 +35,8 @@ article {
 .floatRight {
     float: right;
 }
+
+.form-validation-error {
+    color: red;
+    display: block;
+}

@@ -5,11 +5,26 @@
 
 'use strict';
 
-BlogPostCtrl.$inject = ['$rootScope', '$scope', '$routeParams', 'post', 'comment'];
+BlogPostCtrl.$inject = [
+    '$scope',
+    '$routeParams',
+    'post',
+    'comment',
+    'user'
+];
 
-function BlogPostCtrl($rootScope, $scope, $routeParams, post, comment) {
-    $rootScope.$broadcast('navigation:init', []);
+function BlogPostCtrl(
+    $scope,
+    $routeParams,
+    postService, commentService, userService
+) {
+    $scope.blogPost = postService.get({blogPostId: $routeParams.blogPostId});
+    $scope.data = {
+        comments: commentService.query({blogPostId: $routeParams.blogPostId})
+    };
 
-    $scope.blogPost = post.get({blogPostId: $routeParams.blogPostId});
-    $scope.comments = comment.query({blogPostId: $routeParams.blogPostId});
+    $scope.addCommentForm = 'app/views/desktop/add-comment-form.html';
+    $scope.showAddCommentForm = function() {
+        return userService.isLoggedIn();
+    };
 }

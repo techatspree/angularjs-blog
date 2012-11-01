@@ -6,12 +6,28 @@
         <div class="clearfix">
             <p class="floatLeft">
                 <label class="control-label" for="inputUsername">Username</label>
-                <input type="text" id="inputUsername" placeholder="Username" ng-model="user.username">
+
+                <input type="text"
+                       id="inputUsername"
+                       placeholder="Username"
+                       ng-model="user.username">
+
+                <span class="form-validation-error"
+                      ng-show="error.username"
+                      ng-bind="error.username"></span>
             </p>
 
             <p class="floatRight">
                 <label class="control-label" for="inputPassword">Password</label>
-                <input type="password" id="inputPassword" placeholder="Password" ng-model="user.password">
+
+                <input type="password"
+                       id="inputPassword"
+                       placeholder="Password"
+                       ng-model="user.password">
+
+                <span class="form-validation-error"
+                      ng-show="error.password"
+                      ng-bind="error.password"></span>
             </p>
         </div>
 
@@ -19,12 +35,28 @@
         <div class="clearfix">
             <p class="floatLeft">
                 <label class="control-label" for="inputFirstname">First Name</label>
-                <input type="text" id="inputFirstname" placeholder="First Name" ng-model="user.firstname">
+
+                <input type="text"
+                       id="inputFirstname"
+                       placeholder="First Name"
+                       ng-model="user.firstname">
+
+                <span class="form-validation-error"
+                      ng-show="error.firstname"
+                      ng-bind="error.firstname"></span>
             </p>
 
             <p class="floatRight">
                 <label class="control-label" for="inputSurname">Surname</label>
-                <input type="text" id="inputSurname" placeholder="Surname" ng-model="user.surname">
+
+                <input type="text"
+                       id="inputSurname"
+                       placeholder="Surname"
+                       ng-model="user.surname">
+
+                <span class="form-validation-error"
+                      ng-show="error.surname"
+                      ng-bind="error.surname"></span>
             </p>
 
         </div>
@@ -32,17 +64,31 @@
         <div class="clearfix">
             <p class="floatLeft">
                 <label class="control-label" for="inputEmail">Email</label>
-                <input type="email" id="inputEmail" placeholder="Email" ng-model="user.email">
+
+                <input type="email"
+                       id="inputEmail"
+                       placeholder="Email"
+                       ng-model="user.email">
+
+                <span class="form-validation-error"
+                      ng-show="error.email"
+                      ng-bind="error.email"></span>
             </p>
 
             <p class="floatRight">
                 <label class="control-label" for="inputPhone">Phone</label>
-                <input type="text" id="inputPhone" placeholder="Phone" ng-model="user.phone">
+
+                <input type="text"
+                       id="inputPhone"
+                       placeholder="Phone"
+                       ng-model="user.phone">
             </p>
         </div>
 
         <p>
-            <button type="submit" class="btn" ng-click="register(user)">Register</button>
+            <button type="submit"
+                    class="btn"
+                    ng-click="register(user)">Register</button>
         </p>
     </form>
 </div>

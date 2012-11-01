@@ -11,116 +11,78 @@ angular.module('user.services', []).
         '$http',
 
         function($http) {
-
-            /**
-             *
-             * @param data
-             * @return {*}
-             */
-            var urlEncode = function(data) {
-                if (data) { return $.param(data); }
-                return null;
-            }
-
-
-            /**
-             *
-             * @param credentials
-             */
-            function login(credentials) {
-                $http({
-                    method: 'POST',
-                    url: '../rest/authentication',
-                    data: credentials,
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-                    transformRequest: urlEncode
-                }).
-                    success(function(data, status, headers, config) {
-                        sessionStorage.setItem('user', angular.toJson(data));
-                        return true;
-                    }).
-                    error(function(data, status, headers, config) {
-                        console.log(status);
-                        return false;
-                    });
-            }
-
-
-            /**
-             *
-             * @return {Boolean}
-             */
-            function logout() {
-                if (sessionStorage.getItem('user')) {
-                    sessionStorage.removeItem('user');
-                    return true;
-                }
-                return false;
-            }
-
-
-            /**
-             *
-             * @param user
-             */
-            function register(userData) {
-                $http({
-                    url: '../rest/user',
-                    method: "POST",
-                    data: userData,
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-                    transformRequest: urlEncode
-                }).
-                    success(function(data, status, headers, config) {
-                        console.log(data);
-                        return true;
-                    }).
-                    error(function(data, status, headers, config) {
-                        console.log(status);
-                        return false;
-                    });
-            }
-
-
-            /**
-             *
-             * @return {Boolean}
-             */
-            function isLoggedIn() {
-                var user = sessionStorage.getItem('user');
-                if (user) { return true; }
-                return false;
-            }
-
-
-            /**
-             *
-             * @return {*}
-             */
-            function retrieve() {
-                var user = sessionStorage.getItem('user');
-                if (user) { return user; }
-                return false;
-            }
-
-
-            /**
-             *
-             */
             return {
-                login: login,
-                logout: logout,
-                isLoggedIn: isLoggedIn,
-                register: register,
-                retrieve: retrieve
-            }
+                /**
+                 *
+                 * @param credentials
+                 * @param callback
+                 * @param errorCallback
+                 */
+                login: function(credentials) {
+                    var config = {
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                    };
+
+                    return $http.post('../rest/authentication', credentials, config);
+                },
+
+
+                /**
+                 *
+                 * @return {Boolean}
+                 */
+                logout: function() {
+                    if (sessionStorage.getItem('user')) {
+                        sessionStorage.removeItem('user');
+                        return true;
+                    }
+                    return false;
+                },
+
+
+                /**
+                 *
+                 * @param userData
+                 * @return {*}
+                 */
+                register: function(userData) {
+                    var config = {
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                    };
+
+                    return $http.post('../rest/user', userData, config);
+                },
+
+
+                /**
+                 *
+                 * @return {Boolean}
+                 */
+                isLoggedIn: function() {
+                    var user = sessionStorage.getItem('user');
+                    if (user) { return true; }
+                    return false;
+                },
+
+
+                /**
+                 *
+                 * @return {*}
+                 */
+                getUser: function() {
+                    var user = sessionStorage.getItem('user');
+                    if (user) { return angular.fromJson(user); }
+                    return false;
+                }
+            };
         }
     ]).
 
-    run(function($rootScope, $location, user) {
+    run(function($rootScope, $location, $route, user) {
         $rootScope.$on('user:logout', function() {
             if (user.logout()) {
                 $location.url('/');
+                $route.reload();
             }
         });
     });
