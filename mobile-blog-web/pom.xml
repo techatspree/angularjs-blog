@@ -95,6 +95,14 @@
 
                         <include>${jasmine.fixture.setup}</include>
 
+                        <!-- angular js -->
+                        <source>${project.basedir}/src/test/webapp/js/lib/jquery-1.8.2.min.js</source>
+
+                        <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular.js</source>
+                        <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular-mocks.js</source>
+                        <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular-resource.js</source>
+                        <!--<source>${project.basedir}/src/main/webapp/angular-js/app/js/services/blog-post-services.js</source>-->
+
 						<source>${project.basedir}/src/test/webapp/js/lib/mock-ajax.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/hubu.all.min.js</source>
                         <source>${project.basedir}/src/main/webapp/js/lib/zepto.min.js</source>

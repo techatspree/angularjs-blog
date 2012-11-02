@@ -1,0 +1,16 @@
+
+<section class="container">
+    <header class="row" ng-include="header"></header>
+
+    <nav class="row" ng-include="navigation"></nav>
+
+    <section id="content" class="row">
+        <section class="span1"></section>
+
+        <section id="mainContent" ng-view class="span6"></section>
+
+        <aside class="span3 offset1" ng-include="sidebar"></aside>
+
+        <section class="span1"></section>
+    </section>
+</section>

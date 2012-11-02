@@ -5,7 +5,7 @@
 
 'use strict';
 
-angular.module('app.filters', []).
+angular.module('Filters', []).
 
     filter('blogPostPreview', function() {
         return function(input) {

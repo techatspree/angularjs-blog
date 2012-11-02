@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>AeroGear - Blog Demo</title>
@@ -10,54 +10,49 @@
 
     <link rel="shortcut icon" href="app/img/favicon.ico" type="image/x-icon" />
 </head>
-
 <body>
 
 
-<section class="container" ng-controller="AppCtrl">
-    <header class="row" ng-include="header"></header>
-
-    <nav class="row" ng-include="navigation"></nav>
-
-    <section id="content" class="row">
-        <section class="span1"></section>
-
-        <section id="mainContent" ng-view class="span6"></section>
-
-        <aside class="span3 offset1" ng-include="sidebar"></aside>
-
-        <section class="span1"></section>
-    </section>
-</section>
+<section ng-controller="AppCtrl" ng-include="index"></section>
 
 
 <!-- JavaScript -->
 <script type="text/javascript" src="app/lib/zepto.min.js"></script>
+<script type="text/javascript" src="app/lib/modernizr.min.js"></script>
 
 <!-- angular.js -->
 <script type="text/javascript" src="app/lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="app/lib/angular/angular-resource.min.js"></script>
 
 <!-- app -->
-<script type="text/javascript" src="app/js/app.js"></script>
+<script type="text/javascript" src="app/js/DesktopApp.js"></script>
+<script type="text/javascript" src="app/js/MobileApp.js"></script>
 
-<!-- app controller -->
-<script type="text/javascript" src="app/js/controllers/app-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/navigation-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/blog-post-list-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/blog-post-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/add-blog-post-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/add-comment-controller.js"></script>
-<script type="text/javascript" src="app/js/controllers/login-ctrl.js"></script>
-<script type="text/javascript" src="app/js/controllers/register-ctrl.js"></script>
+<!-- controller -->
+<script type="text/javascript" src="app/js/controllers/AuthenticationControllers.js"></script>
+<script type="text/javascript" src="app/js/controllers/BlogPostControllers.js"></script>
 
-<!-- app services -->
-<script type="text/javascript" src="app/js/services/blog-post-services.js"></script>
-<script type="text/javascript" src="app/js/services/user-services.js"></script>
+<!-- services -->
+<script type="text/javascript" src="app/js/services/BlogPostServices.js"></script>
+<script type="text/javascript" src="app/js/services/UserServices.js"></script>
 
-<!-- app filters -->
-<script type="text/javascript" src="app/js/filters/app-filters.js"></script>
+<!-- filters -->
+<script type="text/javascript" src="app/js/filters/Filters.js"></script>
 
+
+<!-- device detection -->
+<script type="text/javascript">
+    var smallScreen = Modernizr.mq("only screen and (max-device-width: 1024px)");
+    var touchScreen = Modernizr.touch;
+
+    angular.element(document).ready(function() {
+        if (smallScreen && touchScreen) {
+            angular.bootstrap(document, ['MobileApp']);
+        } else {
+            angular.bootstrap(document, ['DesktopApp']);
+        }
+    });
+</script>
 
 </body>
 
