@@ -7,10 +7,12 @@
 
 angular.module('UserServices', []).
 
-    service('UserService', [
+    factory('UserService', [
         '$http',
 
         function($http) {
+
+            var loggedIn = (sessionStorage.getItem('user')) ? true : false;
 
             var httpPost = function(url, data, success, error) {
                 var config = {
@@ -31,6 +33,7 @@ angular.module('UserServices', []).
                 login: function(credentials, success, error) {
                     httpPost('../rest/authentication', credentials, function(data) {
                         sessionStorage.setItem('user', angular.toJson(data));
+                        loggedIn = true;
                         success();
                     }, error);
                 },
@@ -43,6 +46,7 @@ angular.module('UserServices', []).
                 logout: function() {
                     if (sessionStorage.getItem('user')) {
                         sessionStorage.removeItem('user');
+                        loggedIn = false;
                         return true;
                     }
                     return false
@@ -59,14 +63,13 @@ angular.module('UserServices', []).
                 },
 
 
+
                 /**
                  *
                  * @return {Boolean}
                  */
                 isLoggedIn: function() {
-                    var user = sessionStorage.getItem('user');
-                    if (user) { return true; }
-                    return false;
+                    return loggedIn;
                 },
 
 
@@ -84,10 +87,10 @@ angular.module('UserServices', []).
     ]).
 
     run(function($rootScope, $location, $route, UserService) {
+
         $rootScope.$on('user:logout', function() {
             if (UserService.logout()) {
                 $location.url('/');
-                $route.reload();
             }
         });
     });

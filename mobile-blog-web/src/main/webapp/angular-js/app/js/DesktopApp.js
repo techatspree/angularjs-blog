@@ -68,7 +68,9 @@ angular.module('DesktopApp', [
         $scope.sidebar    = 'app/partials/desktop/sidebar.html';
         $scope.navigation = 'app/partials/desktop/navigation.html';
 
-        $scope.isLoggedIn = UserService.isLoggedIn();
+
+        $scope.userService = UserService;
+
         $scope.broadcastBtnEvent = function(event) {
             $rootScope.$broadcast(event);
         };

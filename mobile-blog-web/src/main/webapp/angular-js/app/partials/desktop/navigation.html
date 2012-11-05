@@ -1,6 +1,6 @@
 
 <div class="span1"></div>
-<div class="span10" ng-switch="isLoggedIn">
+<div class="span10" ng-switch="userService.isLoggedIn()">
 
     <!-- user is logged-in -->
     <ul class="nav nav-pills" ng-switch-when="false">

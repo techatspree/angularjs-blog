@@ -21,9 +21,6 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
     controller('BlogPostCtrl',
         function($scope, $routeParams, BlogPostService, CommentService) {
             $scope.blogPost = BlogPostService.getBlogPost($routeParams.blogPostId);
-
-
-
             $scope.comments = CommentService.getComments($routeParams.blogPostId);
 
             $scope.addCommentForm = 'app/partials/desktop/add-comment-form.html';
@@ -45,11 +42,11 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
                     blogPost.author.id = (user) ? user.id : null;
                 }
 
-                var success = function() {
+                var onSuccess = function() {
                     $location.url('/');
                 };
-                var error =  function() {};
-                BlogPostService.addBlogPost(blogPost, success, error);
+                var onError =  function() {};
+                BlogPostService.addBlogPost(blogPost, onSuccess, onError);
             };
         }
     ).
@@ -69,13 +66,14 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
                     comment.author.id = (user) ? user.id : null;
                 }
 
-                var success = function() {
-                    CommentService.getComments(blogPostId);
-                    $scope.comment.content = '';
+                var onSuccess = function() {
+                    $scope.comment = null;
                 };
-                var error =  function() {};
+                var onError =  function() {};
 
-                CommentService.addComment(comment, blogPostId, success, error);
+                CommentService.addComment(comment, blogPostId, onSuccess, onError);
+
+                $scope.comment = null;
             };
         }
     );

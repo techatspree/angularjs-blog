@@ -7,20 +7,16 @@
 
 angular.module('BlogPostServices', ['ngResource']).
 
-    service('BlogPostService', function($resource){
+    factory('BlogPostService', function($resource){
         var blogPosts;
+
         var resource = $resource('../rest/blog/:blogPostId', {}, {});
 
         var fetchBlogPosts = function() {
             blogPosts = resource.query();
         };
-
         var fetchBlogPost = function(blogPostId) {
-            return resource.get({blogPostId: blogPostId});
-        };
-
-        var addBlogPost = function(blogPost, success, error) {
-            resource.save(blogPost , success, error);
+            return resource.get( {blogPostId: blogPostId} );
         };
 
         return {
@@ -29,7 +25,7 @@ angular.module('BlogPostServices', ['ngResource']).
              * @return {*}
              */
             getBlogPosts: function() {
-                fetchBlogPosts();
+                if (typeof blogPosts == 'undefined') { fetchBlogPosts(); }
                 return blogPosts;
             },
 
@@ -45,32 +41,28 @@ angular.module('BlogPostServices', ['ngResource']).
 
             /**
              *
+             * @param blogPost
+             * @param success
+             * @param error
              */
-            addBlogPost: addBlogPost
+            addBlogPost: function(blogPost, success, error) {
+                resource.save(blogPost , function(data) {
+                    blogPosts.unshift(data);
+                    success();
+                }, error);
+            }
         };
 
     }).
 
-    service('CommentService', function($resource) {
-        var comments = [];
+    factory('CommentService', function($resource) {
+        var comments;
+
         var resource = $resource('../rest/blog/:blogPostId/comment', {}, {});
 
         var fetchComments = function(blogPostId) {
-            resource.query({blogPostId: blogPostId}, function(data) {
-                console.log(data);
-                comments = data;
-            });
+            comments = resource.query( {blogPostId: blogPostId} );
         };
-
-        var addComment = function(comment, blogPostId, success, error) {
-            resource.save({blogPostId: blogPostId}, comment, function() {
-                fetchComments(blogPostId);
-                success();
-            }, error);
-
-            comments.push(comment);
-        };
-
 
         return {
             /**
@@ -78,15 +70,23 @@ angular.module('BlogPostServices', ['ngResource']).
              * @param blogPostId
              */
             getComments: function(blogPostId) {
-                fetchComments(blogPostId);
+                if (typeof comments == 'undefined') { fetchComments(blogPostId); }
                 return comments;
             },
 
 
             /**
              *
+             * @param comment
+             * @param blogPostId
+             * @param success
+             * @param error
              */
-            addComment: addComment
-
+            addComment: function(comment, blogPostId, success, error) {
+                resource.save({blogPostId: blogPostId}, comment, function(data) {
+                    comments.push(data);
+                    success();
+                }, error);
+            }
         };
     });
