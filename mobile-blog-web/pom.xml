@@ -101,6 +101,8 @@
                         <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular.js</source>
                         <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular-mocks.js</source>
                         <source>${project.basedir}/src/main/webapp/angular-js/app/lib/angular/angular-resource.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/matchers.js</source>
+
                         <source>${project.basedir}/src/main/webapp/angular-js/app/js/services/BlogPostServices.js</source>
                         <source>${project.basedir}/src/main/webapp/angular-js/app/js/services/UserServices.js</source>
 

@@ -1,0 +1,12 @@
+[
+    {
+        "id":1, "author":{"firstname":"Elvis", "surname":"Presley"},
+        "content":"Lorem ipsum dolor sit amet",
+        "created":"2012-07-12T00:19:32.146+02:00"
+    },
+    {
+        "id":2, "author":{"firstname":"John", "surname":"Doe"},
+        "content":"Lorem ipsum dolor sit amet",
+        "created":"2012-07-12T00:19:32.146+02:00"
+    }
+]

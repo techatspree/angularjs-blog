@@ -1,0 +1,5 @@
+{
+    "id":1, "author":{"firstname":"John", "surname":"Doe"},
+    "title":"Lorem ipsum dolor sit amet", "content":"Lorem ipsum dolor sit amet",
+    "created":"2012-07-12T00:19:32.146+02:00"
+}
