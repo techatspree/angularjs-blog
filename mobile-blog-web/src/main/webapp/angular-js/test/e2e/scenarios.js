@@ -21,8 +21,6 @@ describe('E2E Tests', function() {
         afterEach(function() {
             var $http = angular.injector(['ng']).get('$http');
 
-
-
             $http.get('../../../rest/user').success(function(data) {
                 var userId;
                 console.log(data);
