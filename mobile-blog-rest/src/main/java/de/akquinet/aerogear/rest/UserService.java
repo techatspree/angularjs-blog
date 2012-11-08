@@ -54,7 +54,7 @@ public class UserService {
 
 	@DELETE
 	@Path("/{id:[1-9][0-9]*}")
-	public void deleteBlogEntry(@PathParam("id") final long id) {
+	public void deleteUser(@PathParam("id") final long id) {
 		userDao.remove(id);
 	}
 

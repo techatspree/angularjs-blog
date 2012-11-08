@@ -43,7 +43,7 @@ angular.module('AuthenticationControllers', ['UserServices']).
             $scope.registerSubmit = function(userData) {
                 userData = (userData) ? $.param(userData) : null;
 
-                var success = function() {
+                var success = function(data) {
                     console.log("register: success");
                     $scope.user = undefined;
                     $location.url('/login');

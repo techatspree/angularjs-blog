@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="DesktopApp">
 <head>
     <meta charset="utf-8">
     <title>AeroGear - Blog Demo</title>
@@ -39,20 +39,6 @@
 <!-- filters -->
 <script type="text/javascript" src="app/js/filters/Filters.js"></script>
 
-
-<!-- device detection -->
-<script type="text/javascript">
-    var smallScreen = Modernizr.mq("only screen and (max-device-width: 1024px)");
-    var touchScreen = Modernizr.touch;
-
-    angular.element(document).ready(function() {
-        if (smallScreen && touchScreen) {
-            angular.bootstrap(document, ['MobileApp']);
-        } else {
-            angular.bootstrap(document, ['DesktopApp']);
-        }
-    });
-</script>
 
 </body>
 
