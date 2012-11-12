@@ -1,6 +1,6 @@
 
-<div>
-    <form novalidate class="simple-form" ng-controller="AddCommentController">
+<div ng-controller="AddCommentController">
+    <form novalidate class="simple-form">
         <legend>Add Comment</legend>
         <p>
             <label class="control-label" for="inputContent">Content</label>
@@ -14,6 +14,7 @@
         <p>
             <button type="submit"
                     class="btn btn-large btn-block"
+                    ng-disabled="!comment"
                     ng-click="addCommentSubmit(comment)">Submit</button>
         </p>
     </form>

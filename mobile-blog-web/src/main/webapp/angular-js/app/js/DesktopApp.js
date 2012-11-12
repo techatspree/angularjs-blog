@@ -7,9 +7,14 @@
 
 angular.module('DesktopApp', [
     'BlogPostControllers',
+    'CommentControllers',
     'AuthenticationControllers',
+    'RegistrationControllers',
+
     'BlogPostServices',
+    'CommentServices',
     'UserServices',
+
     'Filters'
 ]).
 
@@ -19,47 +24,95 @@ angular.module('DesktopApp', [
         // app routing
         function($routeProvider) {
             $routeProvider.
+
+                /**
+                 * Main route (blog post list)
+                 *
+                 * Controllers: BlogPostListController
+                 */
                 when('/', {
-                    templateUrl: 'app/partials/desktop/blog-post-list.html',
-                    controller: 'BlogPostListController',
-                    resolve: {
-                        blogPosts: function(BlogPostService) {
-                            return BlogPostService.fetchBlogPosts();
-                        }
-                    }
+                    templateUrl: 'app/partials/desktop/blog-post-list.html'
+//                    resolve: {
+//                        blogPosts: ['BlogPostService', function(BlogPostService) {
+//                            return BlogPostService.fetchBlogPosts();
+//                        }]
+//                    }
                 }).
+
+
+                /**
+                 * Add blog post route (authentication required)
+                 *
+                 * Controllers: AddBlogPostController
+                 */
                 when('/post/add', {
                     templateUrl: 'app/partials/desktop/add-blog-post-form.html',
-                    controller: 'AddBlogPostController',
                     authRequired: true
                 }).
+
+
+                /**
+                 * Blog post route
+                 *
+                 * Controllers: BlogPostController, AddCommentController
+                 */
                 when('/post/:blogPostId', {
-                    templateUrl: 'app/partials/desktop/blog-post.html',
-                    controller: 'BlogPostController',
-                    resolve: {
-                         blogPost: function($route, BlogPostService) {
-                             return BlogPostService.fetchBlogPost($route.current.params.blogPostId);
-                         },
-                         commentList: function($route, CommentService) {
-                             return CommentService.fetchComments($route.current.params.blogPostId);
-                         }
-                    }
+                    templateUrl: 'app/partials/desktop/blog-post.html'
+//                    resolve: {
+//                         blogPost: ['BlogPostService',
+//                             function($route, BlogPostService) {
+//                                 return BlogPostService.fetchBlogPost(
+//                                     $route.current.params.blogPostId
+//                                 );
+//                             }
+//                         ],
+//                         commentList: ['CommentService',
+//                             function($route, CommentService) {
+//                                return CommentService.fetchComments(
+//                                    $route.current.params.blogPostId
+//                                );
+//                             }
+//                         ]
+//                    }
                 }).
+
+
+                /**
+                 * Login route
+                 *
+                 * Controllers: LoginController
+                 */
                 when('/login', {
-                    templateUrl: 'app/partials/desktop/login-form.html',
-                    controller: 'LoginController'
+                    templateUrl: 'app/partials/desktop/login-form.html'
                 }).
+
+
+                /**
+                 * Registration route
+                 *
+                 * Controllers: RegisterController
+                 */
                 when('/register', {
-                    templateUrl: 'app/partials/desktop/register-form.html',
-                    controller: 'RegisterController'
+                    templateUrl: 'app/partials/desktop/register-form.html'
                 }).
-                when('/401', {
-                    template: '401'
-                }).
-                when('/404', {
-                    template: '404'
-                })
-                .otherwise({redirectTo: '/404'});
+
+
+                /**
+                 * HTTP 401 Unauthorized
+                 */
+                when('/401', { template: '401' }).
+
+
+                /**
+                 * HTTP 404 Not Found
+                 */
+                when('/404', { template: '404' })
+
+
+                /**
+                 * Redirect to "/404" when no other route definition is matched
+                 */
+                .otherwise({ redirectTo: '/404' });
         }
     ]).
 
@@ -77,10 +130,17 @@ angular.module('DesktopApp', [
         $rootScope.header     = 'app/partials/desktop/header.html';
         $rootScope.sidebar    = 'app/partials/desktop/sidebar.html';
         $rootScope.navigation = 'app/partials/desktop/navigation.html';
+    }).
 
-        $rootScope.userService = UserService;
+    controller('AppController', [
+        '$rootScope',
+        'UserService',
 
-        $rootScope.broadcastBtnEvent = function(event) {
-            $rootScope.$broadcast(event);
-        };
-    });
+        function($rootScope, UserService) {
+            $rootScope.userService = UserService;
+
+            $rootScope.broadcastBtnEvent = function(event) {
+                $rootScope.$broadcast(event);
+            };
+        }
+    ]);

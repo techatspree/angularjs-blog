@@ -30,32 +30,4 @@ angular.module('AuthenticationControllers', ['UserServices']).
                     });
             }
         }
-    ]).
-
-
-    /**
-     * Register Controller
-     */
-    controller('RegisterController', [
-        '$scope',
-        '$location',
-        'UserService',
-
-        function($scope, $location, UserService) {
-            $scope.error;
-            $scope.user;
-
-            $scope.registerSubmit = function(userData) {
-                userData = (userData) ? $.param(userData) : undefined;
-
-                UserService.register(userData).
-                    success(function() {
-                        $scope.user = undefined;
-                        $location.url('/login');
-                    }).
-                    error(function(data) {
-                        $scope.error = data;
-                    });
-            }
-        }
     ]);

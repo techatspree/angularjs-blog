@@ -104,6 +104,7 @@
                         <source>${project.basedir}/src/test/webapp/js/matchers.js</source>
 
                         <source>${project.basedir}/src/main/webapp/angular-js/app/js/services/BlogPostServices.js</source>
+                        <source>${project.basedir}/src/main/webapp/angular-js/app/js/services/CommentServices.js</source>
                         <source>${project.basedir}/src/main/webapp/angular-js/app/js/services/UserServices.js</source>
 
 						<source>${project.basedir}/src/test/webapp/js/lib/mock-ajax.js</source>

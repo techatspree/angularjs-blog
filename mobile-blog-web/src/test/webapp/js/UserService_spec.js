@@ -8,7 +8,8 @@ describe('UserServices', function() {
 
 
     describe('Register', function() {
-        var data = getJSONFixture('user.json');
+        var data = getJSONFixture('user.json'),
+            responseData;
 
         beforeEach(inject(function(_$httpBackend_) {
             $httpBackend = _$httpBackend_;
@@ -16,26 +17,16 @@ describe('UserServices', function() {
         }));
 
         it('should send post request to "../rest/user"', inject(function(UserService) {
-            UserService.register({}, function(){});
-            $httpBackend.flush();
-        }));
-
-        it("should return registered user", inject(function(UserService) {
-            var user;
             UserService.register(data).
                 success(function(data) {
-                    user = data;
+                    responseData = data;
                 });
             $httpBackend.flush();
-            expect(user).toEqual(data);
         }));
 
-//        it("should return incomplete user data", inject(function(UserService) {
-//            var user;
-//            UserService.register(data);
-//            $httpBackend.flush();
-//            expect(user).not.toEqual(data);
-//        }));
+        it("expect response data equals data", function() {
+            expect(responseData).toEqual(data);
+        });
     });
 
 });

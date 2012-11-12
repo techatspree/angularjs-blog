@@ -1,5 +1,5 @@
 
-<div>
+<div ng-controller="RegisterController">
     <form novalidate class="simple-form">
         <legend>Register</legend>
 
@@ -90,6 +90,7 @@
             <button type="submit"
                     id="registerSubmitBtn"
                     class="btn"
+                    ng-disabled="!user"
                     ng-click="registerSubmit(user)">Register</button>
         </p>
     </form>

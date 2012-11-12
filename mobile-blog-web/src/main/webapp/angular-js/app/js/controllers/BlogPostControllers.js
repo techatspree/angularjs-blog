@@ -3,7 +3,11 @@
  * @date 02.11.12
  */
 
-angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
+angular.module('BlogPostControllers', [
+    'BlogPostServices',
+    'CommentServices',
+    'UserServices'
+]).
 
     /**
      * BlogPostList Controller
@@ -13,6 +17,7 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
         'BlogPostService',
 
         function($scope, BlogPostService) {
+            BlogPostService.fetchBlogPosts();
             $scope.blogPostService = BlogPostService;
         }
     ]).
@@ -23,11 +28,20 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
      */
     controller('BlogPostController', [
         '$scope',
-        'blogPost',
+        '$routeParams',
+        'BlogPostService',
         'CommentService',
 
-        function($scope, blogPost, CommentService) {
-            $scope.blogPost = blogPost.data;
+        function($scope, $routeParams, BlogPostService, CommentService) {
+            var blogPostId = $routeParams.blogPostId || undefined;
+
+            BlogPostService.fetchBlogPost(blogPostId).
+                success(function(data) {
+                    $scope.blogPost = data;
+                });
+
+            CommentService.fetchComments(blogPostId);
+
             $scope.commentService = CommentService;
 
             $scope.addCommentForm = 'app/partials/desktop/add-comment-form.html';
@@ -56,34 +70,6 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
                 BlogPostService.addBlogPost(blogPost).
                     success(function() {
                         $location.url('/');
-                    });
-            };
-        }
-    ]).
-
-
-    /**
-     * AddComment Controller
-     */
-    controller('AddCommentController', [
-        '$scope',
-        '$routeParams',
-        'CommentService',
-        'UserService',
-
-        function($scope, $routeParams, CommentService, UserService) {
-            $scope.addCommentSubmit = function(comment) {
-                var user = UserService.getUser();
-                var blogPostId = $routeParams.blogPostId;
-
-                if (comment) {
-                    comment.author = {};
-                    comment.author.id = user.id || undefined;
-                }
-
-                CommentService.addComment(comment, blogPostId).
-                    success(function() {
-                        $scope.comment = undefined;
                     });
             };
         }

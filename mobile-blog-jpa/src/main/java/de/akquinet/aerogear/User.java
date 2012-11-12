@@ -27,7 +27,8 @@ public class User extends AbstractEntity {
 	@Column(nullable = false)
 	private String surname;
 
-	@Email
+    @NotEmpty
+    @Email
 	@Column(nullable = false, unique = true)
 	private String email;
 

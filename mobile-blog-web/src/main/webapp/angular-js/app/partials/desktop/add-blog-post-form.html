@@ -1,5 +1,5 @@
 
-<div>
+<div ng-controller="AddBlogPostController">
     <form novalidate class="simple-form">
         <legend>Add Post</legend>
 
@@ -26,6 +26,7 @@
         <p>
             <button type="submit"
                     class="btn btn-large btn-block"
+                    ng-disabled="!post"
                     ng-click="addBlogPostSubmit(post)">Submit</button>
         </p>
     </form>

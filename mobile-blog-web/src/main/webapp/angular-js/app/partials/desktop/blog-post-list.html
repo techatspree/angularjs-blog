@@ -1,5 +1,5 @@
 
-<div id="blogPostList">
+<div id="blogPostList" ng-controller="BlogPostListController">
     <article ng-repeat="post in blogPostService.blogPosts">
         <h2>{{ post.title }}</h2>
         <h5>

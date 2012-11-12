@@ -1,21 +1,23 @@
 
-<div id="blogPostContainer">
-    <h2>{{ blogPost.title }}</h2>
-    <h5>
-        {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy H:mm' }}
-    </h5>
-    <p>{{ blogPost.content }}</p>
-</div>
-
-<div id="commentsList">
-    <h3>Comments</h3>
-
-    <div class="comment" ng-repeat="comment in commentService.comments">
-        <p>{{ comment.content }}</p>
-        <p>
-            -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy H:mm' }}
-        </p>
+<div id="blogPostContainer" ng-controller="BlogPostController">
+    <div id="blogPost">
+        <h2>{{ blogPost.title }}</h2>
+        <h5>
+            {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy H:mm' }}
+        </h5>
+        <p>{{ blogPost.content }}</p>
     </div>
-</div>
 
-<div id="addCommentContainer" ng-include="addCommentForm" ng-show="userService.isLoggedIn()"></div>
+    <div id="commentsList">
+        <h3 ng-show="commentService.comments">Comments</h3>
+
+        <div class="comment" ng-repeat="comment in commentService.comments">
+            <p>{{ comment.content }}</p>
+            <p>
+                -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy H:mm' }}
+            </p>
+        </div>
+    </div>
+
+    <div id="addCommentContainer" ng-include="addCommentForm" ng-show="userService.isLoggedIn()"></div>
+</div>
