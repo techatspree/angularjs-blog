@@ -5,7 +5,7 @@
         <h5>
             {{ post.author.firstname }} {{ post.author.surname }} - {{ post.created | date:'dd.MM.yyyy h:mm' }}
         </h5>
-        <p>{{ post.content | blogPostPreview | addLineBreaks }}</p>
+        <p>{{ post.content | blogPostPreview }}</p>
         <p><a href="#/post/{{ post.id }}">Read more...</a></p>
     </article>
 </div>

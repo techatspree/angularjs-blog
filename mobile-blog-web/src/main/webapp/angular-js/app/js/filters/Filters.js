@@ -15,10 +15,4 @@ angular.module('Filters', []).
             }
             return input;
         };
-    }).
-
-    filter('addLineBreaks', function() {
-        return function(input) {
-            return input.replace(/\n/g, '<br />');
-        }
     });
