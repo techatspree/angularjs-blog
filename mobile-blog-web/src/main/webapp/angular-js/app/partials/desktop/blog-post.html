@@ -10,7 +10,7 @@
 <div id="commentsList">
     <h3>Comments</h3>
 
-    <div class="comment" ng-repeat="comment in comments">
+    <div class="comment" ng-repeat="comment in commentService.comments">
         <p>{{ comment.content }}</p>
         <p>
             -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy h:mm' }}

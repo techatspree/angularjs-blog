@@ -22,24 +22,19 @@ describe('UserServices', function() {
 
         it("should return registered user", inject(function(UserService) {
             var user;
-            var onSuccess = function (data) {
-                user = data;
-            };
-            UserService.register(data, onSuccess);
+            UserService.register(data).then(function(response) {
+                user = response;
+            });
             $httpBackend.flush();
-            expect(user).toEqualData(data);
+            expect(user).toEqual(data);
         }));
 
-        it("should return incomplete user data", inject(function(UserService) {
-            var user;
-            var onSuccess = function(data, status, headers, config) {
-                user = data;
-                console.log(config);
-            };
-            UserService.register(data, onSuccess);
-            $httpBackend.flush();
-            expect(user).toEqualData(data);
-        }));
+//        it("should return incomplete user data", inject(function(UserService) {
+//            var user;
+//            UserService.register(data);
+//            $httpBackend.flush();
+//            expect(user).not.toEqual(data);
+//        }));
     });
 
 });

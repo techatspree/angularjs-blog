@@ -5,88 +5,113 @@
 
 'use strict';
 
-angular.module('BlogPostServices', ['ngResource']).
+angular.module('BlogPostServices', []).
 
-    factory('BlogPostService', function($resource){
-        var blogPosts;
+    /**
+     *
+     */
+    factory('BlogPostService', [
+        '$http',
 
-        var resource = $resource('../rest/blog/:blogPostId', {}, {});
+        function($http) {
+            var restUrl = '../rest/blog';
 
-        var fetchBlogPosts = function() {
-            blogPosts = resource.query();
-        };
-        var fetchBlogPost = function(blogPostId) {
-            return resource.get( {blogPostId: blogPostId} );
-        };
+            return {
 
-        return {
-            /**
-             *
-             * @return {*}
-             */
-            getBlogPosts: function() {
-                if (typeof blogPosts == 'undefined') { fetchBlogPosts(); }
-                return blogPosts;
-            },
+                /**
+                 * Blog posts
+                 */
+                blogPosts: [],
 
+                /**
+                 * Fetch blog posts
+                 *
+                 * @return {*}
+                 */
+                fetchBlogPosts: function() {
+                    var self = this;
+                    return $http.get(restUrl).
+                               then(function(response) {
+                                   return self.blogPosts = response.data;
+                               });
+                },
 
-            /**
-             *
-             * @param blogPostId
-             */
-            getBlogPost: function(blogPostId) {
-                return fetchBlogPost(blogPostId);
-            },
-
-
-            /**
-             *
-             * @param blogPost
-             * @param success
-             * @param error
-             */
-            addBlogPost: function(blogPost, success, error) {
-                resource.save(blogPost , function(data) {
-                    blogPosts.unshift(data);
-                    success();
-                }, error);
-            }
-        };
-
-    }).
-
-    factory('CommentService', function($resource) {
-        var comments;
-
-        var resource = $resource('../rest/blog/:blogPostId/comment', {}, {});
-
-        var fetchComments = function(blogPostId) {
-            comments = resource.query( {blogPostId: blogPostId} );
-        };
-
-        return {
-            /**
-             *
-             * @param blogPostId
-             */
-            getComments: function(blogPostId) {
-                if (typeof comments == 'undefined') { fetchComments(blogPostId); }
-                return comments;
-            },
+                /**
+                 * Fetch blog post with the given id
+                 *
+                 * @param blogPostId
+                 * @return {*}
+                 */
+                fetchBlogPost: function(blogPostId) {
+                    return $http.get(restUrl + '/' + blogPostId).
+                               then(function(response) {
+                                   return response.data;
+                               });
+                },
 
 
-            /**
-             *
-             * @param comment
-             * @param blogPostId
-             * @param success
-             * @param error
-             */
-            addComment: function(comment, blogPostId, success, error) {
-                resource.save({blogPostId: blogPostId}, comment, function(data) {
-                    comments.push(data);
-                    success();
-                }, error);
-            }
-        };
-    });
+                /**
+                 * Add blog post
+                 *
+                 * @param blogPost
+                 * @return {*}
+                 */
+                addBlogPost: function(blogPost) {
+                    return $http.post(restUrl, blogPost).
+                               then(function(response) {
+                                   return response.data;
+                               });
+                }
+            };
+        }
+    ]).
+
+
+    /**
+     *
+     */
+    factory('CommentService', [
+        '$http',
+
+        function($http) {
+            var restUrl = '../rest/blog/';
+
+            return {
+
+                /**
+                 * Comments
+                 */
+                comments: [],
+
+                /**
+                 * Fetch comments
+                 *
+                 * @param blogPostId
+                 * @return {*}
+                 */
+                fetchComments: function(blogPostId) {
+                    var self = this;
+                    return $http.get(restUrl + blogPostId + '/comment').
+                               then(function(response) {
+                                   return self.comments = response.data;
+                               });
+                },
+
+                /**
+                 * Add comment
+                 *
+                 * @param comment
+                 * @param blogPostId
+                 * @return {*}
+                 */
+                addComment: function(comment, blogPostId) {
+                    var self = this;
+                    return $http.post(restUrl + blogPostId + '/comment', comment).
+                               then(function(response) {
+                                   self.fetchComments(blogPostId);
+                                   return response;
+                               });
+                }
+            };
+        }
+    ]);

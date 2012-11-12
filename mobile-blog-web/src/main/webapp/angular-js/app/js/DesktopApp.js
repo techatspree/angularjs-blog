@@ -15,31 +15,43 @@ angular.module('DesktopApp', [
 
     config([
         '$routeProvider',
-        '$httpProvider',
 
         // app routing
         function($routeProvider) {
             $routeProvider.
                 when('/', {
                     templateUrl: 'app/partials/desktop/blog-post-list.html',
-                    controller: 'BlogPostListCtrl'
+                    controller: 'BlogPostListController',
+                    resolve: {
+                        blogPosts: function(BlogPostService) {
+                            return BlogPostService.fetchBlogPosts();
+                        }
+                    }
                 }).
                 when('/post/add', {
                     templateUrl: 'app/partials/desktop/add-blog-post-form.html',
-                    controller: 'AddBlogPostCtrl',
+                    controller: 'AddBlogPostController',
                     authRequired: true
                 }).
                 when('/post/:blogPostId', {
                     templateUrl: 'app/partials/desktop/blog-post.html',
-                    controller: 'BlogPostCtrl'
+                    controller: 'BlogPostController',
+                    resolve: {
+                         blogPost: function($route, BlogPostService) {
+                             return BlogPostService.fetchBlogPost($route.current.params.blogPostId);
+                         },
+                         commentList: function($route, CommentService) {
+                             return CommentService.fetchComments($route.current.params.blogPostId);
+                         }
+                    }
                 }).
                 when('/login', {
                     templateUrl: 'app/partials/desktop/login-form.html',
-                    controller: 'LoginCtrl'
+                    controller: 'LoginController'
                 }).
                 when('/register', {
                     templateUrl: 'app/partials/desktop/register-form.html',
-                    controller: 'RegisterCtrl'
+                    controller: 'RegisterController'
                 }).
                 when('/401', {
                     template: '401'
@@ -60,18 +72,15 @@ angular.module('DesktopApp', [
                 }
             }
         });
-    }).
 
-    controller('AppCtrl', function($rootScope, $scope, UserService) {
-        $scope.index      = 'app/partials/desktop/index.html';
-        $scope.header     = 'app/partials/desktop/header.html';
-        $scope.sidebar    = 'app/partials/desktop/sidebar.html';
-        $scope.navigation = 'app/partials/desktop/navigation.html';
+        $rootScope.index      = 'app/partials/desktop/index.html';
+        $rootScope.header     = 'app/partials/desktop/header.html';
+        $rootScope.sidebar    = 'app/partials/desktop/sidebar.html';
+        $rootScope.navigation = 'app/partials/desktop/navigation.html';
 
+        $rootScope.userService = UserService;
 
-        $scope.userService = UserService;
-
-        $scope.broadcastBtnEvent = function(event) {
+        $rootScope.broadcastBtnEvent = function(event) {
             $rootScope.$broadcast(event);
         };
     });

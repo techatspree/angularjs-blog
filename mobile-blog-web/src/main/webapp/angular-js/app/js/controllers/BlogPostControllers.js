@@ -8,72 +8,81 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
     /**
      * BlogPostList Controller
      */
-    controller('BlogPostListCtrl',
+    controller('BlogPostListController', [
+        '$scope',
+        'BlogPostService',
+
         function($scope, BlogPostService) {
-            $scope.blogPosts = BlogPostService.getBlogPosts();
+            $scope.blogPostService = BlogPostService;
         }
-    ).
+    ]).
 
 
     /**
      * BlogPost Controller
      */
-    controller('BlogPostCtrl',
-        function($scope, $routeParams, BlogPostService, CommentService) {
-            $scope.blogPost = BlogPostService.getBlogPost($routeParams.blogPostId);
-            $scope.comments = CommentService.getComments($routeParams.blogPostId);
+    controller('BlogPostController', [
+        '$scope',
+        'blogPost',
+        'CommentService',
+
+        function($scope, blogPost, CommentService) {
+            $scope.blogPost = blogPost;
+            $scope.commentService = CommentService;
 
             $scope.addCommentForm = 'app/partials/desktop/add-comment-form.html';
         }
-    ).
+    ]).
 
 
     /**
      * AddBlogPost Controller
      */
-    controller('AddBlogPostCtrl',
+    controller('AddBlogPostController', [
+        '$scope',
+        '$location',
+        'BlogPostService',
+        'UserService',
+
         function($scope, $location, BlogPostService, UserService) {
             $scope.addBlogPostSubmit = function(blogPost) {
-                console.log("addBlogPostSubmit");
                 var user = UserService.getUser();
 
                 if (blogPost) {
                     blogPost.author = {};
-                    blogPost.author.id = (user) ? user.id : null;
+                    blogPost.author.id = user.id || undefined;
                 }
 
-                var onSuccess = function() {
+                BlogPostService.addBlogPost(blogPost).then(function() {
                     $location.url('/');
-                };
-                var onError =  function() {};
-                BlogPostService.addBlogPost(blogPost, onSuccess, onError);
+                });
             };
         }
-    ).
+    ]).
 
 
     /**
      * AddComment Controller
      */
-    controller('AddCommentCtrl',
-        function($scope, $routeParams, UserService, CommentService) {
+    controller('AddCommentController', [
+        '$scope',
+        '$routeParams',
+        'CommentService',
+        'UserService',
+
+        function($scope, $routeParams, CommentService, UserService) {
             $scope.addCommentSubmit = function(comment) {
                 var user = UserService.getUser();
                 var blogPostId = $routeParams.blogPostId;
 
                 if (comment) {
                     comment.author = {};
-                    comment.author.id = (user) ? user.id : null;
+                    comment.author.id = user.id || undefined;
                 }
 
-                var onSuccess = function() {
-                    $scope.comment = null;
-                };
-                var onError =  function() {};
-
-                CommentService.addComment(comment, blogPostId, onSuccess, onError);
-
-                $scope.comment = null;
+                CommentService.addComment(comment, blogPostId).then(function() {
+                    $scope.comment = undefined;
+                });
             };
         }
-    );
+    ]);

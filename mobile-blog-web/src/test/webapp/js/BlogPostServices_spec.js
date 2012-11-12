@@ -16,14 +16,14 @@ describe('BlogPostServices', function() {
         }));
 
         it('should send get request to "..rest/blog"', inject(function(BlogPostService) {
-            BlogPostService.getBlogPosts();
+            BlogPostService.fetchBlogPosts();
             $httpBackend.flush();
         }));
 
         it("should fetch 2 blog posts", inject(function(BlogPostService) {
-            var blogPostList = BlogPostService.getBlogPosts();
+            BlogPostService.fetchBlogPosts();
             $httpBackend.flush();
-            expect(blogPostList.length).toEqual(2);
+            expect(BlogPostService.blogPosts.length).toEqual(2);
         }));
     });
 
@@ -37,14 +37,17 @@ describe('BlogPostServices', function() {
         }));
 
         it('should send get request to "../test/blog/xyz"', inject(function(BlogPostService) {
-            BlogPostService.getBlogPost('xyz');
+            BlogPostService.fetchBlogPost('xyz');
             $httpBackend.flush();
         }));
 
         it("should fetch 1 blog post", inject(function(BlogPostService) {
-            var blogPost = BlogPostService.getBlogPost('xyz');
+            var blogPost;
+            BlogPostService.fetchBlogPost('xyz').then(function(response) {
+                blogPost = response;
+            });
             $httpBackend.flush();
-            expect(blogPost).toEqualData(data);
+            expect(blogPost).toEqual(data);
         }));
     });
 
@@ -58,14 +61,14 @@ describe('BlogPostServices', function() {
         }));
 
         it('should send get request to "../rest/blog/xyz/comment"', inject(function(CommentService) {
-            CommentService.getComments('xyz');
+            CommentService.fetchComments('xyz');
             $httpBackend.flush();
         }));
 
         it('should fetch 2 comments', inject(function(CommentService) {
-            var commentList = CommentService.getComments('xyz');
+            CommentService.fetchComments('xyz');
             $httpBackend.flush();
-            expect(commentList.length).toEqual(2);
+            expect(CommentService.comments.length).toEqual(2);
         }));
     });
 

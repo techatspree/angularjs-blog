@@ -1,6 +1,6 @@
 
 <div id="blogPostList">
-    <article ng-repeat="post in blogPosts">
+    <article ng-repeat="post in blogPostService.blogPosts">
         <h2>{{ post.title }}</h2>
         <h5>
             {{ post.author.firstname }} {{ post.author.surname }} - {{ post.created | date:'dd.MM.yyyy h:mm' }}
