@@ -27,7 +27,7 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
         'CommentService',
 
         function($scope, blogPost, CommentService) {
-            $scope.blogPost = blogPost;
+            $scope.blogPost = blogPost.data;
             $scope.commentService = CommentService;
 
             $scope.addCommentForm = 'app/partials/desktop/add-comment-form.html';
@@ -53,9 +53,10 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
                     blogPost.author.id = user.id || undefined;
                 }
 
-                BlogPostService.addBlogPost(blogPost).then(function() {
-                    $location.url('/');
-                });
+                BlogPostService.addBlogPost(blogPost).
+                    success(function() {
+                        $location.url('/');
+                    });
             };
         }
     ]).
@@ -80,9 +81,10 @@ angular.module('BlogPostControllers', ['BlogPostServices', 'UserServices']).
                     comment.author.id = user.id || undefined;
                 }
 
-                CommentService.addComment(comment, blogPostId).then(function() {
-                    $scope.comment = undefined;
-                });
+                CommentService.addComment(comment, blogPostId).
+                    success(function() {
+                        $scope.comment = undefined;
+                    });
             };
         }
     ]);

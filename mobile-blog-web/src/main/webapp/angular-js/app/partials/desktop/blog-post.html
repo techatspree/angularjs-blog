@@ -2,7 +2,7 @@
 <div id="blogPostContainer">
     <h2>{{ blogPost.title }}</h2>
     <h5>
-        {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy h:mm' }}
+        {{ blogPost.author.firstname }} {{ blogPost.author.surname }} - {{ blogPost.created | date:'dd.MM.yyyy H:mm' }}
     </h5>
     <p>{{ blogPost.content }}</p>
 </div>
@@ -13,7 +13,7 @@
     <div class="comment" ng-repeat="comment in commentService.comments">
         <p>{{ comment.content }}</p>
         <p>
-            -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy h:mm' }}
+            -- {{ comment.author.firstname }} {{ comment.author.surname }}, {{ comment.created | date:'dd.MM.yyyy H:mm' }}
         </p>
     </div>
 </div>

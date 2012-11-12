@@ -21,9 +21,12 @@ describe('BlogPostServices', function() {
         }));
 
         it("should fetch 2 blog posts", inject(function(BlogPostService) {
-            BlogPostService.fetchBlogPosts();
+            var blogPosts;
+            BlogPostService.fetchBlogPosts().success(function(data) {
+                blogPosts = data;
+            });
             $httpBackend.flush();
-            expect(BlogPostService.blogPosts.length).toEqual(2);
+            expect(blogPosts.length).toEqual(2);
         }));
     });
 
@@ -42,11 +45,14 @@ describe('BlogPostServices', function() {
         }));
 
         it("should fetch 1 blog post", inject(function(BlogPostService) {
-            var blogPost;
-            BlogPostService.fetchBlogPost('xyz').then(function(response) {
-                blogPost = response;
+            var blogPost = [];
+            expect(blogPost.length).toEqual(0);
+
+            BlogPostService.fetchBlogPost('xyz').success(function(data) {
+                blogPost = data;
             });
             $httpBackend.flush();
+
             expect(blogPost).toEqual(data);
         }));
     });
@@ -66,9 +72,15 @@ describe('BlogPostServices', function() {
         }));
 
         it('should fetch 2 comments', inject(function(CommentService) {
-            CommentService.fetchComments('xyz');
+            var comments = [];
+            expect(comments.length).toEqual(0);
+
+            CommentService.fetchComments('xyz').success(function(data) {
+                comments = data;
+            });
             $httpBackend.flush();
-            expect(CommentService.comments.length).toEqual(2);
+
+            expect(comments.length).toEqual(2);
         }));
     });
 

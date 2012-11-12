@@ -21,10 +21,11 @@ angular.module('AuthenticationControllers', ['UserServices']).
                 credentials = (credentials) ? $.param(credentials) : undefined;
 
                 UserService.login(credentials).
-                    then(function() {
+                    success(function() {
                         $scope.user = undefined;
                         $location.url('/');
-                    }, function() {
+                    }).
+                    error(function() {
                         $scope.error = 'Login failed!';
                     });
             }
@@ -48,11 +49,12 @@ angular.module('AuthenticationControllers', ['UserServices']).
                 userData = (userData) ? $.param(userData) : undefined;
 
                 UserService.register(userData).
-                    then(function() {
+                    success(function() {
                         $scope.user = undefined;
                         $location.url('/login');
-                    }, function(response) {
-                        $scope.error = response.data;
+                    }).
+                    error(function(data) {
+                        $scope.error = data;
                     });
             }
         }

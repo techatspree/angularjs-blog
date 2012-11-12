@@ -30,10 +30,13 @@ angular.module('BlogPostServices', []).
                  */
                 fetchBlogPosts: function() {
                     var self = this;
-                    return $http.get(restUrl).
-                               then(function(response) {
-                                   return self.blogPosts = response.data;
-                               });
+                    return  $http.get(restUrl).
+                                success(function(data) {
+                                    return self.blogPosts = data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 },
 
                 /**
@@ -43,10 +46,13 @@ angular.module('BlogPostServices', []).
                  * @return {*}
                  */
                 fetchBlogPost: function(blogPostId) {
-                    return $http.get(restUrl + '/' + blogPostId).
-                               then(function(response) {
-                                   return response.data;
-                               });
+                    return  $http.get(restUrl + '/' + blogPostId).
+                                success(function(data) {
+                                    return data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 },
 
 
@@ -57,10 +63,13 @@ angular.module('BlogPostServices', []).
                  * @return {*}
                  */
                 addBlogPost: function(blogPost) {
-                    return $http.post(restUrl, blogPost).
-                               then(function(response) {
-                                   return response.data;
-                               });
+                    return  $http.post(restUrl, blogPost).
+                                success(function(data) {
+                                    return data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 }
             };
         }
@@ -91,10 +100,13 @@ angular.module('BlogPostServices', []).
                  */
                 fetchComments: function(blogPostId) {
                     var self = this;
-                    return $http.get(restUrl + blogPostId + '/comment').
-                               then(function(response) {
-                                   return self.comments = response.data;
-                               });
+                    return  $http.get(restUrl + blogPostId + '/comment').
+                                success(function(data) {
+                                    return self.comments = data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 },
 
                 /**
@@ -106,11 +118,14 @@ angular.module('BlogPostServices', []).
                  */
                 addComment: function(comment, blogPostId) {
                     var self = this;
-                    return $http.post(restUrl + blogPostId + '/comment', comment).
-                               then(function(response) {
-                                   self.fetchComments(blogPostId);
-                                   return response;
-                               });
+                    return  $http.post(restUrl + blogPostId + '/comment', comment).
+                                success(function(data) {
+                                    self.fetchComments(blogPostId);
+                                    return data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 }
             };
         }

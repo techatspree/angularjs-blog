@@ -26,12 +26,15 @@ angular.module('UserServices', []).
                  * @return {*}
                  */
                 login: function(credentials) {
-                    return $http.post('../rest/authentication', credentials, restConfig).
-                           then(function(response) {
-                               sessionStorage.setItem('user', angular.toJson(response.data));
-                               loggedIn = true;
-                               return response.data;
-                           });
+                    return  $http.post('../rest/authentication', credentials, restConfig).
+                                success(function(data) {
+                                    sessionStorage.setItem('user', angular.toJson(data));
+                                    loggedIn = true;
+                                    return data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 },
 
 
@@ -57,10 +60,13 @@ angular.module('UserServices', []).
                  * @return {*}
                  */
                 register: function(userData) {
-                    return $http.post('../rest/user', userData, restConfig).
-                               then(function(response) {
-                                   return response.data;
-                               });
+                    return  $http.post('../rest/user', userData, restConfig).
+                                success(function(data) {
+                                    return data;
+                                }).
+                                error(function(data) {
+                                    return data;
+                                });
                 },
 
 

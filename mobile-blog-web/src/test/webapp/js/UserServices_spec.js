@@ -22,9 +22,10 @@ describe('UserServices', function() {
 
         it("should return registered user", inject(function(UserService) {
             var user;
-            UserService.register(data).then(function(response) {
-                user = response;
-            });
+            UserService.register(data).
+                success(function(data) {
+                    user = data;
+                });
             $httpBackend.flush();
             expect(user).toEqual(data);
         }));
