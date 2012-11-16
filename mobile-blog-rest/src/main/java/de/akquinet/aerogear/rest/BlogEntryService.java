@@ -1,29 +1,17 @@
 package de.akquinet.aerogear.rest;
 
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.Resource;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.jms.*;
-import javax.validation.ValidationException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
 import de.akquinet.aerogear.BlogEntry;
 import de.akquinet.aerogear.User;
 import de.akquinet.aerogear.dao.BlogEntryDao;
 import de.akquinet.aerogear.dao.UserDao;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.validation.ValidationException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 @Path("/blog")
@@ -43,11 +31,7 @@ public class BlogEntryService {
 	@Inject
 	private ContraintValidator validator;
 
-    @Resource(mappedName = "java:/ConnectionFactory")
-    private ConnectionFactory connectionFactory;
 
-    @Resource(mappedName = "java:/topic/test")
-    private Topic topic;
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -99,25 +83,6 @@ public class BlogEntryService {
 		newBlogEntry.setAuthor(author);
 		newBlogEntry.setTitle(blogEntry.getTitle());
 		newBlogEntry.setContent(blogEntry.getContent());
-
-        Connection connection = null;
-        try {
-            connection = connectionFactory.createConnection();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer messageProducer = session.createProducer(topic);
-            connection.start();
-            TextMessage replyMessage = session.createTextMessage(blogEntry.getContent());
-            messageProducer.send(replyMessage);
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (JMSException e) {
-                }
-            }
-        }
 
 		blogEntryDao.persist(newBlogEntry);
 		return newBlogEntry;
