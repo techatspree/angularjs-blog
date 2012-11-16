@@ -39,21 +39,21 @@ public class E2ETest {
         Wait w = new WebDriverWait(driver, 10);
         w.until(e);
 
-        WebElement errorText   = driver.findElement(By.className("status-error"));
-        WebElement failureText = driver.findElement(By.className("status-failure"));
-        WebElement successText = driver.findElement(By.className("status-success"));
+        WebElement error   = driver.findElement(By.className("status-error"));
+        WebElement failure = driver.findElement(By.className("status-failure"));
+        WebElement success = driver.findElement(By.className("status-success"));
 
         System.out.println("\n\n\n------------------------------------------------------------------------");
         System.out.println("AngularJS End-to-End-Tests\n");
 
-        System.out.println(errorText.getText());
-        System.out.println(failureText.getText());
-        System.out.println(successText.getText());
+        System.out.println(error.getText());
+        System.out.println(failure.getText());
+        System.out.println(success.getText());
 
         System.out.println("------------------------------------------------------------------------\n\n\n");
 
-        Assert.assertEquals(errorText.getText(), "0 Errors");
-        Assert.assertEquals(failureText.getText(), "0 Failures");
+        Assert.assertEquals(error.getText(), "0 Errors");
+        Assert.assertEquals(failure.getText(), "0 Failures");
 
         driver.close();
     }
