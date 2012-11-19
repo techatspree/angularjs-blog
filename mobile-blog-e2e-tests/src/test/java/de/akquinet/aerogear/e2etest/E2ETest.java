@@ -1,10 +1,10 @@
 package de.akquinet.aerogear.e2etest;
 
-import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -29,14 +29,14 @@ public class E2ETest {
     @Test
     public void runE2ETest() {
         WebDriver driver = new FirefoxDriver();
-        driver.get("http://localhost:8180/blog/angular-js/test/e2e/runner.html");
+        driver.get("http://localhost:8180/blog/e2e-test/runner.html");
 
         ExpectedCondition e = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return !d.findElement(By.id("application")).isDisplayed();
             }
         };
-        Wait w = new WebDriverWait(driver, 10);
+        Wait w = new WebDriverWait(driver, 20);
         w.until(e);
 
         WebElement error   = driver.findElement(By.className("status-error"));

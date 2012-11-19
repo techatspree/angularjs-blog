@@ -17,10 +17,6 @@
 		<hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
 		<jta.data.source>java:jboss/datasources/ExampleDS</jta.data.source>
 		<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
-
-        <jasmine.setup.folder>${project.basedir}/src/test/webapp/resources/jasmine-setup</jasmine.setup.folder>
-        <jasmine.fixture.setup>${jasmine.setup.folder}/file_system_fixtures.js</jasmine.fixture.setup>
-
 	</properties>
 
 	<dependencyManagement>

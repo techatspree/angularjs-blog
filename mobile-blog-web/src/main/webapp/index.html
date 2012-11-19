@@ -1,28 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en" ng-app="App">
 <head>
-    <title>AeroGear Blog Demo</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8">
+    <title>AngularJS - Blog-Demo</title>
 
-    <script type="text/javascript" src="js/lib/modernizr.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
 
-    <script type="text/javascript">
-        var smallScreen = Modernizr.mq( "only screen and (max-device-width: 1024px)");
-        var touchScreen = Modernizr.touch;
-
-        if (smallScreen && touchScreen) {
-            // mobile
-            document.location.href="mobile-jo/";
-        }
-        else {
-            // desktop
-            document.location.href="angular-js/";
-        }
-    </script>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 </head>
-
 <body>
+
+
+<section ng-include="index"></section>
+
+
+<!-- JavaScript -->
+<script type="text/javascript" src="js/lib/zepto.min.js"></script>
+
+<!-- angular.js -->
+<script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="js/lib/angular/angular-resource.min.js"></script>
+
+<!-- app -->
+<script type="text/javascript" src="js/App.js"></script>
+
+<!-- controller -->
+<script type="text/javascript" src="js/controllers/AuthenticationControllers.js"></script>
+<script type="text/javascript" src="js/controllers/RegistrationControllers.js"></script>
+<script type="text/javascript" src="js/controllers/BlogPostControllers.js"></script>
+<script type="text/javascript" src="js/controllers/CommentControllers.js"></script>
+
+<!-- services -->
+<script type="text/javascript" src="js/services/BlogPostServices.js"></script>
+<script type="text/javascript" src="js/services/CommentServices.js"></script>
+<script type="text/javascript" src="js/services/UserServices.js"></script>
+
+<!-- filters -->
+<script type="text/javascript" src="js/filters/Filters.js"></script>
+
+
 </body>
 
 </html>
