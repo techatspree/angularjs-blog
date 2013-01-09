@@ -1,6 +1,6 @@
 describe('CommentService', function() {
 
-    beforeEach(module('CommentServices'));
+    beforeEach(module('Services'));
 
     afterEach(function() {
         jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));

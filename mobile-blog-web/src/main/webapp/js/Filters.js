@@ -1,6 +1,8 @@
 /**
+ * Filters module
+ *
  * @author Till Hermsen
- * @date 31.10.12
+ * @date 09.01.13
  */
 
 'use strict';

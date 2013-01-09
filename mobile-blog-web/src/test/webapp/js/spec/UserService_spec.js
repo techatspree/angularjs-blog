@@ -1,6 +1,6 @@
 describe('UserServices', function() {
 
-    beforeEach(module('UserServices'));
+    beforeEach(module('Services'));
 
     afterEach(function() {
         jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));

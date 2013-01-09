@@ -1,4 +1,6 @@
 /**
+ * App module
+ *
  * @author Till Hermsen
  * @date 02.11.12
  */
@@ -6,15 +8,8 @@
 'use strict';
 
 angular.module('App', [
-    'BlogPostControllers',
-    'CommentControllers',
-    'AuthenticationControllers',
-    'RegistrationControllers',
-
-    'BlogPostServices',
-    'CommentServices',
-    'UserServices',
-
+    'Services',
+    'Controllers',
     'Filters'
 ]).
 
@@ -31,12 +26,12 @@ angular.module('App', [
                  * Controllers: BlogPostListController
                  */
                 when('/', {
-                    templateUrl: 'partials/blog-post-list.html'
-//                    resolve: {
-//                        blogPosts: ['BlogPostService', function(BlogPostService) {
-//                            return BlogPostService.fetchBlogPosts();
-//                        }]
-//                    }
+                    templateUrl: 'partials/blog-post-list.html',
+                    resolve: {
+                        blogPosts: ['BlogPostService', function(BlogPostService) {
+                            return BlogPostService.fetchBlogPosts();
+                        }]
+                    }
                 }).
 
 
@@ -57,23 +52,28 @@ angular.module('App', [
                  * Controllers: BlogPostController, AddCommentController
                  */
                 when('/post/:blogPostId', {
-                    templateUrl: 'partials/blog-post.html'
-//                    resolve: {
-//                         blogPost: ['BlogPostService',
-//                             function($route, BlogPostService) {
-//                                 return BlogPostService.fetchBlogPost(
-//                                     $route.current.params.blogPostId
-//                                 );
-//                             }
-//                         ],
-//                         commentList: ['CommentService',
-//                             function($route, CommentService) {
-//                                return CommentService.fetchComments(
-//                                    $route.current.params.blogPostId
-//                                );
-//                             }
-//                         ]
-//                    }
+                    templateUrl: 'partials/blog-post.html',
+                    resolve: {
+                         blogPost: [
+                             '$route',
+                             'BlogPostService',
+
+                             function($route, BlogPostService) {
+                                 var blogPostId = $route.current.params.blogPostId;
+                                 return BlogPostService.fetchBlogPost(blogPostId);
+                             }
+                         ],
+
+                         commentList: [
+                             '$route',
+                             'CommentService',
+
+                             function($route, CommentService) {
+                                 var blogPostId = $route.current.params.blogPostId;
+                                return CommentService.fetchComments(blogPostId);
+                             }
+                         ]
+                    }
                 }).
 
 
@@ -90,7 +90,7 @@ angular.module('App', [
                 /**
                  * Registration route
                  *
-                 * Controllers: RegisterController
+                 * Controllers: RegistrationController
                  */
                 when('/register', {
                     templateUrl: 'partials/register-form.html'
@@ -100,13 +100,13 @@ angular.module('App', [
                 /**
                  * HTTP 401 Unauthorized
                  */
-                when('/401', { template: '401' }).
+                when('/401', { template: '<h1>401 Error</h1>' }).
 
 
                 /**
                  * HTTP 404 Not Found
                  */
-                when('/404', { template: '404' })
+                when('/404', { template: '<h1>404 Error</h1>' })
 
 
                 /**
@@ -116,23 +116,22 @@ angular.module('App', [
         }
     ]).
 
-    run(function($rootScope, $location, UserService) {
-        $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            var authRequired = next.$route && next.$route.authRequired;
-            if (authRequired !== undefined) {
-                if (authRequired && !UserService.isLoggedIn()) {
-                    $location.url('401');
+    run([
+        '$rootScope',
+        '$location',
+        'UserService',
+
+        function($rootScope, $location, UserService) {
+            $rootScope.$on('$routeChangeStart', function(event, next, current) {
+                var authRequired = next.$route && next.$route.authRequired;
+                if (authRequired !== undefined) {
+                    if (authRequired && !UserService.isLoggedIn()) {
+                        $location.url('401');
+                    }
                 }
-            }
-        });
-
-        $rootScope.index      = 'partials/index.html';
-        $rootScope.header     = 'partials/header.html';
-        $rootScope.sidebar    = 'partials/sidebar.html';
-        $rootScope.navigation = 'partials/navigation.html';
-
-        $rootScope.addCommentForm = 'partials/add-comment-form.html';
-    }).
+            });
+        }
+    ]).
 
     controller('AppController', [
         '$rootScope',

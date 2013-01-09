@@ -106,9 +106,9 @@
                         <include>zepto.min.js</include>
                         <include>lib/angular/angular.js</include>
                         <include>lib/angular/angular-mocks.js</include>
-                        <include>controllers/*.js</include>
-                        <include>filters/*.js</include>
-                        <include>services/*.js</include>
+                        <include>Services.js</include>
+                        <include>Controllers.js</include>
+                        <include>Filters.js</include>
                     </sourceIncludes>
                 </configuration>
             </plugin>

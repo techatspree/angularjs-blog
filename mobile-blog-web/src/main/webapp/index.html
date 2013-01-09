@@ -4,42 +4,45 @@
     <meta charset="utf-8">
     <title>AngularJS - Blog-Demo</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
 </head>
+
 <body>
 
 
-<section ng-include="index"></section>
+<section class="container" ng-controller="AppController">
+    <header class="row" ng-include="'partials/header.html'"></header>
+
+    <nav class="row" ng-include="'partials/navigation.html'"></nav>
+
+    <section id="content" class="row">
+        <section class="span1"></section>
+
+        <section id="mainContent" ng-view class="span6"></section>
+
+        <aside class="span3 offset1" ng-include="'partials/sidebar.html'"></aside>
+
+        <section class="span1"></section>
+    </section>
+</section>
 
 
 <!-- JavaScript -->
 <script type="text/javascript" src="js/lib/zepto.min.js"></script>
 
-<!-- angular.js -->
+<!-- AngularJS -->
 <script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
-<script type="text/javascript" src="js/lib/angular/angular-resource.min.js"></script>
 
 <!-- app -->
 <script type="text/javascript" src="js/App.js"></script>
 
-<!-- controller -->
-<script type="text/javascript" src="js/controllers/AuthenticationControllers.js"></script>
-<script type="text/javascript" src="js/controllers/RegistrationControllers.js"></script>
-<script type="text/javascript" src="js/controllers/BlogPostControllers.js"></script>
-<script type="text/javascript" src="js/controllers/CommentControllers.js"></script>
-
-<!-- services -->
-<script type="text/javascript" src="js/services/BlogPostServices.js"></script>
-<script type="text/javascript" src="js/services/CommentServices.js"></script>
-<script type="text/javascript" src="js/services/UserServices.js"></script>
-
-<!-- filters -->
-<script type="text/javascript" src="js/filters/Filters.js"></script>
-
+<script type="text/javascript" src="js/Services.js"></script>
+<script type="text/javascript" src="js/Controllers.js"></script>
+<script type="text/javascript" src="js/Filters.js"></script>
 
 </body>
 
