@@ -11,16 +11,17 @@ describe('UserServices', function() {
         var data = getJSONFixture('user.json'),
             responseData;
 
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.expectPOST('rest/user').respond(data);
-        }));
+        it('should send post request to "rest/user"', inject(function($injector) {
+            var $httpBackend = $injector.get('$httpBackend'),
+                UserService = $injector.get('UserService');
 
-        it('should send post request to "rest/user"', inject(function(UserService) {
+            $httpBackend.expectPOST('rest/user').respond(data);
+
             UserService.register(data).
                 success(function(data) {
                     responseData = data;
                 });
+
             $httpBackend.flush();
         }));
 

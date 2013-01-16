@@ -11,12 +11,12 @@ describe('CommentService', function() {
         var data = getJSONFixture('comment-list.json'),
             responseData;
 
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
-        }));
+        it('should send get request to "rest/blog/xyz/comment"', inject(function($injector) {
+            var $httpBackend = $injector.get('$httpBackend'),
+                CommentService = $injector.get('CommentService');
 
-        it('should send get request to "rest/blog/xyz/comment"', inject(function(CommentService) {
+            $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
+
             CommentService.fetchComments('xyz').
                 success(function(data) {
                     responseData = data;

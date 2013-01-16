@@ -11,12 +11,12 @@ describe('BlogPostService', function() {
         var data = getJSONFixture('blog-post-list.json'),
             responseData;
 
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('rest/blog').respond(data);
-        }));
+        it('should send get request to "rest/blog"', inject(function($injector) {
+            var $httpBackend = $injector.get('$httpBackend'),
+                BlogPostService = $injector.get("BlogPostService");
 
-        it('should send get request to "rest/blog"', inject(function(BlogPostService) {
+            $httpBackend.expectGET('rest/blog').respond(data);
+
             BlogPostService.fetchBlogPosts().
                 success(function(data) {
                     responseData = data;
@@ -34,12 +34,12 @@ describe('BlogPostService', function() {
         var data = getJSONFixture('blog-post.json'),
             responseData;
 
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('rest/blog/xyz').respond(data);
-        }));
+        it('should send get request to "rest/blog/xyz"', inject(function($injector) {
+            var $httpBackend = $injector.get('$httpBackend'),
+                BlogPostService = $injector.get("BlogPostService");
 
-        it('should send get request to "rest/blog/xyz"', inject(function(BlogPostService) {
+            $httpBackend.expectGET('rest/blog/xyz').respond(data);
+
             BlogPostService.fetchBlogPost('xyz').
                 success(function(data) {
                     responseData = data;
