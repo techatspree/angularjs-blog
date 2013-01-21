@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.akquinet.aerogear</groupId>
-        <artifactId>mobile-blog</artifactId>
+	<groupId>de.akquinet.angularjs</groupId>
+        <artifactId>angularjs-blog</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>mobile-blog Parent</name>
+	<name>angularjs-blog Parent</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,44 +23,44 @@
 		<dependencies>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-jpa</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-jpa</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>jar</type>
 			</dependency>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-jpa</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-jpa</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-ejb</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-ejb</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-bootstrap</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-bootstrap</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-rest</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-rest</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 
 			<dependency>
-				<groupId>de.akquinet.aerogear</groupId>
-				<artifactId>mobile-blog-web</artifactId>
+				<groupId>de.akquinet.angularjs</groupId>
+				<artifactId>angularjs-blog-web</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<type>war</type>
 				<scope>compile</scope>
@@ -256,55 +256,12 @@
 		</pluginManagement>
 	</build>
 
-	<profiles>
-        <profile>
-            <id>android</id>
-            <modules>
-                <module>mobile-blog-android</module>
-            </modules>
-        </profile>
-		<profile>
-			<id>openshift</id>
-			<properties>
-				<context.root>/</context.root>
-				<hibernate.hbm2ddl.auto>create</hibernate.hbm2ddl.auto>
-				<jta.data.source>java:jboss/datasources/PostgreSQLDS</jta.data.source>
-				<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<outputDirectory>deployments</outputDirectory>
-							<packagingExcludes>WEB-INF/lib/mobile-blog-bootstrap*.jar</packagingExcludes>
-
-							<webResources>
-								<resource>
-									<!-- this is relative to the pom.xml directory -->
-									<directory>src/main/webapp</directory>
-
-									<filtering>true</filtering>
-
-									<includes>
-										<include>**/jboss-web.xml</include>
-									</includes>
-								</resource>
-							</webResources>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-	</profiles>
-
 	<modules>
-		<module>mobile-blog-jpa</module>
-		<module>mobile-blog-bootstrap</module>
-		<module>mobile-blog-ejb</module>
-		<module>mobile-blog-rest</module>
-		<module>mobile-blog-web</module>
-        <module>mobile-blog-e2e-tests</module>
+		<module>angularjs-blog-jpa</module>
+		<module>angularjs-blog-bootstrap</module>
+		<module>angularjs-blog-ejb</module>
+		<module>angularjs-blog-rest</module>
+		<module>angularjs-blog-web</module>
+        <module>angularjs-blog-e2e-tests</module>
     </modules>
 </project>

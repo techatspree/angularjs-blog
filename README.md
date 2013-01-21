@@ -1,4 +1,4 @@
-Cross-Platform AeroGear example application
+AngularJS example application
 ============================
 [@akquinet](https://twitter.com/akquinet)
 
@@ -14,17 +14,8 @@ Executing the Arquillian tests
  	mvn clean test -Pjbossas-7-managed -DjbossHome=JBOSS_HOME
  	
  	
-Access the application on Openshift
-------------------------------
-
-[http://mobile-akquinet.rhcloud.com](http://mobile-akquinet.rhcloud.com)
-
- 	
 Further information
 ---------------- 	
  	
 * [http://blog.akquinet.de](http://blog.akquinet.de)
-* [http://www.jboss.org/aerogear](http://www.jboss.org/aerogear)
-* [https://openshift.redhat.com/](https://openshift.redhat.com/)
- 	
- 	
+* [http://blog-de.akquinet.de](http://blog-de.akquinet.de)

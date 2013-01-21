@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>angularjs-blog</artifactId>
+		<groupId>de.akquinet.angularjs</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>angularjs-blog-web</artifactId>
+	<packaging>war</packaging>
+
+	<name>angularjs-blog Web module</name>
+
+    <properties>
+        <!-- Jasmine fixtures path workaround -->
+        <jasmine.setup.folder>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings</jasmine.setup.folder>
+        <jasmine.fixture.setup>${jasmine.setup.folder}/file_system_fixtures.js</jasmine.fixture.setup>
+    </properties>
+
+	<dependencies>
+		<!-- Dependency on the EJB module so we can use it's services if needed -->
+		<dependency>
+			<groupId>de.akquinet.angularjs</groupId>
+			<artifactId>angularjs-blog-bootstrap</artifactId>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>de.akquinet.angularjs</groupId>
+			<artifactId>angularjs-blog-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.akquinet.angularjs</groupId>
+			<artifactId>angularjs-blog-ejb</artifactId>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>de.akquinet.angularjs</groupId>
+			<artifactId>angularjs-blog-rest</artifactId>
+			<type>ejb</type>
+		</dependency>
+
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>de.akquinet.angularjs</groupId>
+			<artifactId>angularjs-blog-jpa</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src/main/webapp</directory>
+
+							<filtering>true</filtering>
+
+							<includes>
+								<include>**/jboss-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+            <plugin>
+                <groupId>com.github.searls</groupId>
+                <artifactId>jasmine-maven-plugin</artifactId>
+                <version>1.2.0.0</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsSrcDir>${project.basedir}/src/main/webapp/js</jsSrcDir>
+                    <jsTestSrcDir>${project.basedir}/src/test/webapp/js/spec</jsTestSrcDir>
+
+                    <preloadSources>
+                        <source>${project.basedir}/src/test/webapp/js/lib/console.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jquery-1.8.3.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.4.2.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine.console_reporter.js</source>
+                        <source>${jasmine.fixture.setup}</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/matchers.js</source>
+                    </preloadSources>
+
+                    <sourceIncludes>
+                        <include>zepto.min.js</include>
+                        <include>lib/angular/angular.js</include>
+                        <include>lib/angular/angular-mocks.js</include>
+                        <include>Services.js</include>
+                        <include>Controllers.js</include>
+                        <include>Filters.js</include>
+                    </sourceIncludes>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+    <profiles>
+        <profile>
+            <id>jasmine-web</id>
+            <properties>
+                <jasmine.fixture.setup>${jasmine.setup.folder}/web_resource_fixtures.js</jasmine.fixture.setup>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>
