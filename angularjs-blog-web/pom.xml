@@ -99,7 +99,6 @@
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.4.2.js</source>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine.console_reporter.js</source>
                         <source>${jasmine.fixture.setup}</source>
-                        <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/matchers.js</source>
                     </preloadSources>
 
                     <sourceIncludes>
