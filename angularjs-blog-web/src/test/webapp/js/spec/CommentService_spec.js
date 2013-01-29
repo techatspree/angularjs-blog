@@ -1,4 +1,4 @@
-describe('CommentService', function() {
+describe('CommentService test suite', function() {
 
     beforeEach(module('Services'));
 
@@ -7,22 +7,22 @@ describe('CommentService', function() {
     });
 
 
-    describe('CommentList', function() {
+    describe('CommentList tests', function() {
         var data = getJSONFixture('comment-list.json'),
             responseData;
 
-        it('should send get request to "rest/blog/xyz/comment"', inject(function($injector) {
-            var $httpBackend = $injector.get('$httpBackend'),
-                CommentService = $injector.get('CommentService');
+        it('should send get request to "rest/blog/xyz/comment"', inject(
+            function($httpBackend, CommentService) {
+                $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
 
-            $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
+                CommentService.fetchComments('xyz').
+                    success(function(data) {
+                        responseData = data;
+                    });
 
-            CommentService.fetchComments('xyz').
-                success(function(data) {
-                    responseData = data;
-                });
-            $httpBackend.flush();
-        }));
+                $httpBackend.flush();
+            })
+        );
 
         it('expect two comments', function() {
             expect(responseData.length).toEqual(2);

@@ -1,4 +1,4 @@
-describe('BlogPostService', function() {
+describe('BlogPostService test suite', function() {
 
     beforeEach(module('Services'));
 
@@ -7,22 +7,22 @@ describe('BlogPostService', function() {
     });
 
 
-    describe('BlogPostList', function() {
+    describe('BlogPostList tests', function() {
         var data = getJSONFixture('blog-post-list.json'),
             responseData;
 
-        it('should send get request to "rest/blog"', inject(function($injector) {
-            var $httpBackend = $injector.get('$httpBackend'),
-                BlogPostService = $injector.get("BlogPostService");
+        it('should send get request to "rest/blog"', inject(
+            function($httpBackend, BlogPostService) {
+                $httpBackend.expectGET('rest/blog').respond(data);
 
-            $httpBackend.expectGET('rest/blog').respond(data);
+                BlogPostService.fetchBlogPosts().
+                    success(function(data) {
+                        responseData = data;
+                    });
 
-            BlogPostService.fetchBlogPosts().
-                success(function(data) {
-                    responseData = data;
-                });
-            $httpBackend.flush();
-        }));
+                $httpBackend.flush();
+            })
+        );
 
         it("expect two blog posts", function() {
             expect(responseData.length).toEqual(2);
@@ -30,22 +30,22 @@ describe('BlogPostService', function() {
     });
 
 
-    describe('BlogPost', function() {
+    describe('BlogPost test', function() {
         var data = getJSONFixture('blog-post.json'),
             responseData;
 
-        it('should send get request to "rest/blog/xyz"', inject(function($injector) {
-            var $httpBackend = $injector.get('$httpBackend'),
-                BlogPostService = $injector.get("BlogPostService");
+        it('should send get request to "rest/blog/xyz"', inject(
+            function($httpBackend, BlogPostService) {
+                $httpBackend.expectGET('rest/blog/xyz').respond(data);
 
-            $httpBackend.expectGET('rest/blog/xyz').respond(data);
+                BlogPostService.fetchBlogPost('xyz').
+                    success(function(data) {
+                        responseData = data;
+                    });
 
-            BlogPostService.fetchBlogPost('xyz').
-                success(function(data) {
-                    responseData = data;
-                });
-            $httpBackend.flush();
-        }));
+                $httpBackend.flush();
+            })
+        );
 
         it("expect response data to equal data", function() {
             expect(responseData).toEqual(data);

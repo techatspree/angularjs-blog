@@ -1,4 +1,4 @@
-describe('UserServices', function() {
+describe('UserService test suite', function() {
 
     beforeEach(module('Services'));
 
@@ -7,23 +7,22 @@ describe('UserServices', function() {
     });
 
 
-    describe('Register', function() {
+    describe('Registration test', function() {
         var data = getJSONFixture('user.json'),
             responseData;
 
-        it('should send post request to "rest/user"', inject(function($injector) {
-            var $httpBackend = $injector.get('$httpBackend'),
-                UserService = $injector.get('UserService');
+        it('should send post request to "rest/user"', inject(
+            function($httpBackend, UserService) {
+                $httpBackend.expectPOST('rest/user').respond(data);
 
-            $httpBackend.expectPOST('rest/user').respond(data);
+                UserService.register(data).
+                    success(function(data) {
+                        responseData = data;
+                    });
 
-            UserService.register(data).
-                success(function(data) {
-                    responseData = data;
-                });
-
-            $httpBackend.flush();
-        }));
+                $httpBackend.flush();
+            })
+        );
 
         it("expect response data equals data", function() {
             expect(responseData).toEqual(data);
