@@ -116,7 +116,7 @@
 
     <profiles>
         <profile>
-            <id>jasmine-web</id>
+            <id>jasmine-spec-runner</id>
             <properties>
                 <jasmine.fixture.setup>${jasmine.setup.folder}/web_resource_fixtures.js</jasmine.fixture.setup>
             </properties>

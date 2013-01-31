@@ -13,14 +13,20 @@ describe('BlogPostService test suite', function() {
 
         it('should send get request to "rest/blog"', inject(
             function($httpBackend, BlogPostService) {
+                var requestType, requestUrl;
                 $httpBackend.expectGET('rest/blog').respond(data);
 
                 BlogPostService.fetchBlogPosts().
-                    success(function(data) {
+                    success(function(data, status, headers, config) {
                         responseData = data;
+                        requestType = config.method;
+                        requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
+
+                expect(requestType).toEqual("GET");
+                expect(requestUrl).toEqual("rest/blog");
             })
         );
 
@@ -36,14 +42,19 @@ describe('BlogPostService test suite', function() {
 
         it('should send get request to "rest/blog/xyz"', inject(
             function($httpBackend, BlogPostService) {
+                var requestType, requestUrl;
                 $httpBackend.expectGET('rest/blog/xyz').respond(data);
 
                 BlogPostService.fetchBlogPost('xyz').
-                    success(function(data) {
+                    success(function(data, status, headers, config) {
                         responseData = data;
+                        requestType = config.method;
+                        requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
+                expect(requestType).toEqual("GET");
+                expect(requestUrl).toEqual("rest/blog/xyz");
             })
         );
 

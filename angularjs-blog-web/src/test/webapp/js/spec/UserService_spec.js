@@ -13,14 +13,19 @@ describe('UserService test suite', function() {
 
         it('should send post request to "rest/user"', inject(
             function($httpBackend, UserService) {
+                var requestType, requestUrl;
                 $httpBackend.expectPOST('rest/user').respond(data);
 
                 UserService.register(data).
-                    success(function(data) {
+                    success(function(data, status, headers, config) {
                         responseData = data;
+                        requestType = config.method;
+                        requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
+                expect(requestType).toEqual("POST");
+                expect(requestUrl).toEqual("rest/user");
             })
         );
 

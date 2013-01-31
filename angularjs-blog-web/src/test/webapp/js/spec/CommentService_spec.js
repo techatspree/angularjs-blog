@@ -13,14 +13,19 @@ describe('CommentService test suite', function() {
 
         it('should send get request to "rest/blog/xyz/comment"', inject(
             function($httpBackend, CommentService) {
+                var requestType, requestUrl;
                 $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
 
                 CommentService.fetchComments('xyz').
-                    success(function(data) {
+                    success(function(data, status, headers, config) {
                         responseData = data;
+                        requestType = config.method;
+                        requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
+                expect(requestType).toEqual("GET");
+                expect(requestUrl).toEqual("rest/blog/xyz/comment");
             })
         );
 
