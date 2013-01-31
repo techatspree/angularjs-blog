@@ -14,6 +14,11 @@ nav {
     margin: 20px 0 0;
 }
 
+.navbar-inner {
+    -webkit-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
 .container {
     background: white;
     padding: 0 0 20px;

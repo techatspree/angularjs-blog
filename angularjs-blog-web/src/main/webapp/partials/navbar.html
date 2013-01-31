@@ -1,0 +1,15 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" href="#/">AngularJS-Blog</a>
+        <ul class="nav">
+            <li ng-show="userService.isLoggedIn()">
+                <a ng-href="#/post/add">Add Post</a>
+            </li>
+        </ul>
+
+        <ul class="pull-right nav" ng-switch="userService.isLoggedIn()">
+            <li ng-switch-when="false"><a ng-href="#/login">Login</a></li>
+            <li ng-switch-when="true"><a ng-click="broadcastBtnEvent('user:logout')">Logout</a></li>
+        </ul>
+    </div>
+</div>

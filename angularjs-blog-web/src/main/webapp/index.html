@@ -13,22 +13,21 @@
 
 <body>
 
+<div class="container" ng-controller="AppController">
+    <div ng-include="'partials/navbar.html'"></div>
 
-<section class="container" ng-controller="AppController">
     <header class="row" ng-include="'partials/header.html'"></header>
 
-    <nav class="row" ng-include="'partials/navigation.html'"></nav>
-
-    <section id="content" class="row">
-        <section class="span1"></section>
+    <div id="content" class="row">
+        <div class="span1"></div>
 
         <section id="mainContent" ng-view class="span6"></section>
 
         <aside class="span3 offset1" ng-include="'partials/sidebar.html'"></aside>
 
-        <section class="span1"></section>
-    </section>
-</section>
+        <div class="span1"></div>
+    </div>
+</div>
 
 
 <!-- JavaScript -->
