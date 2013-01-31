@@ -16,8 +16,7 @@
 
     <properties>
         <!-- Jasmine fixtures path workaround -->
-        <jasmine.setup.folder>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings</jasmine.setup.folder>
-        <jasmine.fixture.setup>${jasmine.setup.folder}/file_system_fixtures.js</jasmine.fixture.setup>
+        <jasmine.fixture.setup>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/headless.js</jasmine.fixture.setup>
     </properties>
 
 	<dependencies>
@@ -118,7 +117,7 @@
         <profile>
             <id>jasmine-spec-runner</id>
             <properties>
-                <jasmine.fixture.setup>${jasmine.setup.folder}/web_resource_fixtures.js</jasmine.fixture.setup>
+                <jasmine.fixture.setup>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/jasmine_spec_runner.js</jasmine.fixture.setup>
             </properties>
         </profile>
     </profiles>
