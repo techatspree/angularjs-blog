@@ -6,32 +6,29 @@ describe('UserService test suite', function() {
         jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
     });
 
-
     describe('Registration test', function() {
-        var data = getJSONFixture('user.json'),
-            responseData;
+        var data, responseData,
+            requestMethod, requestUrl;
 
         it('should send post request to "rest/user"', inject(
             function($httpBackend, UserService) {
-                var requestType, requestUrl;
+                data = getJSONFixture('user.json');
                 $httpBackend.expectPOST('rest/user').respond(data);
 
                 UserService.register(data).
                     success(function(data, status, headers, config) {
                         responseData = data;
-                        requestType = config.method;
+                        requestMethod = config.method;
                         requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
-                expect(requestType).toEqual("POST");
+
+                expect(responseData).not.toBe(undefined);
+                expect(requestMethod).toEqual("POST");
                 expect(requestUrl).toEqual("rest/user");
             })
         );
-
-        it("expect response data equals data", function() {
-            expect(responseData).toEqual(data);
-        });
     });
 
 });

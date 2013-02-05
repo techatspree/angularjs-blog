@@ -22,14 +22,21 @@ public class E2ETest {
 
     @Deployment(testable = false)
     public static WebArchive accessDeployment() {
-        File theWar = MavenDependencyResolver.resolve("de.akquinet.angularjs", "angularjs-blog-web", "1.0-SNAPSHOT", null, "war");
-        return ShrinkWrap.createFromZipFile(WebArchive.class, theWar);
+        File war = MavenDependencyResolver.resolve(
+                "de.akquinet.angularjs",
+                "angularjs-blog-web",
+                "1.0-SNAPSHOT",
+                "e2etest",
+                "war"
+        );
+        return ShrinkWrap.createFromZipFile(WebArchive.class, war);
     }
 
     @Test
     public void runE2ETest() {
         WebDriver driver = new FirefoxDriver();
-        driver.get("http://localhost:8180/blog/e2e-test/runner.html");
+
+        driver.get("http://localhost:8180/blog/angularjs-scenario-runner/runner.html");
 
         ExpectedCondition e = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {

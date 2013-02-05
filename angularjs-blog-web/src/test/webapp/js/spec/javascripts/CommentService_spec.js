@@ -6,32 +6,29 @@ describe('CommentService test suite', function() {
         jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
     });
 
-
-    describe('CommentList tests', function() {
-        var data = getJSONFixture('comment-list.json'),
-            responseData;
+    describe('CommentList test', function() {
+        var data, responseData,
+            requestMethod, requestUrl;
 
         it('should send get request to "rest/blog/xyz/comment"', inject(
             function($httpBackend, CommentService) {
-                var requestType, requestUrl;
+                data = getJSONFixture('comment-list.json');
                 $httpBackend.expectGET('rest/blog/xyz/comment').respond(data);
 
                 CommentService.fetchComments('xyz').
                     success(function(data, status, headers, config) {
                         responseData = data;
-                        requestType = config.method;
+                        requestMethod = config.method;
                         requestUrl = config.url;
                     });
 
                 $httpBackend.flush();
-                expect(requestType).toEqual("GET");
+
+                expect(responseData).not.toBe(undefined);
+                expect(requestMethod).toEqual("GET");
                 expect(requestUrl).toEqual("rest/blog/xyz/comment");
             })
         );
-
-        it('expect two comments', function() {
-            expect(responseData.length).toEqual(2);
-        });
     });
 
 });

@@ -10,14 +10,8 @@
 	</parent>
 
 	<artifactId>angularjs-blog-web</artifactId>
-	<packaging>war</packaging>
-
 	<name>angularjs-blog Web module</name>
-
-    <properties>
-        <!-- Jasmine fixtures path workaround -->
-        <jasmine.fixture.setup>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/headless.js</jasmine.fixture.setup>
-    </properties>
+    <packaging>war</packaging>
 
 	<dependencies>
 		<!-- Dependency on the EJB module so we can use it's services if needed -->
@@ -44,7 +38,6 @@
 			<type>ejb</type>
 		</dependency>
 
-
 		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>de.akquinet.angularjs</groupId>
@@ -59,21 +52,44 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webResources>
 						<resource>
-							<!-- this is relative to the pom.xml directory -->
 							<directory>src/main/webapp</directory>
-
 							<filtering>true</filtering>
-
 							<includes>
 								<include>**/jboss-web.xml</include>
 							</includes>
 						</resource>
 					</webResources>
 				</configuration>
+
+                <executions>
+                    <execution>
+                        <id>e2etest</id>
+
+                        <configuration>
+                            <classifier>e2etest</classifier>
+                            <webappDirectory>${project.build.directory}/${project.build.finalName}-e2etest</webappDirectory>
+                            <webResources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/jboss-web.xml</include>
+                                    </includes>
+                                </resource>
+
+                                <resource>
+                                    <directory>src/test/webapp/e2e-test</directory>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                        <goals>
+                            <goal>war</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 
             <plugin>
@@ -97,11 +113,9 @@
                         <source>${project.basedir}/src/test/webapp/js/lib/jquery-1.8.3.js</source>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.4.2.js</source>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine.console_reporter.js</source>
-                        <source>${jasmine.fixture.setup}</source>
                     </preloadSources>
 
                     <sourceIncludes>
-                        <include>zepto.min.js</include>
                         <include>lib/angular/angular.js</include>
                         <include>lib/angular/angular-mocks.js</include>
                         <include>Services.js</include>
@@ -116,9 +130,20 @@
     <profiles>
         <profile>
             <id>jasmine-spec-runner</id>
-            <properties>
-                <jasmine.fixture.setup>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/jasmine_spec_runner.js</jasmine.fixture.setup>
-            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.searls</groupId>
+                        <artifactId>jasmine-maven-plugin</artifactId>
+                        <configuration>
+                            <preloadSources combine.children="append">
+                                <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-settings/jasmine_spec_runner_fixtures_path.js</source>
+                            </preloadSources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 

@@ -1,1 +1,0 @@
-jasmine.getJSONFixtures().fixturesPath = 'src/test/webapp/js/spec/fixtures/json';
