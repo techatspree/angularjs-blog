@@ -113,11 +113,11 @@
                         <source>${project.basedir}/src/test/webapp/js/lib/jquery-1.8.3.js</source>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine-jquery-1.4.2.js</source>
                         <source>${project.basedir}/src/test/webapp/js/lib/jasmine.console_reporter.js</source>
+                        <source>${project.basedir}/src/main/webapp/js/lib/angular/angular.js</source>
+                        <source>${project.basedir}/src/test/webapp/js/lib/angular-mocks.js</source>
                     </preloadSources>
 
                     <sourceIncludes>
-                        <include>lib/angular/angular.js</include>
-                        <include>lib/angular/angular-mocks.js</include>
                         <include>Services.js</include>
                         <include>Controllers.js</include>
                         <include>Filters.js</include>

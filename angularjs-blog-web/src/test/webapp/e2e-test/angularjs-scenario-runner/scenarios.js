@@ -12,7 +12,7 @@ describe('E2E Tests', function() {
             input('user.surname').enter('Doe');
             input('user.email').enter('john@doe.com');
 
-            element('#registerSubmitBtn', 'register form submit button').click();
+            element('#registerSubmitBtn', 'registration form submit button').click();
 
             expect(browser().location().url()).toBe('/login');
         });
