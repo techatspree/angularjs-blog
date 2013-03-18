@@ -12,6 +12,7 @@ Executing the Arquillian tests
 ------------------------
 
  	mvn clean test -Pjbossas-7-managed -DjbossHome=JBOSS_HOME
+ Replace 'JBOSS_HOME' with your JBoss AS 7 path
  	
  	
 Further information
